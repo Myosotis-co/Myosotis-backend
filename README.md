@@ -8,11 +8,16 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 
 ## Setup
 
-1. Clone the project: `git clone https://github.com/ZinnurovArtur/DeleteMeHere.git`
+1. Install nvm and Node 18.
+```shell
+   docker ps
+   ```
 
-2. `cd` into the directory you checked the project code out into.
+2. Clone the project: `git clone https://github.com/ZinnurovArtur/DeleteMeHere.git`
 
-3. Start docker and initiate Redis:
+3. `cd` into the directory you checked the project code out into.
+
+4. Start docker and initiate Redis:
    ```shell
    docker compose up --build
    ```
@@ -26,3 +31,9 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
    9d5416dd7273     deletemehere_app
    123304c59a4b     postgres:15
    ```
+
+## Database setup
+
+   1. Install PostgreSQL
+
+   2. Install pgAdmin
