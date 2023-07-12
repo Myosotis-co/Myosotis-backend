@@ -4,15 +4,35 @@ In a world where almost every online service requires you to create an account, 
 
 This is where DeleteMeHere comes in. Our application is designed to empower users to take control of their digital footprint. It offers a simple and efficient way to view and manage all your online accounts in one place.
 
-
-
 ## Setup
 
-1. Clone the project: `git clone https://github.com/ZinnurovArtur/DeleteMeHere.git`
+1. Install nvm and Node 18.
 
-2. `cd` into the directory you checked the project code out into.
+```shell
+   docker ps
+```
 
-3. Start docker and initiate Redis:
+2. Clone the project: `git clone https://github.com/ZinnurovArtur/DeleteMeHere.git`
+
+3. `cd` into the directory you checked the project code out into.
+
+4. Start docker and initiate Redis:
    ```shell
    docker compose up --build
    ```
+   To verify that the two images are running you can check with:
+   ```shell
+   docker ps
+   ```
+   Should look like this:
+   ```
+   CONTAINER ID     IMAGE
+   9d5416dd7273     deletemehere_app
+   123304c59a4b     postgres:15
+   ```
+
+## Database setup
+
+1.  Install PostgreSQL
+
+2.  Install pgAdmin
