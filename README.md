@@ -16,3 +16,13 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
    ```shell
    docker compose up --build
    ```
+    To verify that the two images are running you can check with:
+    ```shell
+   docker ps
+   ```
+   Should look like this:
+   ```
+   CONTAINER ID     IMAGE
+   9d5416dd7273     deletemehere_app
+   123304c59a4b     postgres:15
+   ```
