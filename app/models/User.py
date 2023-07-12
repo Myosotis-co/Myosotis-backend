@@ -16,5 +16,4 @@ class User(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
 
-    routes = relationship("Route", back_populates="owner")
-    landmarks = relationship("Landmark", back_populates="owner")
+  
