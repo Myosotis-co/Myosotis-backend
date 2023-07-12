@@ -17,7 +17,7 @@ services:
     container_name: fastapi_app
     volumes:
       - .:/app
-    command: uvicorn app.main:app --host 0.0.0.0
+    command: uvicorn app.main:app --reload
     ports:
       - 8008:8000
     depends_on:

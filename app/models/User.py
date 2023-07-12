@@ -1,5 +1,4 @@
 
-from turtle import update
 from venv import create
 from sqlalchemy import Boolean, Column, Integer, String, Float, DateTime, ForeignKey,MetaData, TIMESTAMP, text
 from sqlalchemy.orm import relationship
