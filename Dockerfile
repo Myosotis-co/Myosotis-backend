@@ -17,5 +17,3 @@ RUN pip install -r requirements.txt
 # copy project
 COPY . .
 
-
-RUN chmod a+x docker/*.sh
