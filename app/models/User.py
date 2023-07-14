@@ -8,13 +8,14 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    role_id = Column(Integer, ForeignKey('roles.id'), default=1)
+    # role_id = Column(Integer, ForeignKey("role.id"))
     name = Column(String)
-    email = Column(String, unique=True)
+    # email = Column(String, unique=True)
+    email = Column(String)
     user_token = Column(String)
-    is_deleted = Column(Boolean, default = False)
+    hashed_password = Column(String)
+    is_deleted = Column(Boolean, default=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
-    hashed_password = Column(String)
 
-    role = relationship("Role", back_populates="user")
+    #role = relationship("Role", back_populates="users")

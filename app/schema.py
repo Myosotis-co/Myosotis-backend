@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 from pydantic import BaseModel
 
@@ -9,11 +10,12 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    role_id: int
-    is_deleted: bool
+    # role_id: int
     name: str
-    email: str
     user_token: str
+    is_deleted: bool
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
 
     class Config:
         orm_mode = True
@@ -27,9 +29,9 @@ class RoleCreate(RoleBase):
 
 class Role(RoleBase):
     id: int
-    title: str
+    name: str
     description: str
-    users: List[User] = []
+    # users: List[User]
 
     class Config:
         orm_mode = True

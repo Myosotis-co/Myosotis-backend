@@ -1,0 +1,12 @@
+{
+    "model" : "app.models.Role",
+    "data" : [
+    {
+        "name" : "Admin",
+        "description" : "Administrator role"
+    },
+    {
+        "name" : "User",
+        "description" : "Regular user role"
+    }]
+}

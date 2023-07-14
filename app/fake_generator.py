@@ -1,7 +1,6 @@
-
-
 from faker import Faker
 from datetime import datetime
+
 fake = Faker()
 
 def generate_fake_users(num_users):

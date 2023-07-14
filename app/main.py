@@ -1,16 +1,12 @@
-
-
 from fastapi import FastAPI,Depends,HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-
-
 
 from app import crud
 from app.config import settings
 from app.database import  engine
 from app.models import User
 from app.routers import user
-
+from app.seeder import seed
 
 app = FastAPI()
 

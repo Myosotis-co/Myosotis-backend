@@ -11,4 +11,4 @@ class Role(Base):
     name = Column(String)
     description = Column(String)
 
-    user = relationship("User", back_populates="role")
+    # users = relationship("User", back_populates="role")
