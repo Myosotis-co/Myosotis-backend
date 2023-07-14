@@ -1,5 +1,3 @@
-
-
 from fastapi import APIRouter, Depends, HTTPException
 
 from app import crud, schema
@@ -7,7 +5,6 @@ from app.database import get_db
 from sqlalchemy.orm import Session
 
 from app.fake_generator import generate_fake_users
-
 
 router = APIRouter()
 
