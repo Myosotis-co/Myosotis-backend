@@ -8,7 +8,7 @@ def generate_fake_users(num_users):
     for i in range(num_users):
         user = {
             'name': fake.name(),
-            'email': fake.email(),
+            'email': fake.unique.email(),
             'user_token': "not_real_token" + str(i),
             'hashed_password': 'hashed_not_real_password' + str(i)
         }
