@@ -25,3 +25,4 @@ app.add_middleware(
 )
 
 app.include_router(user.router,tags=["Users"],prefix="/api/users")
+seed()

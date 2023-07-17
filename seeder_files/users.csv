@@ -1,0 +1,3 @@
+name,email,user_token,hashed_password
+Improsterov Ivan,Abobus@sus.su,token 1,hashed pass 1
+Nickolas,Cage@is.cool,token 2,hashed pass 2
