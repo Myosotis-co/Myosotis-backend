@@ -94,3 +94,4 @@ zipp==3.11.0
 flower
 gunicorn
 Faker
+sqlalchemyseed
