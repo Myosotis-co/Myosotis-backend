@@ -1,8 +1,9 @@
 name: Black (python)
 
-on:  pull_request
-branch:
-  - main
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   lint:
