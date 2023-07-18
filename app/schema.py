@@ -10,7 +10,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    # role_id: int
+    role_id: int
     name: str
     user_token: str
     is_deleted: bool
@@ -31,7 +31,7 @@ class Role(RoleBase):
     id: int
     name: str
     description: str
-    # users: List[User]
+    users: List[User]
 
     class Config:
         orm_mode = True
