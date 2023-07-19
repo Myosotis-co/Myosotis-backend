@@ -8,7 +8,7 @@ class Role(Base):
     __tablename__ = "roles"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String, unique=True)
     description = Column(String)
 
     users = relationship(User, backref='user', passive_deletes=True)
