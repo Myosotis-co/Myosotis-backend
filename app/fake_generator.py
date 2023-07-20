@@ -1,6 +1,6 @@
 from faker import Faker
 from datetime import datetime
-from app.models.Role import Role
+from app.models import Role
 from app.database import SessionLocal
 
 fake = Faker()
