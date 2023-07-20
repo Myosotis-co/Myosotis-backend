@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from app.database import SQLALCHEMY_DATABASE_URL
+from app.models import User
+from app.models import Role
 from alembic import context
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +30,8 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-target_metadata = database.Base.metadata
+target_metadata = [User.Base.metadata]
+
 
 
 def run_migrations_offline() -> None:

@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
 from app import schema
-from app.fake_generator import generate_fake_users
-from app.models import *
+
+from app.models.User import User
 
 def get_user(db: Session, user_id: int):
     return db.query(User).filter(User.id == user_id).first()

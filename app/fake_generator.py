@@ -1,10 +1,11 @@
 from faker import Faker
 from datetime import datetime
-from app.models import Role
-from app.database import SessionLocal
+from app.models.Role import Role
 
-fake = Faker()
+#fake = Faker()
 
+
+"""
 def generate_fake_users(num_users):
     db = SessionLocal()
     try:
@@ -21,3 +22,4 @@ def generate_fake_users(num_users):
     finally:
         db.close()
     return users
+"""
