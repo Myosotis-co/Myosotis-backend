@@ -4,7 +4,7 @@ from sqlalchemyseed import load_entities_from_yaml
 from sqlalchemyseed import load_entities_from_csv
 from sqlalchemyseed import Seeder
 from app.database import SessionLocal
-from app.models.Role import Role
+from app.models import Role
 
 # Reading from YAML/JSON is not possible due to the "Model not found exception"
 #entities = load_entities_from_json('seeder_json/users.json')

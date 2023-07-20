@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app import crud
 from app.config import settings
 from app.database import  engine
-from app.models import User
+from app import models
 from app.routers import user
 from app.seeder import seed
 
@@ -14,7 +14,7 @@ origins = [
     settings.CLIENT_ORIGIN
 ]
 
-User.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
