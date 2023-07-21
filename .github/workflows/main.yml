@@ -18,7 +18,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v35
         with: 
-          files:  docs/*.py
+          files: app/*.py
 
       - name: Setup Python env
         uses: actions/setup-python@v3
