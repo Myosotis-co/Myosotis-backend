@@ -3,6 +3,9 @@ from sqlalchemyseed import load_entities_from_json
 from sqlalchemyseed import load_entities_from_yaml
 from sqlalchemyseed import load_entities_from_csv
 from sqlalchemyseed import Seeder
+import sqlalchemy as sa
+from alembic import op
+
 from app.models import *
 
 # Reading from YAML/JSON is not possible due to the "Model not found exception"
@@ -11,17 +14,17 @@ from app.models import *
 
 def create_roles(db: Session):
     entities = load_entities_from_csv('seeder_files/roles.csv', Role)
-    does_exist = does_roles_exist(db, entities)
+    does_exist = does_data_exist(db, entities)
     if not does_exist:
         seeder = Seeder(db)
         seeder.seed(entities)
         db.commit()
     pass
 
-def does_roles_exist(db: Session, roles: dict) -> bool:
-    # I am stupid, how to do it properly?
+def does_data_exist(db: Session, data: dict) -> bool:
     role_quantity = db.query(Role).count()
-    if role_quantity < 2:
+    print(dict.__len__)
+    if role_quantity < dict.__len__:
         return False
     return True
 
@@ -32,3 +35,19 @@ def create_users(db: Session):
     db.commit()
     pass
 
+def seed():
+    connection = op.get_bind()
+    Session = sa.orm.sessionmaker()
+    db = Session(bind=connection)
+
+	# Session.configure(bind=op.get_bind())
+	# db = Session()
+
+    # engine = op.get_db().engine
+    # db = engine.connect()
+
+    try:
+        create_roles(db)
+    finally:
+        db.close()
+    pass
