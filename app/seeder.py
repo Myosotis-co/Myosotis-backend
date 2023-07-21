@@ -13,6 +13,7 @@ from app.models import *
 #entities = load_entities_from_yaml('seeder_json/users.yaml')
 
 def create_roles(db: Session):
+    print('Creating roles...')
     entities = load_entities_from_csv('seeder_files/roles.csv', Role)
     does_exist = does_data_exist(db, entities)
     if not does_exist:
@@ -23,8 +24,7 @@ def create_roles(db: Session):
 
 def does_data_exist(db: Session, data: dict) -> bool:
     role_quantity = db.query(Role).count()
-    print(dict.__len__)
-    if role_quantity < dict.__len__:
+    if role_quantity < len(data):
         return False
     return True
 
@@ -35,10 +35,8 @@ def create_users(db: Session):
     db.commit()
     pass
 
-def seed():
-    connection = op.get_bind()
-    Session = sa.orm.sessionmaker()
-    db = Session(bind=connection)
+def seed(engine):
+    db = Session(bind=engine)
 
 	# Session.configure(bind=op.get_bind())
 	# db = Session()
@@ -48,6 +46,7 @@ def seed():
 
     try:
         create_roles(db)
+        create_users(db)
     finally:
         db.close()
     pass
