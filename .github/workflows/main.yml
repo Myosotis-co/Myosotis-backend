@@ -28,7 +28,7 @@ jobs:
 
       - name: Black and Sort changed files
         run: |
-          black --check reorder-python-imports ${{ steps.changed-files.outputs.all_changed_files }}
+          black --check  ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Run black on full codebase
         uses: psf/black@stable
