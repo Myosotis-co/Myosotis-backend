@@ -1,20 +1,27 @@
+import os
 from fastapi import FastAPI,Depends,HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import crud
 from app.config import settings
-from app.database import  engine
-from app import models
+from app.models import User
 from app.routers import user
-from app.seeder import seed
+
+from dotenv import load_dotenv
+from fastapi_sqlalchemy import DBSessionMiddleware
+from app.database import SQLALCHEMY_DATABASE_URL
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env-docker"))
 
 app = FastAPI()
+
+app.add_middleware(DBSessionMiddleware, db_url=SQLALCHEMY_DATABASE_URL)
 
 origins = [
     settings.CLIENT_ORIGIN
 ]
 
-models.Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,4 +32,3 @@ app.add_middleware(
 )
 
 app.include_router(user.router,tags=["Users"],prefix="/api/users")
-seed()

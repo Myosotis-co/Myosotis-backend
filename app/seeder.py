@@ -3,8 +3,8 @@ from sqlalchemyseed import load_entities_from_json
 from sqlalchemyseed import load_entities_from_yaml
 from sqlalchemyseed import load_entities_from_csv
 from sqlalchemyseed import Seeder
-from app.database import SessionLocal
-from app.models import Role
+from app.models.User import User
+from app.models.Role import Role
 
 # Reading from YAML/JSON is not possible due to the "Model not found exception"
 #entities = load_entities_from_json('seeder_json/users.json')
@@ -26,10 +26,10 @@ def does_roles_exist(db: Session, roles: dict) -> bool:
         return False
     return True
 
-def seed():
-    db = SessionLocal()
-    try:
-        create_roles(db)
-    finally:
-        db.close()
+def create_users(db: Session):
+    entities = load_entities_from_csv('seeder_json/users.csv', User)
+    seeder = Seeder(db)
+    seeder.seed(entities)
+    db.commit()
     pass
+

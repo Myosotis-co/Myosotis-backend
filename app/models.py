@@ -1,6 +1,9 @@
 from sqlalchemy import Boolean, Column, Integer, String, Float, DateTime, ForeignKey, MetaData, TIMESTAMP, text
 from sqlalchemy.orm import relationship
 from app.database import Base
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 class Message(Base):
     __tablename__ = "messages"
