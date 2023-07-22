@@ -5,11 +5,12 @@ services:
     build:
       context: .
     env_file:
-      - .env-docker
+      - /env/.env-docker
     container_name: fastapi_app
+    restart: unless-stopped
     volumes:
-      - .:/app
-    command: bash -c " alembic upgrade head && uvicorn app.main:app  --host 0.0.0.0 --reload"
+      - ../:/deletemehere/
+    command: bash -c " uvicorn app.main:app  --host 0.0.0.0 --reload"
     tty: true
     stdin_open: true
     ports:
@@ -29,7 +30,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .env-docker
+      - /env/.env-docker
 
   pgadmin:
     container_name: pgadmin
