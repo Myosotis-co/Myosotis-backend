@@ -5,7 +5,7 @@ services:
     build:
       context: .
     env_file:
-      - /env/.env-docker
+      - env/.env-docker
     container_name: fastapi_app
     restart: unless-stopped
     volumes:
