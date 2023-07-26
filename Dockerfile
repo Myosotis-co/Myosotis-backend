@@ -9,6 +9,7 @@ WORKDIR /app/
 # set env variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV LC_ALL=C.UTF-8
 
 # install dependencies
 COPY requirements.txt .

@@ -8,6 +8,7 @@ from sqlalchemy import pool
 from app.database import SQLALCHEMY_DATABASE_URL
 from alembic import context
 from app.models import Base
+from app import seeder
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env-docker"))
@@ -52,6 +53,7 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
+    seeder.seed(url)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -69,6 +71,8 @@ def run_migrations_online() -> None:
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
+
+    seeder.seed(connectable)
 
     with connectable.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)
