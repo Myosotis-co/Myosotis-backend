@@ -29,7 +29,7 @@ def does_data_exist(db: Session, data: dict) -> bool:
     return True
 
 def create_users(db: Session):
-    entities = load_entities_from_csv('seeder_json/users.csv', User)
+    entities = load_entities_from_csv('seeder_files/users.csv', User)
     seeder = Seeder(db)
     seeder.seed(entities)
     db.commit()
