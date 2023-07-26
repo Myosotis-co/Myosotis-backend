@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     CLIENT_ORIGIN: str
 
     class Config:
-        env_file = '/.env-docker'
+        env_file = 'docker/env/.env-docker'
 
 
 

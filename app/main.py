@@ -13,7 +13,7 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from app.database import SQLALCHEMY_DATABASE_URL
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(os.path.join(BASE_DIR, ".env-docker"))
+load_dotenv(os.path.join(BASE_DIR, "/docker/env/.env-docker"))
 
 app = FastAPI()
 

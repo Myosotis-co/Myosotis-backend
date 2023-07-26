@@ -38,6 +38,14 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 
 2.  Install pgAdmin
 
+## Initialize database through git backup
+
+1. Generate personal token in settings
+2. Use your own git repository for storing backup
+3. In the project `docker/db` create the `git.token` file
+4. Put your token into this file
+5. Run ```docker compose up --build```
+
 
 
 # Troubleshooting
