@@ -40,11 +40,12 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 
 ## Initialize database through git backup
 
-1. Generate personal token in settings
-2. Use your own git repository for storing backup
-3. In the project `docker/db` create the `git.token` file
-4. Put your token into this file
-5. Run ```docker compose up --build```
+1. Remove previous volumes using `docker compose down --volumens`
+2. Generate personal token in settings
+3. Use your own git repository for storing backup and put it to the `env-docker` file as the `GIT_REPO`
+4. In the project `docker/db` create the `git.token` file
+5. Put your token into this file
+6.  Run ```docker compose up --build```
 
 
 
