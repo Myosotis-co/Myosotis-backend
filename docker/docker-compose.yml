@@ -28,8 +28,7 @@ services:
     restart: always
     container_name: db
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-      - /db/:/docker-entrypoint-initdb.d/db/
+      - ./db/:/docker-entrypoint-initdb.d/db/
     ports:
       - "5432:5432"
     env_file:
