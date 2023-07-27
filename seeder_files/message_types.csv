@@ -1,0 +1,6 @@
+name, description
+Registration, Received upon registration
+Confirmation, Received upon confirmation
+Notification, Received upon notification
+Password reset, Received upon password reset
+Code receive, Received upon code receival

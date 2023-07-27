@@ -7,6 +7,7 @@ from app.config import settings
 from app.models import User
 from app.routers import user
 
+from app import seeder
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
 from app.database import SQLALCHEMY_DATABASE_URL
@@ -32,3 +33,4 @@ app.add_middleware(
 )
 
 app.include_router(user.router,tags=["Users"],prefix="/api/users")
+

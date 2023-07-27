@@ -1,3 +1,8 @@
-name,email,user_token,hashed_password
-Improsterov Ivan,Abobus@sus.su,token 1,hashed pass 1
-Nickolas,Cage@is.cool,token 2,hashed pass 2
+role_id,name,email,user_token,hashed_password
+2, Mikhail Okrugov,mikork@gmail.com,Unique token 1,Unique password 1
+2, Arthur Zinnurov,artzin@gmail.com,Unique token 2,Unique password 2
+2, Illya Lobachevsky,illlob@gmail.com,Unique token 3,Unique password 3
+1, Studid Retardo,sturet@gmail.com,Unique token 4,12345678
+1, Smart Einsteino,smaein@gmail.com,Unique token 5,9g20hjgj-1iwjg2kb1jhv
+1, Average Middles,avemid@gmail.com,Unique token 6,abobus1!
+

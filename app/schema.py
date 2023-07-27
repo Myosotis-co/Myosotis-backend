@@ -1,5 +1,5 @@
 import datetime
-from typing import List
+from typing import ForwardRef, List
 from pydantic import BaseModel
 
 class MessageBase(BaseModel):
@@ -62,11 +62,8 @@ class Category(CategoryBase):
     deletion_date: datetime.datetime
     created_at: datetime.datetime
     updated_at: datetime.datetime
-
-    # tempEmail: "Forward ref"
-    # ListLoggerModel = ForwardRef("List[LoggerModel]")
-    # LoggerModel.update_forward_refs()
-    applications: List[Application]
+    # temp_email: ForwardRef("Temp_Email")
+    # applications: List[Application]
 
     class Config:
         orm_mode = True
@@ -85,6 +82,8 @@ class Temp_Email(Temp_EmailBase):
     updated_at: datetime.datetime
 
     category: Category
+
+# Category.model_rebuild()
 
 #---#
 class UserBase(BaseModel):
