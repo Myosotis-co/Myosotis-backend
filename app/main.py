@@ -32,5 +32,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(user.router,tags=["Users"],prefix="/api/users")
+app.include_router(user.router,tags=["Users"],prefix="/functions/users")
 
