@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 emails = APIRouter()
 
-MAILSAC_API_KEY = "k_M0F13in1d4DgPcxg3EF5O0qGW6lVdrP5qszxRZM7f"
+MAILSAC_API_KEY = "insert_key_here"
 MAILSAC_BASE_URL = "mailsac.com"
 email = Email.generate_email_prefix() + "@mailsac.com"
 
