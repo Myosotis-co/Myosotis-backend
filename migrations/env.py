@@ -54,33 +54,23 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
+    #seeder.seed(url)
     # seeder.seed(url)
 
     with context.begin_transaction():
         context.run_migrations()
 
-def do_run_migrations_online(connection):
-    context.configure(connection=connection, target_metadata=target_metadata)
-    
-    with context.begin_transaction():
-            context.run_migrations()
 
-async def run_migrations_online() -> None:
+def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
 
-    with context.begin_transaction():
-        context.run_migrations()
-
-
-async def run_async_migrations():
-    """In this scenario we need to create an Engine
+    In this scenario we need to create an Engine
     and associate a connection with the context.
 
     """
     connectable = AsyncEngine(create_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True))
 
-    async with connectable.connect() as connection:
-        await connection.run_sync(do_run_migrations)
+    #seeder.seed(connectable)
 
     async with connectable.connect() as connection:
          await do_run_migrations_online(connection)
