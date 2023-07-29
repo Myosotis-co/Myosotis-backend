@@ -54,7 +54,7 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
-    seeder.seed(url)
+    #seeder.seed(url)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -74,7 +74,7 @@ async def run_migrations_online() -> None:
     """
     connectable = AsyncEngine(create_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True))
 
-    seeder.seed(connectable)
+    #seeder.seed(connectable)
 
     async with connectable.connect() as connection:
          await do_run_migrations_online(connection)
