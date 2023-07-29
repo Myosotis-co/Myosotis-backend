@@ -3,10 +3,21 @@ from app.database import Base
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON, Boolean, MetaData,text
 from sqlalchemy.orm import relationship
-from app.models import Category
+
 metadata = MetaData()
 
-class User(Base):
+
+class Role(Base):
+    __tablename__ = "roles"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True)
+    description = Column(String)
+
+    users = relationship("User", backref='users', passive_deletes=True)
+
+
+class User(SQLAlchemyBaseUserTable[int],Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -19,4 +30,4 @@ class User(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
 
-    categories = relationship(Category, backref='categories', passive_deletes=True)
+    categories = relationship("Category", backref='categories', passive_deletes=True)
