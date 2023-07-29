@@ -4,7 +4,6 @@ from app.database import Base
 from app.auth.user import User
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
 
 class Message(Base):
     __tablename__ = "messages"
@@ -63,11 +62,3 @@ class Temp_Email(Base):
     category = relationship(Category, back_populates="temp_email", passive_deletes=True) 
 
 
-class Role(Base):
-    __tablename__ = "roles"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True)
-    description = Column(String)
-
-    users = relationship(User, backref='users', passive_deletes=True)
