@@ -3,13 +3,12 @@ from logging.config import fileConfig
 import os
 import sys
 from dotenv import load_dotenv
-from sqlalchemy import engine_from_config, pool
-from sqlalchemy.ext.asyncio import async_engine_from_config
+from sqlalchemy import engine_from_config
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel import create_engine
 from app.database import SQLALCHEMY_DATABASE_URL,Base
 from alembic import context
-from app.database import Base
+from app.auth.models import metadata as auth_metadata
 from app import seeder
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -56,7 +55,6 @@ def run_migrations_offline() -> None:
         dialect_opts={"paramstyle": "named"},
     )
     #seeder.seed(url)
-    # seeder.seed(url)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -77,8 +75,7 @@ async def run_migrations_online() -> None:
     """
     connectable = AsyncEngine(create_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True))
 
-    async with connectable.connect() as connection:
-        await connection.run_sync(do_run_migrations)
+    #seeder.seed(connectable)
 
     async with connectable.connect() as connection:
          await do_run_migrations_online(connection)
