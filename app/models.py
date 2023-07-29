@@ -12,7 +12,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from app.database import Base
-from app.auth.models import User
+from app.auth.user import User
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -94,4 +94,14 @@ class Temp_Email(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
 
-    category = relationship(Category, back_populates="temp_email", passive_deletes=True)
+    category = relationship(Category, back_populates="temp_email", passive_deletes=True) 
+
+
+class Role(Base):
+    __tablename__ = "roles"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True)
+    description = Column(String)
+
+    users = relationship(User, backref='users', passive_deletes=True)
