@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from app import crud
 from app.config import settings
 from app.models import User
-from app.routers import user
 
 from app import seeder
 from dotenv import load_dotenv
@@ -32,5 +31,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(user.router,tags=["Users"],prefix="/api/users")
+#app.include_router(user.router,tags=["Users"],prefix="/api/users")
 
