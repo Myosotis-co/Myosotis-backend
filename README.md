@@ -47,7 +47,14 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 5. Put your token into this file
 6.  Run ```docker compose up --build```
 
-
+## Using VSCode for development
+1. Ensure container is running
+2. Click on Remote Window button on the left corener
+3. Click "Attach to the running container"
+4. Vscode opens new window
+5. You should see extensions being installed
+6. In order to see logs of the container go to "Remote explorer"
+7. Click the right button to show logs of the container
 
 # Troubleshooting
 
