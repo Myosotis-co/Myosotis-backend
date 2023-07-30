@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String, Float, DateTime, ForeignKey, MetaData, TIMESTAMP, text
 from sqlalchemy.orm import relationship
 from app.database import Base
-from app.auth.user import User
+from app.auth.models import User
 from sqlalchemy.ext.declarative import declarative_base
 
 
