@@ -3,9 +3,10 @@ from typing import Optional
 
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
+from auth.functions import get_user_db
+from app.crud import get_user
 
 from auth.user import User
-from auth.utils import get_user_db
 
 from config import SECRET_AUTH
 
@@ -29,6 +30,12 @@ class UserManager(IntegerIDMixin,BaseUserManager[User,int]):
             else user_create.create_update_dict_superuser()
         )
         password = user_dict.pop("password")
-        user_dict["hashed_password"] = self.pasword_helper.hash(password)
+        user_dict["hashed_password"] = self.password_helper.hash(password)
         user_dict["role_id"] = 1
-        return db
+        created_user = await self.password_helper.hash(password)
+        await self.on_after_register(created_user,request)
+
+        return created_user
+    
+    async def get_user_manager(user_db=Depends(get_user_db)):
+        yield UserManager
