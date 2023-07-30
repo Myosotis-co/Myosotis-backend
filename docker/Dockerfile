@@ -7,8 +7,7 @@ FROM python:3.9-slim
 WORKDIR /deletemehere
 
 RUN apt-get update -y -q && \
-    apt-get upgrade -y -q && \
-    apt-get install dos2unix
+    apt-get upgrade -y -q && apt-get install git -y -q && apt-get install dos2unix
     
 # set env variables
 ENV PYTHONDONTWRITEBYTECODE 1
