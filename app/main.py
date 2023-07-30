@@ -1,14 +1,16 @@
 import os
 from fastapi import FastAPI,Depends,HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import fastapi_users
 
-from app import crud
+
+from app.auth.schema import UserCreate, UserRead
 from app.config import settings
-from app.models import User
 
 from app import seeder
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
+from app.auth.jwt_config import auth_backend,fastapi_users
 from app.database import SQLALCHEMY_DATABASE_URL
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -30,6 +32,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/auth",
+    tags=["Auth"],
+)
+
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["Auth"],
+)
+
 
 #app.include_router(user.router,tags=["Users"],prefix="/api/users")
 
