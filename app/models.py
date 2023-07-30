@@ -12,6 +12,10 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from app.database import Base
+<<<<<<< HEAD
+=======
+from app.auth.models import User
+>>>>>>> fc4c7d9 (using models for alembic from auth )
 from sqlalchemy.ext.declarative import declarative_base
 
 
