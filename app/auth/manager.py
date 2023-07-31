@@ -4,6 +4,8 @@ from typing import Optional
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
 from app.auth.functions import get_user_db
+from fastapi_users.password import PasswordHelper
+from passlib.context import CryptContext
 
 from app.auth.models import User
 
@@ -28,10 +30,13 @@ class UserManager(IntegerIDMixin,BaseUserManager[User,int]):
             if safe
             else user_create.create_update_dict_superuser()
         )
+        context = CryptContext(schemes=["sha512_crypt", "bcrypt"], deprecated="auto")
+        password_helper = PasswordHelper(context)
+
         password = user_dict.pop("password")
-        user_dict["hashed_password"] = self.password_helper.hash(password)
+        user_dict["hashed_password"] = password_helper.hash(password)
         user_dict["role_id"] = 1
-        created_user = await self.password_helper.hash(password)
+        created_user = await password_helper.hash(password)
         await self.on_after_register(created_user,request)
 
         return created_user
