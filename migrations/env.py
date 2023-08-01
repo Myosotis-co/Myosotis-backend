@@ -4,13 +4,10 @@ import os
 import sys
 from dotenv import load_dotenv
 from sqlalchemy import engine_from_config
-from sqlalchemy import engine_from_config
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel import create_engine
 from app.database import SQLALCHEMY_DATABASE_URL,Base
-from app.database import SQLALCHEMY_DATABASE_URL,Base
 from alembic import context
-from app.auth.models import metadata as auth_metadata
 from app.auth.models import metadata as auth_metadata
 from app import seeder
 
@@ -33,8 +30,6 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-
-target_metadata = auth_metadata
 
 target_metadata = auth_metadata
 
@@ -65,14 +60,7 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 def do_run_migrations_online(connection):
-def do_run_migrations_online(connection):
     context.configure(connection=connection, target_metadata=target_metadata)
-    
-    with context.begin_transaction():
-            context.run_migrations()
-
-async def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
     
     with context.begin_transaction():
             context.run_migrations()
@@ -96,5 +84,4 @@ async def run_migrations_online() -> None:
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    asyncio.run(run_migrations_online())
     asyncio.run(run_migrations_online())
