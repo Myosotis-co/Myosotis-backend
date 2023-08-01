@@ -74,7 +74,8 @@ async def run_migrations_online() -> None:
     """
     connectable = AsyncEngine(create_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True))
 
-    #seeder.seed(connectable)
+    async with connectable.connect() as connection:
+        await connection.run_sync(do_run_migrations)
 
     async with connectable.connect() as connection:
          await do_run_migrations_online(connection)
