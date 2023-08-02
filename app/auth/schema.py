@@ -1,24 +1,26 @@
 
-from typing import Optional
+import datetime
+from typing import List, Optional
 
 from fastapi_users import schemas
+
+from app.schema import Category,UserBase
 
 
 class UserRead(schemas.BaseUser[int]):
     id: int
     email: str
-    username: str
     role_id: int
+    is_deleted: bool = False
     is_active: bool = True
-    is_superuser: bool = False
     is_verified: bool = False
+    categories: List[Category]
 
     class Config:
         orm_mode = True
 
 
 class UserCreate(schemas.BaseUserCreate):
-    username: str
     email: str
     password: str
     role_id: int
