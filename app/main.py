@@ -2,6 +2,7 @@ import os
 from fastapi import FastAPI,Depends,HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import fastapi_users
+from app.auth.models import User
 
 
 from app.auth.schema import UserCreate, UserRead
@@ -46,6 +47,12 @@ app.include_router(
 )
 
 current_user = fastapi_users.current_user()
+
+#Added for test
+@app.get("/protected-route")
+def protected_route(user: User = Depends(current_user)):
+    return f"Hello, {user.name}"
+
 
 #app.include_router(user.router,tags=["Users"],prefix="/api/users")
 
