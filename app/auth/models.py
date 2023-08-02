@@ -4,7 +4,6 @@ from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON, Boolean, MetaData,text
 from sqlalchemy.orm import relationship
 
-metadata = MetaData()
 
 
 class Role(Base):
@@ -27,6 +26,9 @@ class User(SQLAlchemyBaseUserTable[int],Base):
     user_token = Column(String, unique=True)
     hashed_password = Column(String)
     is_deleted = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True)
+    is_superuser = Column(Boolean, default=False)
+    is_verified = Column(Boolean, default=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
 
