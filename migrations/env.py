@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel import create_engine
 from app.database import SQLALCHEMY_DATABASE_URL,Base
 from alembic import context
-from app.database import metadata, Base
+from app.database import  Base
 from app import seeder
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,7 +32,7 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-target_metadata = [metadata, Base.metadata]
+target_metadata = [Base.metadata]
 
 
 
@@ -55,7 +55,7 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
-    #seeder.seed(url)
+    seeder.seed(url)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -63,10 +63,10 @@ def run_migrations_offline() -> None:
 
 def do_run_migrations(connection):
     context.configure(connection=connection, target_metadata=target_metadata)
+    seeder.seed(connection)
 
     with context.begin_transaction():
         context.run_migrations()
-
 
 async def run_async_migrations():
     """In this scenario we need to create an Engine
@@ -79,6 +79,8 @@ async def run_async_migrations():
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
+
+
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
