@@ -45,6 +45,7 @@ app.include_router(
     tags=["Auth"],
 )
 
+current_user = fastapi_users.current_user()
 
 #app.include_router(user.router,tags=["Users"],prefix="/api/users")
 
