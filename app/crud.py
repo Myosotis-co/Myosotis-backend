@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+"""from sqlalchemy.orm import Session
 
 from app import schema
 
@@ -15,3 +15,4 @@ def create_user(db: Session, user: schema.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+"""
