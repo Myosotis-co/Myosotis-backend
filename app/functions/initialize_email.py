@@ -15,7 +15,8 @@ class Email:
 
     @staticmethod
     def generate_email_prefix():
-        email_prefix = Email.generate_specific_email_prefix()
+        # email_prefix = Email.generate_specific_email_prefix()
+        email_prefix = ""
         if email_prefix == "":
             return Email.generate_random_email_prefix(size=10, chars=string.ascii_lowercase + string.digits)
         else:

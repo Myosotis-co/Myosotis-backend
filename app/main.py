@@ -1,11 +1,12 @@
 import os
-from fastapi import FastAPI,Depends,HTTPException
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import crud
 from app.config import settings
 from app.models import User
 from app.routers import user
+from app.routers import emails
 
 from app import seeder
 from dotenv import load_dotenv
@@ -23,7 +24,6 @@ origins = [
     settings.CLIENT_ORIGIN
 ]
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -32,5 +32,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(user.router,tags=["Users"],prefix="/functions/users")
-
+app.include_router(user.router, tags=["Users"], prefix="/functions/users")
+app.include_router(emails.router)
