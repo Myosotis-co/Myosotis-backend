@@ -31,3 +31,10 @@ class User(Base):
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
 
     categories = relationship("Category", backref='categories', passive_deletes=True)
+
+    # ignoring the fastapi_users columns
+    def is_active(self): 
+        pass
+
+    def is_superuser(self):
+        pass
