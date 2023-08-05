@@ -32,5 +32,5 @@ jobs:
 
       - name: Run black on full codebase
         with:
-          options: "--exclude '/migrations'"
+          options: " . --exclude 'migrations' "
         uses: psf/black@stable
