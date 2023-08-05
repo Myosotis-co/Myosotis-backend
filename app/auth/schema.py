@@ -1,4 +1,3 @@
-
 import datetime
 from typing import Generic, List, Optional
 
@@ -12,7 +11,7 @@ class CreateUpdateDictModel(BaseModel):
     def create_update_dict(self):
         return self.dict(
             exclude_unset=True,
-             exclude={
+            exclude={
                 "id",
                 "oauth_accounts",
             },
@@ -20,7 +19,7 @@ class CreateUpdateDictModel(BaseModel):
 
     def create_update_dict_superuser(self):
         return self.dict(exclude_unset=True, exclude={"id"})
-    
+
 
 class BaseUser(Generic[models.ID], CreateUpdateDictModel):
     """Base User model."""
@@ -32,7 +31,6 @@ class BaseUser(Generic[models.ID], CreateUpdateDictModel):
     class Config:
         orm_mode = True
 
-    
 
 class UserRead(BaseUser[int]):
     id: int
@@ -43,6 +41,7 @@ class UserRead(BaseUser[int]):
 
     class Config:
         orm_mode = True
+
 
 class UserCreate(CreateUpdateDictModel):
     email: str
