@@ -33,4 +33,4 @@ jobs:
       - name: Run black on full codebase
         with:
           options: "--check --diff --exclude '/migrations/versions' "
-          uses: psf/black@stable
+        uses: psf/black@stable
