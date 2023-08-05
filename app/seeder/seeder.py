@@ -1,16 +1,18 @@
 from math import e
 from sqlalchemy.orm import Session
-#from sqlalchemyseed import load_entities_from_json
-#from sqlalchemyseed import load_entities_from_yaml
+
+# from sqlalchemyseed import load_entities_from_json
+# from sqlalchemyseed import load_entities_from_yaml
 from sqlalchemyseed import load_entities_from_csv
 from sqlalchemyseed import Seeder
-from app.auth.models import Role,User
+from app.auth.models import Role, User
 
 from app.models import *
 
-#Reading from YAML/JSON is not possible due to the "Model not found exception"
-#entities = load_entities_from_json('seeder_json/users.json')
-#entities = load_entities_from_yaml('seeder_json/users.yaml')
+# Reading from YAML/JSON is not possible due to the "Model not found exception"
+# entities = load_entities_from_json('seeder_json/users.json')
+# entities = load_entities_from_yaml('seeder_json/users.yaml')
+
 
 def does_data_exist(db: Session, data: dict, model) -> bool:
     role_quantity = db.query(model).count()
@@ -18,17 +20,18 @@ def does_data_exist(db: Session, data: dict, model) -> bool:
         return False
     return True
 
-def create_table(db: Session, path_to_file, model):
 
+def create_table(db: Session, path_to_file, model):
     entities = load_entities_from_csv(path_to_file, model)
     entities["data"] = cast_to_int(entities["data"])
-    
+
     does_exist = does_data_exist(db, entities, model)
     if not does_exist:
         seeder = Seeder(db)
         seeder.seed(entities)
         db.commit()
     pass
+
 
 def cast_to_int(entities):
     for i, object in enumerate(entities):
@@ -38,6 +41,7 @@ def cast_to_int(entities):
         entities[i] = object
 
     return entities
+
 
 def seed(engine):
     db = Session(bind=engine)
