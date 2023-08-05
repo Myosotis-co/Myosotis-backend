@@ -28,7 +28,9 @@ jobs:
 
       - name: Black and Sort changed files
         run: |
-          black --check  ${{ steps.changed-files.outputs.all_changed_files }} --exclude '/migrations'
+          black --check  ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Run black on full codebase
+        with:
+          options: "--exclude '/migrations'"
         uses: psf/black@stable
