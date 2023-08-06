@@ -14,6 +14,8 @@ from fastapi.openapi.docs import get_swagger_ui_html
 
 from fastapi.staticfiles import StaticFiles
 
+from app.seeder.router import router as seeder_router
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, "/docker/env/.env-docker"))
 
@@ -43,6 +45,7 @@ app.include_router(
     prefix="/auth",
     tags=["Auth"],
 )
+app.include_router(seeder_router,tags=["Seeder"])
 
 current_user = fastapi_users.current_user()
 
