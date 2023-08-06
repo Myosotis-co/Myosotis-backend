@@ -45,7 +45,7 @@ app.include_router(
     prefix="/auth",
     tags=["Auth"],
 )
-app.include_router(seeder_router,tags=["Seeder"])
+app.include_router(seeder_router, tags=["Seeder"])
 
 current_user = fastapi_users.current_user()
 
