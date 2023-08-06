@@ -2,11 +2,14 @@ import datetime
 from typing import ForwardRef, List
 from pydantic import BaseModel
 
+
 class MessageBase(BaseModel):
     pass
 
+
 class MessageCreate(BaseModel):
     pass
+
 
 class Message(MessageBase):
     id: int
@@ -16,12 +19,15 @@ class Message(MessageBase):
     message_text: str
     created_at: datetime.datetime
 
-#---#
+
+# ---#
 class Message_TypeBase(BaseModel):
     pass
 
+
 class Message_TypeCreate(BaseModel):
     pass
+
 
 class Message_Type(Message_TypeBase):
     id: int
@@ -30,12 +36,15 @@ class Message_Type(Message_TypeBase):
 
     messages: List[Message]
 
-#---#
+
+# ---#
 class ApplicationBase(BaseModel):
     pass
 
+
 class ApplicationCreate(BaseModel):
     pass
+
 
 class Application(ApplicationBase):
     id: int
@@ -47,12 +56,15 @@ class Application(ApplicationBase):
 
     receivedMessages: List[Message]
 
-#---#
+
+# ---#
 class CategoryBase(BaseModel):
     pass
 
+
 class CategoryCreate(BaseModel):
     pass
+
 
 class Category(CategoryBase):
     id: int
@@ -68,26 +80,32 @@ class Category(CategoryBase):
     class Config:
         orm_mode = True
 
-#---#
+
+# ---#
 class Temp_EmailBase(BaseModel):
     email: str
+
 
 class Temp_EmailCreate(BaseModel):
     pass
 
+
 class Temp_Email(Temp_EmailBase):
-    id : int
+    id: int
     access_token: str
     created_at: datetime.datetime
     updated_at: datetime.datetime
 
     category: Category
 
+
 # Category.model_rebuild()
 
-#---#
+
+# ---#
 class UserBase(BaseModel):
     email: str
+
 
 class User(UserBase):
     id: int
@@ -103,12 +121,15 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
-#---#
+
+# ---#
 class RoleBase(BaseModel):
     pass
 
+
 class RoleCreate(RoleBase):
     pass
+
 
 class Role(RoleBase):
     id: int

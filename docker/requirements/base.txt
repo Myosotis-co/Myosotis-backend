@@ -92,6 +92,7 @@ wcwidth==0.2.6
 websockets==10.4
 WTForms==3.0.1
 zipp==3.11.0
+black==23.7.0
 flower
 gunicorn
 Faker
