@@ -10442,7 +10442,7 @@ body a:hover {
 }
 
 .swagger-ui textarea {
-  background: hsla(0, 0%, 100%, .8);
+  background: rgb(40, 43, 46);
   border: none;
   border-radius: 4px;
   color: var(--text-color);

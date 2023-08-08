@@ -7,8 +7,7 @@
         "Username": "postgres",
         "Host": "db",
         "SSLMode": "prefer",
-        "MaintenanceDB": "postgres",
-        "PassFile": "/tmp/pgpassfile"
+        "MaintenanceDB": "postgres"
       }
     }
   }
