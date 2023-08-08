@@ -19,10 +19,10 @@ class Message(Base):
     __tablename__ = "messages"
 
     id = Column(Integer, primary_key=True)
-    application_id = Column(Integer, ForeignKey("applications.id"))
-    message_type_id = Column(Integer, ForeignKey("message_types.id"))
-    topic = Column(String)
-    message_text = Column(String)
+    application_id = Column(Integer, ForeignKey("applications.id"), nullable=False)
+    message_type_id = Column(Integer, ForeignKey("message_types.id"), nullable=False)
+    topic = Column(String, nullable=False)
+    message_text = Column(String, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
@@ -32,8 +32,8 @@ class Message_Type(Base):
     __tablename__ = "message_types"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True)
-    description = Column(String)
+    name = Column(String, unique=True, nullable=False)
+    description = Column(String, nullable=False)
 
     messages = relationship(Message, backref="messages", passive_deletes=True)
 
@@ -42,8 +42,8 @@ class Application(Base):
     __tablename__ = "applications"
 
     id = Column(Integer, primary_key=True)
-    category_id = Column(Integer, ForeignKey("categories.id"))
-    website_url = Column(String)
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
+    website_url = Column(String, nullable=False)
     deletion_date = Column(TIMESTAMP(timezone=True), nullable=True)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
@@ -53,7 +53,10 @@ class Application(Base):
     )
 
     received_messages = relationship(
-        Message, backref="received_messages", passive_deletes=True
+        Message,
+        backref="received_messages",
+        passive_deletes=True,
+        cascade="all, delete-orphan",
     )
 
 
@@ -61,9 +64,9 @@ class Category(Base):
     __tablename__ = "categories"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    temp_email_id = Column(Integer, ForeignKey("temp_emails.id"))
-    category_name = Column(String)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    temp_email_id = Column(Integer, ForeignKey("temp_emails.id"), nullable=False)
+    category_name = Column(String, nullable=False)
     deletion_date = Column(TIMESTAMP(timezone=True), nullable=True)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
@@ -73,7 +76,10 @@ class Category(Base):
     )
 
     applications = relationship(
-        Application, backref="applications", passive_deletes=True
+        Application,
+        backref="applications",
+        passive_deletes=True,
+        cascade="all, delete-orphan",
     )
     temp_email = relationship(
         "Temp_Email", back_populates="category", passive_deletes=True
@@ -84,8 +90,8 @@ class Temp_Email(Base):
     __tablename__ = "temp_emails"
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, unique=True)
-    access_token = Column(String, unique=True)
+    email = Column(String, unique=True, nullable=False)
+    access_token = Column(String, unique=True, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
