@@ -1,7 +1,8 @@
 import os
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-import fastapi_users
+
+# from app import email
 from app.auth.models import User
 from app.auth.schema import UserCreate, UserRead
 from app.config import settings
@@ -13,6 +14,8 @@ from app.database import SQLALCHEMY_DATABASE_URL
 from fastapi.openapi.docs import get_swagger_ui_html
 
 from fastapi.staticfiles import StaticFiles
+
+from app.email.router import router
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, "/docker/env/.env-docker"))
@@ -30,6 +33,12 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+app.include_router(
+    router,
+    prefix="/email",
+    tags=["Email"],
 )
 
 app.include_router(
