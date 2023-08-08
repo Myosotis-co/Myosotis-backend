@@ -94,14 +94,4 @@ class Temp_Email(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
 
-    category = relationship(Category, back_populates="temp_email", passive_deletes=True) 
-
-
-class Role(Base):
-    __tablename__ = "roles"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True)
-    description = Column(String)
-
-    users = relationship(User, backref='users', passive_deletes=True)
+    category = relationship(Category, back_populates="temp_email", passive_deletes=True)
