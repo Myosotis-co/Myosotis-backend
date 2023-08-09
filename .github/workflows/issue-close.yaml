@@ -16,7 +16,7 @@ jobs:
       - name: Sync issue states
         uses: dasmerlon/project-issue-state-sync@v2
         with:
-          github_token: ${{ secrets.board }}
+          github_token: ${{ secrets.BOARD }}
           owner: ZinnurovArtur
           project_number: 1
           closed_statuses: Ready for deployment
