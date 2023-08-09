@@ -3,7 +3,7 @@ name: Project Issue State Sync
 on: 
   schedule:
     # At minute 0 every 2 hours
-    - cron:  0-/10 * * * *
+    - cron:  24 * * * *
   
   workflow_dispatch:
     # Manual trigger
