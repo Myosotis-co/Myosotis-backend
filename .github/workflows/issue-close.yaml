@@ -20,4 +20,4 @@ jobs:
           owner: ZinnurovArtur
           project_number: 2
           closed_statuses: Ready for deployment
-          open_statuses: In Progress
+          open_statuses: In progress
