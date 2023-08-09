@@ -1,10 +1,9 @@
 name: Project Issue State Sync
 
-on: 
-  schedule:
-    # At minute 0 every 2 hours
-    - cron:  24 * * * *
-  
+on:
+  project_card:
+    types: [created, edited, moved]
+
   workflow_dispatch:
     # Manual trigger
 
