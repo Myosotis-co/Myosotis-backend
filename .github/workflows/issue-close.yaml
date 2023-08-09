@@ -1,8 +1,8 @@
 name: Project Issue State Sync
 
 on:
-  project_card:
-    types: [created, edited, moved]
+  schedule:
+    - cron: 0/10 * * * *
 
   workflow_dispatch:
     # Manual trigger
