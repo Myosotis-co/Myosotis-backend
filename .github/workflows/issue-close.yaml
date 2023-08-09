@@ -1,21 +1,23 @@
-name: 'Issue States'
+name: Project Issue State Sync
 
-on:
-  project_card:
-    types: [created, edited, moved]
-
-permissions:
-  repository-projects: read
-  issues: write
-  pull-requests: write
+on: 
+  schedule:
+    # At minute 0 every 2 hours
+    - cron:  0-/1 * * * *
+  
+  workflow_dispatch:
+    # Manual trigger
 
 jobs:
-  action:
+  issue-state-sync:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: dessant/issue-states@v3
+      - name: Sync issue states
+        uses: dasmerlon/project-issue-state-sync@v2
         with:
-          github-token: ${{ github.token }}
-          open-issue-columns: ''
-          closed-issue-columns: 'Ready for deployment'
-          log-output: false
+          github_token: ${{ secrets.board }}
+          owner: ZinnurovArtur
+          project_number: 1
+          closed_statuses: Ready for deployment
+          open_statuses: In Progress
