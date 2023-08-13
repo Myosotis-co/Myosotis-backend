@@ -5,6 +5,6 @@ __pycache__/
 .idea
 **/venv/
 .DS_Store
-*backup
 git.token
 .env
+*.backup
