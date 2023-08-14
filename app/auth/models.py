@@ -30,7 +30,9 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
+    role_id = Column(
+        Integer, ForeignKey("roles.id", ondelete="CASCADE"), nullable=False
+    )
     name = Column(
         String,
         nullable=False,
@@ -51,7 +53,7 @@ class User(Base):
         "Category",
         backref="categories",
         passive_deletes=True,
-        cascade="all, delete-orphan",
+        cascade="all, delete",
     )
 
     # ignoring the fastapi_users columns
