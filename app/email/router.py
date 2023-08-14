@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 router = APIRouter(tags=["Email"])
 
-MAILSAC_API_KEY = "k_M0F13in1d4DgPcxg3EF5O0qGW6lVdrP5qszxRZM7f"
+MAILSAC_API_KEY = "insert_key_here"
 MAILSAC_BASE_URL = "mailsac.com"
 
 
@@ -15,7 +15,7 @@ MAILSAC_BASE_URL = "mailsac.com"
 async def check_email_availability(email):
     try:
         conn = http.client.HTTPSConnection(MAILSAC_BASE_URL)
-        headers = {'Mailsac-Key': MAILSAC_API_KEY}
+        headers = {"Mailsac-Key": MAILSAC_API_KEY}
         conn.request("GET", f"/api/addresses/{email}/availability", headers=headers)
 
         res = conn.getresponse()
@@ -29,7 +29,7 @@ async def check_email_availability(email):
 async def validate_user_login_email(email):
     try:
         conn = http.client.HTTPSConnection("mailsac.com")
-        headers = {'Mailsac-Key': MAILSAC_API_KEY}
+        headers = {"Mailsac-Key": MAILSAC_API_KEY}
         conn.request("GET", f"/api/validations/addresses/{email}", headers=headers)
 
         res = conn.getresponse()
@@ -44,7 +44,7 @@ async def validate_user_login_email(email):
 async def list_messages_for_an_email(email):
     try:
         conn = http.client.HTTPSConnection("mailsac.com")
-        headers = {'Mailsac-Key': MAILSAC_API_KEY}
+        headers = {"Mailsac-Key": MAILSAC_API_KEY}
         conn.request("GET", f"/api/addresses/{email}/messages", headers=headers)
 
         res = conn.getresponse()
@@ -59,7 +59,7 @@ async def list_messages_for_an_email(email):
 async def get_original_email_message(email, message_id):
     try:
         conn = http.client.HTTPSConnection("mailsac.com")
-        headers = {'Mailsac-Key': MAILSAC_API_KEY}
+        headers = {"Mailsac-Key": MAILSAC_API_KEY}
         conn.request("GET", f"/api/raw/{email}/{message_id}", headers=headers)
 
         res = conn.getresponse()
@@ -74,8 +74,10 @@ async def get_original_email_message(email, message_id):
 async def get_email_metadata(email, message_id):
     try:
         conn = http.client.HTTPSConnection("mailsac.com")
-        headers = {'Mailsac-Key': MAILSAC_API_KEY}
-        conn.request("GET", f"/api/addresses/{email}/messages/{message_id}", headers=headers)
+        headers = {"Mailsac-Key": MAILSAC_API_KEY}
+        conn.request(
+            "GET", f"/api/addresses/{email}/messages/{message_id}", headers=headers
+        )
 
         res = conn.getresponse()
         data = res.read()
@@ -89,7 +91,7 @@ async def get_email_metadata(email, message_id):
 async def get_email_message(email, message_id):
     try:
         conn = http.client.HTTPSConnection("mailsac.com")
-        headers = {'Mailsac-Key': MAILSAC_API_KEY}
+        headers = {"Mailsac-Key": MAILSAC_API_KEY}
         conn.request("GET", f"/api/text/{email}/{message_id}", headers=headers)
 
         res = conn.getresponse()

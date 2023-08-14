@@ -28,7 +28,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 origins = [settings.CLIENT_ORIGIN]
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -74,6 +73,5 @@ def custom_swagger_ui_html_cdn():
         # swagger_ui_dark.css CDN link
         swagger_css_url="/static/swagger_ui_dark.css",
     )
-
 
 # app.include_router(user.router,tags=["Users"],prefix="/api/users")
