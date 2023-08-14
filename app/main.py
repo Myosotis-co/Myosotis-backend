@@ -74,4 +74,5 @@ def custom_swagger_ui_html_cdn():
         swagger_css_url="/static/swagger_ui_dark.css",
     )
 
+
 # app.include_router(user.router,tags=["Users"],prefix="/api/users")
