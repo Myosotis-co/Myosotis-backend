@@ -57,3 +57,12 @@ async def seed(db):
     await create_table(db, "seeder_files/applications.csv", Application)
     await create_table(db, "seeder_files/message_types.csv", Message_Type)
     await create_table(db, "seeder_files/messages.csv", Message)
+
+
+# How to cursor, how to delete, how to pass parameters in the route
+async def delete_first(db):
+    query = text("DELETE FROM users WHERE id = 1")
+    result = await db.scalars(sa.select(User).from_statement(query))
+    user = result.one()
+    print(type(user), user.name)
+    await db.commit()

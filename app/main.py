@@ -1,7 +1,8 @@
 import os
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-import fastapi_users
+
+# from app import email
 from app.auth.models import User
 from app.auth.schema import UserCreate, UserRead
 from app.config import settings
@@ -14,6 +15,8 @@ from fastapi.openapi.docs import get_swagger_ui_html
 
 from fastapi.staticfiles import StaticFiles
 
+from app.email.router import router
+
 from app.seeder.router import router as seeder_router
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -25,13 +28,18 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 origins = [settings.CLIENT_ORIGIN]
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+app.include_router(
+    router,
+    prefix="/email",
+    tags=["Email"],
 )
 
 app.include_router(
