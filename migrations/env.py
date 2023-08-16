@@ -3,14 +3,18 @@ from logging.config import fileConfig
 import os
 import sys
 from dotenv import load_dotenv
-from sqlalchemy import engine_from_config,pool
+from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel import create_engine
-from app.database import SQLALCHEMY_DATABASE_URL,Base
+from app.database import SQLALCHEMY_DATABASE_URL, Base
 from alembic import context
-from app.database import  Base
+from app.database import Base
 from app import seeder
+
+# Required for migrations (Do not delete)
+from app.auth.models import Role, User
+from app.models import Message, Application, Category, Temp_Email, Message_Type
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, "docker/env/.env-docker"))
@@ -35,7 +39,6 @@ fileConfig(config.config_file_name)
 target_metadata = [Base.metadata]
 
 
-
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -55,7 +58,7 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
-    seeder.seed(url)
+    # seeder.seed(url)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -63,10 +66,11 @@ def run_migrations_offline() -> None:
 
 def do_run_migrations(connection):
     context.configure(connection=connection, target_metadata=target_metadata)
-    seeder.seed(connection)
+    # seeder.seed(connection)
 
     with context.begin_transaction():
         context.run_migrations()
+
 
 async def run_async_migrations():
     """In this scenario we need to create an Engine
@@ -79,8 +83,6 @@ async def run_async_migrations():
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
-
-
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
