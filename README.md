@@ -40,7 +40,7 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 
 ## Initialize database through git backup
 
-1. Remove previous volumes using `docker compose down --volumens`
+1. Remove previous volumes using `docker compose down --volumes`
 2. Generate personal token in settings
 3. Use your own git repository for storing backup and put it to the `env-docker` file as the `GIT_REPO`
 4. In the project `docker/db` create the `git.token` file
@@ -49,7 +49,7 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 
 ## Using VSCode for development
 1. Ensure container is running
-2. Click on Remote Window button on the left corener
+2. Click on Remote Window button on the left corner
 3. Click "Attach to the running container"
 4. Vscode opens new window
 5. You should see extensions being installed
