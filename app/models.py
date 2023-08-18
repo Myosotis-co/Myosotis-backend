@@ -64,34 +64,6 @@ class Application(Base):
     )
 
 
-class Category(Base):
-    __tablename__ = "categories"
-
-    id = Column(Integer, primary_key=True)
-    user_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
-    )
-    temp_email_id = Column(Integer, ForeignKey("temp_emails.id"), nullable=False)
-    category_name = Column(String, nullable=False)
-    deletion_date = Column(TIMESTAMP(timezone=True), nullable=True)
-    created_at = Column(
-        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
-    )
-    updated_at = Column(
-        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
-    )
-
-    applications = relationship(
-        Application,
-        backref="applications",
-        passive_deletes=True,
-        cascade="all, delete",
-    )
-    temp_email = relationship(
-        "Temp_Email", back_populates="category", passive_deletes=True
-    )
-
-
 class Temp_Email(Base):
     __tablename__ = "temp_emails"
 
@@ -105,4 +77,4 @@ class Temp_Email(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
 
-    category = relationship(Category, back_populates="temp_email", passive_deletes=True)
+    category = relationship("Category", back_populates="temp_email", passive_deletes=True)
