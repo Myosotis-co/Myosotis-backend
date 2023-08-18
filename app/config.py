@@ -10,6 +10,9 @@ class Settings(BaseSettings):
 
     CLIENT_ORIGIN: str
 
+    MAILSAC_KEY: str
+    MAILSAC_BASE_URL: str
+
     class Config:
         env_file = "docker/env/.env-docker"
 

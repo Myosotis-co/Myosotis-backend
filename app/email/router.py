@@ -1,11 +1,12 @@
 # from app.email.functions import Email
 import http.client
+from app.config import settings
 from fastapi import APIRouter
 
 router = APIRouter(tags=["Email"])
 
-MAILSAC_API_KEY = "insert_key_here"
-MAILSAC_BASE_URL = "mailsac.com"
+MAILSAC_API_KEY = settings.MAILSAC_KEY
+MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
 
 
 # email = Email.generate_email_prefix() + "@mailsac.com"
