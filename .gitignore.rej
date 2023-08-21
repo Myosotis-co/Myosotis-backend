@@ -1,0 +1,10 @@
+diff a/.gitignore b/.gitignore	(rejected hunks)
+@@ -6,4 +6,5 @@
+ **/venv/
+ .DS_Store
+ *backup
+-git.token
+\ No newline at end of file
++git.token
++data/
+\ No newline at end of file
