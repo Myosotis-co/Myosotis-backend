@@ -1,4 +1,3 @@
-# from app.email.functions import Email
 import http.client
 from app.config import settings
 from fastapi import APIRouter
@@ -9,15 +8,12 @@ MAILSAC_API_KEY = settings.MAILSAC_KEY
 MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
 
 
-# email = Email.generate_email_prefix() + "@mailsac.com"
-
-
 @router.get("/check-email-availability/{email}")
 async def check_email_availability(email):
     try:
         conn = http.client.HTTPSConnection(MAILSAC_BASE_URL)
         headers = {"Mailsac-Key": MAILSAC_API_KEY}
-        conn.request("GET", f"/api/addresses/{email}/availability", headers=headers)
+        conn.request("GET", f"/api/addresses/f{email}/availability", headers=headers)
 
         res = conn.getresponse()
         data = res.read()
@@ -26,19 +22,20 @@ async def check_email_availability(email):
         return f"Failed to check email availability: {e}"
 
 
-@router.get("/validations/addresses/{email}")
-async def validate_user_login_email(email):
+@router.get("/addresses/{email}")
+async def create_mailsac_public_email(email):
     try:
         conn = http.client.HTTPSConnection("mailsac.com")
         headers = {"Mailsac-Key": MAILSAC_API_KEY}
-        conn.request("GET", f"/api/validations/addresses/{email}", headers=headers)
+
+        conn.request("GET", f"/api/addresses/{email}", headers=headers)
 
         res = conn.getresponse()
         data = res.read()
 
         return data.decode("utf-8")
     except Exception as e:
-        return f"Failed to validate email: {e}"
+        return f"Failed to fetch email: {e}"
 
 
 @router.get("/addresses/{email}/messages")
