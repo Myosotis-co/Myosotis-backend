@@ -1,3 +1,5 @@
+from app.database import Base
+
 from sqlalchemy import (
     Column,
     Integer,
@@ -6,7 +8,6 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.orm import relationship
-from app.database import Base
 
 
 class Temp_Email(Base):
@@ -22,6 +23,7 @@ class Temp_Email(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
 
+    # category = relationship("Category", backref="categories", passive_deletes=True)
     category = relationship(
         "Category", back_populates="temp_email", passive_deletes=True
     )
