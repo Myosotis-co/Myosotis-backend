@@ -16,6 +16,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from app.models import Application
 
+
 class Category(Base):
     __tablename__ = "categories"
 
