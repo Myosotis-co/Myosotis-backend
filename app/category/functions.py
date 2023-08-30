@@ -4,10 +4,7 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-# Service layout functions
 
-
-# Relocate this function to function.py
 def service_add_category(
     user_id: int,
     temp_email_id: int,
@@ -21,17 +18,14 @@ def service_add_category(
     return new_category
 
 
-async def service_get_category(category_id: int, session: AsyncSession = Depends(get_async_session)):
+async def service_get_category(
+    category_id: int, session: AsyncSession = Depends(get_async_session)
+):
     exec_command = select(Category).filter(Category.id == category_id)
     result_value = await session.execute(exec_command)
     category = result_value.scalar()
 
     return category
-    
-
-# async def service_get_category(category_id: int, session: AsyncSession) -> Category:
-#     result = await session.execute(select(Category))
-#     return result.scalar()
 
 
 # async def service_get_categories(session: AsyncSession) -> list[Category]:

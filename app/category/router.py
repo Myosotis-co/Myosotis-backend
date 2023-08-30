@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.database import get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 
 from app.category.models import Category
 from app.schema import Category as Schema_category
@@ -20,8 +19,7 @@ async def create_category(
     new_category = service_add_category(user_id, temp_email_id, category_name, session)
     try:
         await session.commit()
-        # return {"status": 201, "data": "Category is created"}
-        return new_category
+        return {"status": 201, "data": "Category is created"}
     except Exception as e:
         return "Failed to create new category: {e}"
 
@@ -32,17 +30,20 @@ async def get_category(
 ):
     try:
         category = await service_get_category(category_id, session)
-        return category
+        if category is not None:
+            return category
+        return "No category with such ID"
     except Exception as e:
         return "Failed to get a category: {e}"
 
 
-# To implement
+# TODO: Create function to get list of categories as JSON
 # @router.get("/categories/get/list", response_model=list[Schema_category])
+# @router.get("/categories/get/list")
 # async def get_categories(session: AsyncSession = Depends(get_async_session)):
-#     # categories = await service_get_categories(session)
+#     categories = await service_get_categories(session)
 #     # return [Schema_category(id = category.id) for category in categories]
-#     return "Cool!"
+#     return categories
 
 
 # To implement
