@@ -68,9 +68,7 @@ async def delete_category(
 
 
 # TODO: Create function to get list of categories as JSON
-# @router.get("/categories/get/list", response_model=list[Schema_category])
-# @router.get("/categories/get/list")
-# async def get_categories(session: AsyncSession = Depends(get_async_session)):
-#     categories = await service_get_categories(session)
-#     # return [Schema_category(id = category.id) for category in categories]
-#     return categories
+@router.get("/categories/get_all")
+async def get_categories(session: AsyncSession = Depends(get_async_session)):
+    categories = await service_get_categories(session)
+    return categories
