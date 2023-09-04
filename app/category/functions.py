@@ -1,9 +1,9 @@
-from app.category.models import Category
-from app.database import get_async_session
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
+from app.database import get_async_session
+from app.category.models import Category
 from app.schema import CategoryUpdate
 
 
@@ -42,6 +42,13 @@ def service_update_category(
         print(key, value)
     session.add(category)
     return category
+
+
+async def service_delete_category(
+    category_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = delete(Category).filter(Category.id == category_id)
+    await session.execute(exec_command)
 
 
 # async def service_get_categories(session: AsyncSession) -> list[Category]:
