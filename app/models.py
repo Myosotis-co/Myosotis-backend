@@ -77,4 +77,6 @@ class Temp_Email(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
 
-    category = relationship("Category", back_populates="temp_email", passive_deletes=True)
+    category = relationship(
+        "Category", back_populates="temp_email", passive_deletes=True
+    )

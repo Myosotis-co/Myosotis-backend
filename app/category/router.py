@@ -2,8 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.database import get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.category.models import Category
-from app.schema import Category as Schema_category
+from app.schema import *
 from app.category.functions import *
 
 router = APIRouter(tags=["Category"])
@@ -21,7 +20,7 @@ async def create_category(
         await session.commit()
         return {"status": 201, "data": "Category is created"}
     except Exception as e:
-        return "Failed to create new category: {e}"
+        return "Failed to create new category: " + str(e)
 
 
 @router.get("/categories/get/{category_id}")
@@ -32,9 +31,9 @@ async def get_category(
         category = await service_get_category(category_id, session)
         if category is not None:
             return category
-        return "No category with such ID"
+        raise HTTPException(status_code=404, detail="Category not found")
     except Exception as e:
-        return "Failed to get a category: {e}"
+        return "Failed to get a category: " + str(e)
 
 
 # TODO: Create function to get list of categories as JSON
@@ -47,16 +46,21 @@ async def get_category(
 
 
 # To implement
-# @router.put("/categories/update/{category_id}")
-# async def update_category(
-#     category_id: int, session: AsyncSession = Depends(get_async_session)
-# ):
-#     return {"status": 204, "data": "Category is updated"}
-#     # exec_command = select(Category).filter(Category.id == category_id)
-#     # result_value = await session.execute(exec_command)
-#     # category = result_value.scalar()
-
-#     # await session.commit()
+@router.patch("/categories/update/{category_id}")
+async def update_category(
+    category_id: int,
+    category_update: CategoryUpdate,
+    session: AsyncSession = Depends(get_async_session),
+):
+    try:
+        category = await service_get_category(category_id, session)
+        if category is not None:
+            service_update_category(category, category_update, session)
+            await session.commit()
+            return {"status": 204, "data": "Category is updated"}
+        raise HTTPException(status_code=404, detail="Category not found")
+    except Exception as e:
+        return "Failed to get a category: " + str(e)
 
 
 # To implement

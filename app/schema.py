@@ -81,6 +81,11 @@ class Category(CategoryBase):
         orm_mode = True
 
 
+class CategoryUpdate(CategoryBase):
+    temp_email_id: int = None
+    category_name: str = None
+
+
 # ---#
 class Temp_EmailBase(BaseModel):
     email: str
