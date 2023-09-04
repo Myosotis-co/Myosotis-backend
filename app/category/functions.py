@@ -1,0 +1,60 @@
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, delete
+
+from app.database import get_async_session
+from app.category.models import Category
+from app.schema import CategoryUpdate
+from app.schema import Category as CategorySchema
+
+
+def service_add_category(
+    user_id: int,
+    temp_email_id: int,
+    category_name: str,
+    session: AsyncSession = Depends(get_async_session),
+):
+    new_category = Category(
+        user_id=user_id, temp_email_id=temp_email_id, category_name=category_name
+    )
+    session.add(new_category)
+    session.commit()
+    return new_category
+
+
+async def service_get_category(
+    category_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = select(Category).filter(Category.id == category_id)
+    result_value = await session.execute(exec_command)
+    category = result_value.scalar()
+
+    return category
+
+
+def service_update_category(
+    category: Category,
+    category_update: CategoryUpdate,
+    session: AsyncSession = Depends(get_async_session),
+):
+    for key, value in category_update:
+        if value is not None:
+            setattr(category, key, value)
+        print(key, value)
+    session.add(category)
+    return category
+
+
+async def service_delete_category(
+    category_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = delete(Category).filter(Category.id == category_id)
+    await session.execute(exec_command)
+
+
+async def service_get_categories(session: AsyncSession) -> list[CategorySchema]:
+    exec_command = select(Category)
+    result_value = await session.execute(exec_command)
+    categories = result_value.all()
+
+    return categories

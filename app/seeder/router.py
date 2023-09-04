@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.seeder.seeder import *
 
-router = APIRouter()
+router = APIRouter(tags=["Seeder"])
 
 
 @router.post("/seeder")
