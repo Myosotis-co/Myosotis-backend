@@ -14,7 +14,8 @@ from app import seeder
 
 # Required for migrations (Do not delete)
 from app.auth.models import Role, User
-from app.models import Message, Application, Message_Type, Category
+from app.models import Message, Application, Temp_Email, Message_Type
+from app.category.models import Category
 from app.email.models import Temp_Email
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

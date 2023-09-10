@@ -1,6 +1,7 @@
 from sqlalchemy.future import select
 from app.database import get_async_session
 from app.auth.models import Role, User
+from app.category.models import Category
 from app.email.models import Temp_Email
 from app.models import *
 from sqlalchemyseed import load_entities_from_csv, Seeder
