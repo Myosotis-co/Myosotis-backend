@@ -4,7 +4,7 @@ import string
 from app.email.router import check_email_availability, create_mailsac_public_email
 
 
-def generate_random_email_prefix(size, chars):
+def generate_random_email_prefix(size: int, chars: string):
     random_email_prefix = "".join(random.choice(chars) for _ in range(size))
     return random_email_prefix
 

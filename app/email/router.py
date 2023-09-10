@@ -13,7 +13,7 @@ async def check_email_availability(email):
     try:
         conn = http.client.HTTPSConnection(MAILSAC_BASE_URL)
         headers = {"Mailsac-Key": MAILSAC_API_KEY}
-        conn.request("GET", f"/api/addresses/f{email}/availability", headers=headers)
+        conn.request("GET", f"/api/addresses/{email}/availability", headers=headers)
 
         res = conn.getresponse()
         data = res.read()
@@ -22,11 +22,15 @@ async def check_email_availability(email):
         return f"Failed to check email availability: {e}"
 
 
+from app.email.functions import create_mailsac_temp_email
+
+
 @router.get("/addresses/{email}")
-async def create_mailsac_public_email(email):
+async def create_mailsac_public_email():
     try:
         conn = http.client.HTTPSConnection("mailsac.com")
         headers = {"Mailsac-Key": MAILSAC_API_KEY}
+        email = await create_mailsac_temp_email()
 
         conn.request("GET", f"/api/addresses/{email}", headers=headers)
 
