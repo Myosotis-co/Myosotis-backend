@@ -1,7 +1,8 @@
 import os
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-import fastapi_users
+
+# from app import email
 from app.auth.models import User
 from app.auth.schema import UserCreate, UserRead
 from app.config import settings
@@ -9,12 +10,13 @@ from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
 from app.auth.jwt_config import auth_backend, fastapi_users
 from app.database import SQLALCHEMY_DATABASE_URL
-
 from fastapi.openapi.docs import get_swagger_ui_html
-
 from fastapi.staticfiles import StaticFiles
 
+from app.email.router import router as email_router
 from app.seeder.router import router as seeder_router
+from app.category.router import router as category_router
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, "/docker/env/.env-docker"))
@@ -25,13 +27,18 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 origins = [settings.CLIENT_ORIGIN]
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+app.include_router(
+    email_router,
+    prefix="/email",
+    tags=["Email"],
 )
 
 app.include_router(
@@ -45,7 +52,10 @@ app.include_router(
     prefix="/auth",
     tags=["Auth"],
 )
-app.include_router(seeder_router, tags=["Seeder"])
+
+app.include_router(seeder_router, prefix="/seeder", tags=["Seeder"])
+
+app.include_router(category_router, prefix="/category", tags=["Category"])
 
 current_user = fastapi_users.current_user()
 
