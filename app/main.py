@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, Depends
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 
 # from app import email
@@ -8,7 +9,7 @@ from app.auth.schema import UserCreate, UserRead
 from app.config import settings
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
-from app.auth.jwt_config import auth_backend, fastapi_users
+from app.auth.jwt_config import auth_backend, fastapi_users, google_oauth_client, reddit_oauth_client, linkedin_oauth_client, github_oauth_client
 from app.database import SQLALCHEMY_DATABASE_URL
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
