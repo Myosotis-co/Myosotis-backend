@@ -49,7 +49,7 @@ app.include_router(
 )
 
 app.include_router(
-    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, "SECRET"),
+    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, "SECRET", redirect_url="http://localhost:8000"),
     prefix="/auth/google",
     tags=["Auth"],
 )
