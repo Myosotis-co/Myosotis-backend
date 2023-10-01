@@ -18,6 +18,17 @@ from app.email.router import router as email_router
 from app.seeder.router import router as seeder_router
 from app.category.router import router as category_router
 
+from httpx_oauth.clients.google import GoogleOAuth2
+from httpx_oauth.clients.github import GitHubOAuth2
+from httpx_oauth.clients.linkedin import LinkedInOAuth2
+from httpx_oauth.clients.reddit import RedditOAuth2
+
+google_oauth_client = GoogleOAuth2("CLIENT_ID", "CLIENT_SECRET")
+reddit_oauth_client = RedditOAuth2("CLIENT_ID", "CLIENT_SECRET")
+linkedin_oauth_client = LinkedInOAuth2("CLIENT_ID", "CLIENT_SECRET")
+google_oauth_client = GoogleOAuth2("CLIENT_ID", "CLIENT_SECRET")
+github_oauth_client = GitHubOAuth2("CLIENT_ID", "CLIENT_SECRET")
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, "/docker/env/.env-docker"))
@@ -45,6 +56,27 @@ app.include_router(
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix="/auth",
+    tags=["Auth"],
+)
+
+app.include_router(
+    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, "SECRET"),
+    prefix="/auth/google",
+    tags=["Auth"],
+)
+app.include_router(
+    fastapi_users.get_oauth_router(linkedin_oauth_client, auth_backend, "SECRET"),
+    prefix="/auth/linkedin",
+    tags=["Auth"],
+)
+app.include_router(
+    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, "SECRET"),
+    prefix="/auth/github",
+    tags=["Auth"],
+)
+app.include_router(
+    fastapi_users.get_oauth_router(reddit_oauth_client, auth_backend, "SECRET"),
+    prefix="/auth/reddit",
     tags=["Auth"],
 )
 
