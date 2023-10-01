@@ -8,4 +8,3 @@ def generate_random_mailsac_email():
     )
     mailsac_temp_email = random_prefix + "@mailsac.com"
     return mailsac_temp_email
-

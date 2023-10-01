@@ -9,6 +9,7 @@ router = APIRouter(tags=["Email"])
 MAILSAC_API_KEY = settings.MAILSAC_KEY
 MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
 
+
 async def check_generated_temp_email():
     is_owned = True
     mailsac_temp_email = ""
@@ -32,7 +33,6 @@ async def check_email_availability(email):
         return data.decode("utf-8")
     except Exception as e:
         return f"Failed to check email availability: {e}"
-
 
 
 @router.get("/addresses/{email}")
@@ -112,5 +112,3 @@ async def get_email_message(email, message_id):
         return data.decode("utf-8")
     except Exception as e:
         return f"Failed to get message for email: {e}"
-    
-    

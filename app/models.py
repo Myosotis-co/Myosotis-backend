@@ -62,4 +62,3 @@ class Application(Base):
         passive_deletes=True,
         cascade="all, delete",
     )
-
