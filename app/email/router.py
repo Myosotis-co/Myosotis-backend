@@ -1,8 +1,14 @@
 import http.client
 import json
 from app.config import settings
-from fastapi import APIRouter
 from app.email.functions import generate_random_mailsac_email
+
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.database import get_async_session
+from app.email.schema import *
+from app.email.functions import service_add_temp_email
 
 router = APIRouter(tags=["Email"])
 
@@ -112,3 +118,18 @@ async def get_email_message(email, message_id):
         return data.decode("utf-8")
     except Exception as e:
         return f"Failed to get message for email: {e}"
+
+
+@router.post("/email/create")
+async def create_temp_email(
+    id: int,
+    email: str,
+    access_token: str,
+    session: AsyncSession = Depends(get_async_session),
+):
+    service_add_temp_email(id, email, access_token, session)
+    try:
+        await session.commit()
+        return {"status": 201, "data": "Temp Email is created"}
+    except Exception as e:
+        return "Failed to create a temporary email: " + str(e)
