@@ -4,8 +4,8 @@ from sqlalchemy import select, delete
 
 from app.database import get_async_session
 from app.category.models import Category
-from app.schema import CategoryUpdate
-from app.schema import Category as CategorySchema
+from app.category.schema import CategoryUpdate
+from app.category.schema import Category as CategorySchema
 
 
 def service_add_category(

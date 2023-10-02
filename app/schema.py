@@ -56,9 +56,6 @@ class Temp_Email(Temp_EmailBase):
     category: Category
 
 
-# Category.model_rebuild()
-
-
 # ---#
 class UserBase(BaseModel):
     email: str
