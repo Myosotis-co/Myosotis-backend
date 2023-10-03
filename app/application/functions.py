@@ -47,3 +47,13 @@ async def service_delete_application(
 ):
     exec_command = delete(Application).filter(Application.id == application_id)
     await session.execute(exec_command)
+
+
+async def service_get_applications(
+    session: AsyncSession = Depends(get_async_session),
+) -> list[ApplicationSchema]:
+    exec_command = select(Application)
+    result_value = await session.execute(exec_command)
+    applications = result_value.all()
+
+    return applications

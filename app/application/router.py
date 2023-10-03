@@ -62,3 +62,9 @@ async def delete_application(
         return {"status": 204, "data": "Application is deleted"}
     except Exception as e:
         return "Failed to delete an application" + str(e)
+
+
+@router.get("applications/get_all")
+async def get_applications(session: AsyncSession = Depends(get_async_session)):
+    applications = await service_get_applications(session)
+    return applications

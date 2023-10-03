@@ -52,7 +52,9 @@ async def service_delete_category(
     await session.execute(exec_command)
 
 
-async def service_get_categories(session: AsyncSession) -> list[CategorySchema]:
+async def service_get_categories(
+    session: AsyncSession = Depends(get_async_session),
+) -> list[CategorySchema]:
     exec_command = select(Category)
     result_value = await session.execute(exec_command)
     categories = result_value.all()
