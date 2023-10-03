@@ -50,3 +50,15 @@ async def update_application(
         raise HTTPException(status_code=404, detail="Application not found")
     except Exception as e:
         return "Failed to update an application" + str(e)
+
+
+@router.delete("/applications/delete/{application_id}")
+async def delete_application(
+    application_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    try:
+        await service_delete_application(application_id, session)
+        await session.commit()
+        return {"status": 204, "data": "Application is deleted"}
+    except Exception as e:
+        return "Failed to delete an application" + str(e)

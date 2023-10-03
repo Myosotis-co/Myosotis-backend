@@ -40,3 +40,10 @@ def service_update_application(
         print(key, value)
     session.add(application)
     return application
+
+
+async def service_delete_application(
+    application_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = delete(Application).filter(Application.id == application_id)
+    await session.execute(exec_command)
