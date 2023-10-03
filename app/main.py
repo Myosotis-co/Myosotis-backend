@@ -54,18 +54,8 @@ app.include_router(
     tags=["Auth"],
 )
 app.include_router(
-    fastapi_users.get_oauth_router(linkedin_oauth_client, auth_backend, "SECRET"),
-    prefix="/auth/linkedin",
-    tags=["Auth"],
-)
-app.include_router(
-    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, "SECRET"),
+    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, "SECRET", redirect_url="http://localhost:8000"),
     prefix="/auth/github",
-    tags=["Auth"],
-)
-app.include_router(
-    fastapi_users.get_oauth_router(reddit_oauth_client, auth_backend, "SECRET"),
-    prefix="/auth/reddit",
     tags=["Auth"],
 )
 

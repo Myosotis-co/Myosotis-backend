@@ -21,10 +21,8 @@ def get_jwt_strategy():
     return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
 
 
-google_oauth_client = GoogleOAuth2("CLIENT_ID", "CLIENT_SECRET")
-reddit_oauth_client = RedditOAuth2("CLIENT_ID", "CLIENT_SECRET")
-linkedin_oauth_client = LinkedInOAuth2("CLIENT_ID", "CLIENT_SECRET")
-github_oauth_client = GitHubOAuth2("CLIENT_ID", "CLIENT_SECRET")
+google_oauth_client = GoogleOAuth2("777490275004-dcuok40bfl21qpjg5a860ljoomrdtg68.apps.googleusercontent.com", "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")
+github_oauth_client = GitHubOAuth2("ee229338dd853d5a0d5f", "c02ba600b6bba21567f809ac4365febe3fb4960a")
 
 auth_backend = AuthenticationBackend(
     name="jwt",
