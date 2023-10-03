@@ -36,7 +36,6 @@ async def get_category(
         return "Failed to get a category: " + str(e)
 
 
-# To implement
 @router.patch("/categories/update/{category_id}")
 async def update_category(
     category_id: int,
@@ -54,7 +53,6 @@ async def update_category(
         return "Failed to update a category: " + str(e)
 
 
-# Should I check category existance before deletion?
 @router.delete("/categories/delete/{category_id}")
 async def delete_category(
     category_id: int, session: AsyncSession = Depends(get_async_session)
@@ -67,7 +65,6 @@ async def delete_category(
         return "Failed to delete a category: " + str(e)
 
 
-# TODO: Create function to get list of categories as JSON
 @router.get("/categories/get_all")
 async def get_categories(session: AsyncSession = Depends(get_async_session)):
     categories = await service_get_categories(session)

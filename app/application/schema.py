@@ -21,3 +21,7 @@ class Application(ApplicationBase):
     updated_at: datetime.datetime
 
     receivedMessages: List[Message]
+
+
+class ApplicationUpdate(ApplicationBase):
+    website_url: str = None

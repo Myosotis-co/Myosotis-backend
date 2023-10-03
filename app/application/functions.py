@@ -4,6 +4,7 @@ from sqlalchemy import select, delete
 
 from app.database import get_async_session
 from app.application.models import Application
+from app.application.schema import ApplicationUpdate
 from app.application.schema import Application as ApplicationSchema
 
 
@@ -25,4 +26,17 @@ async def service_get_application(
     result_value = await session.execute(exec_command)
     application = result_value.scalar()
 
+    return application
+
+
+def service_update_application(
+    application: Application,
+    application_update: ApplicationUpdate,
+    session: AsyncSession = Depends(get_async_session),
+):
+    for key, value in application_update:
+        if value is not None:
+            setattr(application, key, value)
+        print(key, value)
+    session.add(application)
     return application
