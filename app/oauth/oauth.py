@@ -15,15 +15,6 @@ from httpx_oauth.clients.reddit import RedditOAuth2
 
 from app.database import SQLALCHEMY_DATABASE_URL
 
-
-reddit_oauth_client = RedditOAuth2("CLIENT_ID", "CLIENT_SECRET")
-linkedin_oauth_client = LinkedInOAuth2("CLIENT_ID", "CLIENT_SECRET")
-google_oauth_client = GoogleOAuth2("CLIENT_ID", "CLIENT_SECRET")
-github_oauth_client = GitHubOAuth2("CLIENT_ID", "CLIENT_SECRET")
-
-
-
-
 class Base(DeclarativeBase):
     pass
 
