@@ -14,7 +14,7 @@ from sqlalchemy.orm import relationship
 from app.database import Base
 from sqlalchemy.ext.declarative import declarative_base
 
-from app.application.model import Application
+from app.application.models import Application
 
 
 class Category(Base):

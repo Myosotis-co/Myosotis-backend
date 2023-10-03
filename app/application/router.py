@@ -19,3 +19,15 @@ async def create_applications(
         return {"status": 201, "data": "Application is created"}
     except Exception as e:
         return "Failed to create application: " + str(e)
+    
+@router.get("/applications/get/{category_id}")
+async def get_application(
+    application_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    try:
+        application = await service_get_application(application_id, session)
+        if application is not None:
+            return application
+        raise HTTPException(status_code=404, detail="Applicaion not found")
+    except Exception as e:
+        return "Failed to get an applicaion: " + str(e)
