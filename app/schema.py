@@ -3,6 +3,7 @@ from typing import ForwardRef, List
 from pydantic import BaseModel
 from app.category.schema import *
 
+
 class MessageBase(BaseModel):
     pass
 
@@ -38,26 +39,6 @@ class Message_Type(Message_TypeBase):
 
 
 # ---#
-class ApplicationBase(BaseModel):
-    pass
-
-
-class ApplicationCreate(BaseModel):
-    pass
-
-
-class Application(ApplicationBase):
-    id: int
-    category_id: int
-    website_url: str
-    deletion_date: datetime.datetime
-    created_at: datetime.datetime
-    updated_at: datetime.datetime
-
-    receivedMessages: List[Message]
-
-
-# ---#
 class Temp_EmailBase(BaseModel):
     email: str
 
@@ -73,9 +54,6 @@ class Temp_Email(Temp_EmailBase):
     updated_at: datetime.datetime
 
     category: Category
-
-
-# Category.model_rebuild()
 
 
 # ---#
