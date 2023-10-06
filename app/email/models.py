@@ -10,7 +10,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 
-class Temp_Email(Base):
+class TempEmail(Base):
     __tablename__ = "temp_emails"
 
     id = Column(Integer, primary_key=True)

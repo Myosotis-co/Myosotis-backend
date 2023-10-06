@@ -3,15 +3,15 @@ from app.category.schema import Category
 from pydantic import BaseModel
 
 
-class Temp_EmailBase(BaseModel):
+class TempEmailBase(BaseModel):
     email: str
 
 
-class Temp_EmailCreate(BaseModel):
+class TempEmailCreate(BaseModel):
     pass
 
 
-class Temp_Email(Temp_EmailBase):
+class TempEmail(TempEmailBase):
     id: int
     access_token: str
     created_at: datetime.datetime

@@ -37,25 +37,6 @@ class Message_Type(Message_TypeBase):
     messages: List[Message]
 
 
-# ---#
-class Temp_EmailBase(BaseModel):
-    email: str
-
-
-class Temp_EmailCreate(BaseModel):
-    pass
-
-
-class Temp_Email(Temp_EmailBase):
-    id: int
-    access_token: str
-    created_at: datetime.datetime
-    updated_at: datetime.datetime
-
-    category: Category
-
-
-# ---#
 class UserBase(BaseModel):
     email: str
 
