@@ -4,8 +4,8 @@ from sqlalchemy import select, delete
 
 from app.database import get_async_session
 from app.category.models import Category
-from app.schema import CategoryUpdate
-from app.schema import Category as CategorySchema
+from app.category.schema import CategoryUpdate
+from app.category.schema import Category as CategorySchema
 
 
 def service_add_category(
@@ -52,7 +52,9 @@ async def service_delete_category(
     await session.execute(exec_command)
 
 
-async def service_get_categories(session: AsyncSession) -> list[CategorySchema]:
+async def service_get_categories(
+    session: AsyncSession = Depends(get_async_session),
+) -> list[CategorySchema]:
     exec_command = select(Category)
     result_value = await session.execute(exec_command)
     categories = result_value.all()

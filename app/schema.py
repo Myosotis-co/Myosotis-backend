@@ -38,28 +38,24 @@ class Message_Type(Message_TypeBase):
 
 
 # ---#
-class ApplicationBase(BaseModel):
+class Temp_EmailBase(BaseModel):
+    email: str
+
+
+class Temp_EmailCreate(BaseModel):
     pass
 
 
-class ApplicationCreate(BaseModel):
-    pass
-
-
-class Application(ApplicationBase):
+class Temp_Email(Temp_EmailBase):
     id: int
-    category_id: int
-    website_url: str
-    deletion_date: datetime.datetime
+    access_token: str
     created_at: datetime.datetime
     updated_at: datetime.datetime
 
-    receivedMessages: List[Message]
+    category: Category
 
 
-# Category.model_rebuild()
-
-
+# ---#
 class UserBase(BaseModel):
     email: str
 
