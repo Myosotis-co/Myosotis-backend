@@ -9,7 +9,7 @@ router = APIRouter(tags=["Application"])
 
 
 @router.post("/applications/create")
-async def create_applications(
+async def create_application(
     category_id: int,
     website_url: str,
     session: AsyncSession = Depends(get_async_session),
