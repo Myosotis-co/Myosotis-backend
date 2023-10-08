@@ -20,6 +20,11 @@ class Message(MessageBase):
     created_at: datetime.datetime
 
 
+class MessageUpdate(MessageBase):
+    message_type_id: int
+    topic: str
+    message_text: str
+
 # ---#
 class Message_TypeBase(BaseModel):
     pass

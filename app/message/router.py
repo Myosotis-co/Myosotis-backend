@@ -36,4 +36,21 @@ async def get_message(
             return message
         raise HTTPException(status_code=404, detail="Message not found")
     except Exception as e:
-        return "Failed to get a message" + str(e)
+        return "Failed to get a message: " + str(e)
+
+
+@router.patch("/messages/{message_id}")
+async def update_message(
+    message_id: int,
+    message_update: MessageUpdate,
+    session: AsyncSession = Depends(get_async_session),
+):
+    try:
+        message = await service_get_message(message_id, session)
+        if message is not None:
+            service_update_message(message, message_update, session)
+            await session.commit()
+            return {"status": 204, "data": "Message not found"}
+        raise HTTPException(status_code=404, detail="Message not found")
+    except Exception as e:
+        return "Failed to update a message: " + str(e)

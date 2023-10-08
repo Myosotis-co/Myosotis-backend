@@ -5,6 +5,7 @@ from sqlalchemy import select, delete
 from app.database import get_async_session
 from app.message.models import Message
 from app.message.schema import Message as MessageSchema
+from app.message.schema import MessageUpdate
 
 
 def service_add_message(
@@ -32,4 +33,16 @@ async def service_get_message(
     result_value = await session.execute(exec_command)
     message = result_value.scalar()
 
+    return message
+
+
+def service_update_message(
+    message: Message,
+    message_update: MessageUpdate,
+    session: AsyncSession = Depends(get_async_session),
+):
+    for key, value in message_update:
+        if value is not None:
+            setattr(message, key, value)
+    session.add(message)
     return message
