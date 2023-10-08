@@ -22,6 +22,7 @@ def get_jwt_strategy():
 google_oauth_client = GoogleOAuth2("CLIENT_ID", "CLIENT_SECRET")
 github_oauth_client = GitHubOAuth2("CLIENT_ID", "CLIENT_SECRET")
 
+
 auth_backend = AuthenticationBackend(
     name="jwt",
     transport=cookie_transport,
