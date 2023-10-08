@@ -1,7 +1,7 @@
 import datetime
 from typing import ForwardRef, List
 from pydantic import BaseModel
-
+from app.category.schema import *
 
 class MessageBase(BaseModel):
     pass
@@ -55,35 +55,6 @@ class Application(ApplicationBase):
     updated_at: datetime.datetime
 
     receivedMessages: List[Message]
-
-
-# ---#
-class CategoryBase(BaseModel):
-    pass
-
-
-class CategoryCreate(BaseModel):
-    pass
-
-
-class Category(CategoryBase):
-    id: int
-    user_id: int
-    temp_email_id: int
-    category_name: str
-    deletion_date: datetime.datetime
-    created_at: datetime.datetime
-    updated_at: datetime.datetime
-    # temp_email: ForwardRef("Temp_Email")
-    # applications: List[Application]
-
-    class Config:
-        orm_mode = True
-
-
-class CategoryUpdate(CategoryBase):
-    temp_email_id: int = None
-    category_name: str = None
 
 
 # ---#
