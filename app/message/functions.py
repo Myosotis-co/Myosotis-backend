@@ -11,14 +11,14 @@ from app.message.schema import MessageUpdate
 def service_add_message(
     application_id: int,
     message_type_id: int,
-    message_topic: str,
+    topic: str,
     message_text: str,
     session: AsyncSession = Depends(get_async_session),
 ):
     new_message = Message(
         application_id=application_id,
         message_type_id=message_type_id,
-        message_topic=message_topic,
+        topic=topic,
         message_text=message_text,
     )
     session.add(new_message)

@@ -50,7 +50,7 @@ async def update_message(
         if message is not None:
             service_update_message(message, message_update, session)
             await session.commit()
-            return {"status": 204, "data": "Message not found"}
+            return {"status": 204, "data": "Message is updated"}
         raise HTTPException(status_code=404, detail="Message not found")
     except Exception as e:
         return "Failed to update a message: " + str(e)
