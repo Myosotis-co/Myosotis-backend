@@ -54,3 +54,21 @@ async def update_message(
         raise HTTPException(status_code=404, detail="Message not found")
     except Exception as e:
         return "Failed to update a message: " + str(e)
+
+
+@router.delete("/messages/delete/{message_id}")
+async def delete_message(
+    message_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    try:
+        await service_delete_message(message_id, session)
+        await session.commit()
+        return {"status": 204, "data": "Message is deleted"}
+    except Exception as e:
+        return "Failed to delete a message: " + str(e)
+
+
+@router.get("messages/get_all")
+async def get_messages(session: AsyncSession = Depends(get_async_session)):
+    messages = await service_get_messages(session)
+    return messages

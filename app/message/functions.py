@@ -46,3 +46,20 @@ def service_update_message(
             setattr(message, key, value)
     session.add(message)
     return message
+
+
+async def service_delete_message(
+    message_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = delete(Message).filter(Message.id == message_id)
+    await session.execute(exec_command)
+
+
+async def service_get_messages(
+    session: AsyncSession = Depends(get_async_session),
+) -> list[MessageSchema]:
+    exec_command = select(Message)
+    result_value = await session.execute(exec_command)
+    messages = result_value.all()
+
+    return messages
