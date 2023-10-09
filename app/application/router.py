@@ -46,7 +46,7 @@ async def update_application(
         if application is not None:
             service_update_application(application, application_update, session)
             await session.commit()
-            return {"status": 204, "data": "Application is updates"}
+            return {"status": 204, "data": "Application is updated"}
         raise HTTPException(status_code=404, detail="Application not found")
     except Exception as e:
         return "Failed to update an application: " + str(e)
