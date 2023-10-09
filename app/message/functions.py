@@ -1,0 +1,65 @@
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, delete
+
+from app.database import get_async_session
+from app.message.models import Message
+from app.message.schema import Message as MessageSchema
+from app.message.schema import MessageUpdate
+
+
+def service_add_message(
+    application_id: int,
+    message_type_id: int,
+    topic: str,
+    message_text: str,
+    session: AsyncSession = Depends(get_async_session),
+):
+    new_message = Message(
+        application_id=application_id,
+        message_type_id=message_type_id,
+        topic=topic,
+        message_text=message_text,
+    )
+    session.add(new_message)
+    session.commit()
+    return new_message
+
+
+async def service_get_message(
+    message_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = select(Message).filter(Message.id == message_id)
+    result_value = await session.execute(exec_command)
+    message = result_value.scalar()
+
+    return message
+
+
+def service_update_message(
+    message: Message,
+    message_update: MessageUpdate,
+    session: AsyncSession = Depends(get_async_session),
+):
+    for key, value in message_update:
+        if value is not None:
+            setattr(message, key, value)
+    session.add(message)
+    return message
+
+
+async def service_delete_message(
+    message_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = delete(Message).filter(Message.id == message_id)
+    await session.execute(exec_command)
+
+
+async def service_get_messages(
+    session: AsyncSession = Depends(get_async_session),
+) -> list[MessageSchema]:
+    exec_command = select(Message)
+    result_value = await session.execute(exec_command)
+    messages = result_value.all()
+
+    return messages

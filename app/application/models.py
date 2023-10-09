@@ -13,7 +13,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from app.database import Base
 from sqlalchemy.ext.declarative import declarative_base
-from app.models import Message
+from app.message.models import Message
 
 
 class Application(Base):

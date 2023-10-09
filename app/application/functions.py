@@ -37,7 +37,6 @@ def service_update_application(
     for key, value in application_update:
         if value is not None:
             setattr(application, key, value)
-        print(key, value)
     session.add(application)
     return application
 

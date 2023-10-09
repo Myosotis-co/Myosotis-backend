@@ -3,7 +3,8 @@ from app.database import get_async_session
 from app.auth.models import Role, User
 from app.category.models import Category
 from app.email.models import Temp_Email
-from app.models import *
+from app.application.models import Application
+from app.message.models import Message, Message_Type
 from sqlalchemyseed import load_entities_from_csv, Seeder
 import sqlalchemy as sa
 

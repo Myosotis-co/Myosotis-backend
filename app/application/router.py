@@ -9,7 +9,7 @@ router = APIRouter(tags=["Application"])
 
 
 @router.post("/applications/create")
-async def create_applications(
+async def create_application(
     category_id: int,
     website_url: str,
     session: AsyncSession = Depends(get_async_session),
@@ -46,10 +46,10 @@ async def update_application(
         if application is not None:
             service_update_application(application, application_update, session)
             await session.commit()
-            return {"status": 204, "data": "Application is updates"}
+            return {"status": 204, "data": "Application is updated"}
         raise HTTPException(status_code=404, detail="Application not found")
     except Exception as e:
-        return "Failed to update an application" + str(e)
+        return "Failed to update an application: " + str(e)
 
 
 @router.delete("/applications/delete/{application_id}")
@@ -61,7 +61,7 @@ async def delete_application(
         await session.commit()
         return {"status": 204, "data": "Application is deleted"}
     except Exception as e:
-        return "Failed to delete an application" + str(e)
+        return "Failed to delete an application: " + str(e)
 
 
 @router.get("applications/get_all")
