@@ -2,6 +2,7 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_async_session
 from app.config import settings
+from sqlalchemy import select, delete
 
 import string
 import json
@@ -60,12 +61,29 @@ async def create_mailsac_public_email():
 
 
 def service_add_temp_email(
-    id: int,
+    temp_email_id: int,
     email: TempEmail,
     access_token: str,
     session: AsyncSession = Depends(get_async_session),
 ):
-    new_temp_email = TempEmail(id=id, email=email, access_token=access_token)
+    new_temp_email = TempEmail(id=temp_email_id, email=email, access_token=access_token)
     session.add(new_temp_email)
     session.commit()
     return new_temp_email
+
+
+async def service_get_temp_email(
+    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = select(TempEmail).filter(TempEmail.id == temp_email_id)
+    result_value = await session.execute(exec_command)
+    temp_email = result_value.scalar()
+
+    return temp_email
+
+
+async def service_delete_temp_email(
+    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    exec_command = delete(TempEmail).filter(TempEmail.id == temp_email_id)
+    await session.execute(exec_command)

@@ -1,11 +1,16 @@
 import http.client
 from app.config import settings
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_async_session
-from app.email.functions import service_add_temp_email, create_mailsac_public_email
+from app.email.functions import (
+    service_add_temp_email,
+    create_mailsac_public_email,
+    service_get_temp_email,
+    service_delete_temp_email,
+)
 
 router = APIRouter(tags=["Email"])
 
@@ -88,3 +93,28 @@ async def create_temp_email(
         return {"status": 201, "data": "Temp email is created"}
     except Exception as e:
         return "Failed to create a temp email: " + str(e)
+
+
+@router.get("/email/get/{temp_email_id}")
+async def get_temp_email(
+    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    try:
+        temp_email = await service_get_temp_email(temp_email_id, session)
+        if temp_email is not None:
+            return temp_email
+        raise HTTPException(status_code=404, detail="Temp email was not found")
+    except Exception as e:
+        return "Failed to get a temp email: " + str(e)
+
+
+@router.delete("/email/delete/{temp_email_id}")
+async def delete_temp_email(
+    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    try:
+        await service_delete_temp_email(temp_email_id, session)
+        await session.commit()
+        return {"status": 204, "data": "Temp email is deleted"}
+    except Exception as e:
+        return "Failed to delete a temp email: " + str(e)
