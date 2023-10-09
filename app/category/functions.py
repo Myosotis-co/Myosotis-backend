@@ -40,7 +40,6 @@ def service_update_category(
     for key, value in category_update:
         if value is not None:
             setattr(category, key, value)
-        print(key, value)
     session.add(category)
     return category
 

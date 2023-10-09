@@ -1,7 +1,7 @@
 import datetime
 from typing import List
 from pydantic import BaseModel
-from app.schema import Message
+from app.message.schema import Message
 
 
 class ApplicationBase(BaseModel):
