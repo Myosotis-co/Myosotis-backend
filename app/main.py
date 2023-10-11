@@ -1,18 +1,17 @@
 import os
-from fastapi import FastAPI, Depends
-from fastapi.middleware.cors import CORSMiddleware
 
-# from app import email
-from app.auth.models import User
-from app.auth.schema import UserCreate, UserRead
-from app.config import settings
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
-from app.auth.jwt_config import auth_backend, fastapi_users
-from app.database import SQLALCHEMY_DATABASE_URL
+from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 
+from app.auth.models import User
+from app.auth.schema import UserCreate, UserRead
+from app.config import settings
+from app.auth.jwt_config import auth_backend, fastapi_users
+from app.database import SQLALCHEMY_DATABASE_URL
 from app.email.router import router as email_router
 from app.seeder.router import router as seeder_router
 from app.category.router import router as category_router

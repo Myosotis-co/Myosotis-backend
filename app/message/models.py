@@ -11,8 +11,9 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.orm import relationship
-from app.database import Base
 from sqlalchemy.ext.declarative import declarative_base
+
+from app.database import Base
 
 
 class Message(Base):

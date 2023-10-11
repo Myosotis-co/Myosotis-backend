@@ -25,6 +25,7 @@ class MessageUpdate(MessageBase):
     topic: str
     message_text: str
 
+
 # ---#
 class Message_TypeBase(BaseModel):
     pass
