@@ -86,9 +86,9 @@ async def create_temp_email(
     access_token: str,
     session: AsyncSession = Depends(get_async_session),
 ):
-    email = await create_mailsac_public_email()
-    service_add_temp_email(id, email, access_token, session)
     try:
+        email = await create_mailsac_public_email()
+        service_add_temp_email(id, email, access_token, session)
         await session.commit()
         return {"status": 201, "data": "Temp email is created"}
     except Exception as e:
