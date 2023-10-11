@@ -1,9 +1,8 @@
 import http.client
-from app.config import settings
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config import settings
 from app.database import get_async_session
 from app.email.functions import (
     service_add_temp_email,

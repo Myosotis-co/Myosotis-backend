@@ -1,14 +1,13 @@
-from fastapi import Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.database import get_async_session
-from app.config import settings
-from sqlalchemy import select, delete
-
 import string
 import json
 import random
 import http.client
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, delete
 
+from app.database import get_async_session
+from app.config import settings
 from app.email.models import TempEmail
 
 MAILSAC_API_KEY = settings.MAILSAC_KEY

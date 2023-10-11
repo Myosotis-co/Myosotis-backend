@@ -1,5 +1,3 @@
-from app.database import Base
-
 from sqlalchemy import (
     Column,
     Integer,
@@ -8,6 +6,8 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.orm import relationship
+
+from app.database import Base
 
 
 class TempEmail(Base):

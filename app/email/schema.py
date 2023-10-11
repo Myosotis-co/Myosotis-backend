@@ -1,6 +1,7 @@
 import datetime
-from app.category.schema import Category
 from pydantic import BaseModel
+
+from app.category.schema import Category
 
 
 class TempEmailBase(BaseModel):
