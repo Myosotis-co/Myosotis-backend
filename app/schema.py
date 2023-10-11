@@ -1,22 +1,43 @@
-import datetime
-from typing import ForwardRef, List
+from typing import List
 from pydantic import BaseModel
 from app.category.schema import Category
 
 
-# ---#
-class Temp_EmailBase(BaseModel):
+class UserBase(BaseModel):
     email: str
 
 
-class Temp_EmailCreate(BaseModel):
-    pass
-
-
-class Temp_Email(Temp_EmailBase):
+class User(UserBase):
     id: int
-    access_token: str
+    role_id: int
+    name: str
+    user_token: str
+    is_deleted: bool
     created_at: datetime.datetime
     updated_at: datetime.datetime
 
-    category: Category
+    categories: List[Category]
+
+    class Config:
+        orm_mode = True
+
+
+# ---#
+class RoleBase(BaseModel):
+    pass
+
+
+class RoleCreate(RoleBase):
+    pass
+
+
+class Role(RoleBase):
+    id: int
+    name: str
+    description: str
+
+    users: List[User]
+
+    class Config:
+        orm_mode = True
+        

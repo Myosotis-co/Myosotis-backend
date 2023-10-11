@@ -41,5 +41,5 @@ class Category(Base):
         cascade="all, delete",
     )
     temp_email = relationship(
-        "Temp_Email", back_populates="category", passive_deletes=True
+        "TempEmail", back_populates="category", passive_deletes=True
     )

@@ -1,55 +1,21 @@
 import http.client
-import json
 from app.config import settings
-from fastapi import APIRouter
-from app.email.functions import generate_random_mailsac_email
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.database import get_async_session
+from app.email.functions import (
+    service_add_temp_email,
+    create_mailsac_public_email,
+    service_get_temp_email,
+    service_delete_temp_email,
+)
 
 router = APIRouter(tags=["Email"])
 
 MAILSAC_API_KEY = settings.MAILSAC_KEY
 MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
-
-async def check_generated_temp_email():
-    is_owned = True
-    mailsac_temp_email = ""
-    while is_owned:
-        mailsac_temp_email = generate_random_mailsac_email()
-        response_data = await check_email_availability(mailsac_temp_email)
-        response_json = json.loads(response_data)
-        is_owned = response_json["owned"]
-    return mailsac_temp_email
-
-
-@router.get("/check-email-availability/{email}")
-async def check_email_availability(email):
-    try:
-        conn = http.client.HTTPSConnection(MAILSAC_BASE_URL)
-        headers = {"Mailsac-Key": MAILSAC_API_KEY}
-        conn.request("GET", f"/api/addresses/{email}/availability", headers=headers)
-
-        res = conn.getresponse()
-        data = res.read()
-        return data.decode("utf-8")
-    except Exception as e:
-        return f"Failed to check email availability: {e}"
-
-
-
-@router.get("/addresses/{email}")
-async def create_mailsac_public_email():
-    try:
-        conn = http.client.HTTPSConnection("mailsac.com")
-        headers = {"Mailsac-Key": MAILSAC_API_KEY}
-        email = await check_generated_temp_email()
-
-        conn.request("GET", f"/api/addresses/{email}", headers=headers)
-
-        res = conn.getresponse()
-        data = res.read()
-
-        return data.decode("utf-8")
-    except Exception as e:
-        return f"Failed to fetch email: {e}"
 
 
 @router.get("/addresses/{email}/messages")
@@ -112,5 +78,43 @@ async def get_email_message(email, message_id):
         return data.decode("utf-8")
     except Exception as e:
         return f"Failed to get message for email: {e}"
-    
-    
+
+
+@router.post("/email/create")
+async def create_temp_email(
+    id: int,
+    access_token: str,
+    session: AsyncSession = Depends(get_async_session),
+):
+    email = await create_mailsac_public_email()
+    service_add_temp_email(id, email, access_token, session)
+    try:
+        await session.commit()
+        return {"status": 201, "data": "Temp email is created"}
+    except Exception as e:
+        return "Failed to create a temp email: " + str(e)
+
+
+@router.get("/email/get/{temp_email_id}")
+async def get_temp_email(
+    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    try:
+        temp_email = await service_get_temp_email(temp_email_id, session)
+        if temp_email is not None:
+            return temp_email
+        raise HTTPException(status_code=404, detail="Temp email was not found")
+    except Exception as e:
+        return "Failed to get a temp email: " + str(e)
+
+
+@router.delete("/email/delete/{temp_email_id}")
+async def delete_temp_email(
+    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
+):
+    try:
+        await service_delete_temp_email(temp_email_id, session)
+        await session.commit()
+        return {"status": 204, "data": "Temp email is deleted"}
+    except Exception as e:
+        return "Failed to delete a temp email: " + str(e)

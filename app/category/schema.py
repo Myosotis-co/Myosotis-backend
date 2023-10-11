@@ -18,7 +18,7 @@ class Category(CategoryBase):
     deletion_date: datetime.datetime
     created_at: datetime.datetime
     updated_at: datetime.datetime
-    # temp_email: ForwardRef("Temp_Email")
+    # temp_email: ForwardRef("TempEmail")
     # applications: List[Application]
 
     class Config:
