@@ -4,6 +4,7 @@ from fastapi_users.authentication import (
     JWTStrategy,
     AuthenticationBackend,
 )
+
 from app.auth.manager import get_user_manager
 from app.auth.models import User
 

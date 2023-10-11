@@ -1,5 +1,3 @@
-from app.database import Base
-
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import (
     Table,
@@ -14,6 +12,8 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.orm import relationship
+
+from app.database import Base
 
 
 class Role(Base):
