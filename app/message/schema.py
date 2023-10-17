@@ -1,5 +1,5 @@
 import datetime
-from typing import ForwardRef, List
+from typing import List
 from pydantic import BaseModel
 
 

@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_async_session
 from app.message.schema import *
-from app.message.functions import *
+from app.message.models import Message as Message_model
 from app.functions import *
 
 router = APIRouter(tags=["Message"])
@@ -14,7 +14,7 @@ async def create_message(
     message_create: MessageCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    await service_create_model(Message, message_create, session)
+    await service_create_model(Message_model, message_create, session)
     try:
         await session.commit()
         return {"status": 201, "data": "Message is created"}
@@ -27,7 +27,7 @@ async def get_message(
     message_id: int, session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        message = await service_get_model(Message, message_id, session)
+        message = await service_get_model(Message_model, message_id, session)
         if message is not None:
             return message
         raise HTTPException(status_code=404, detail="Message not found")
@@ -42,7 +42,7 @@ async def update_message(
     session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        message = await service_get_model(Message, message_id, session)
+        message = await service_get_model(Message_model, message_id, session)
         if message is not None:
             await service_update_model(message, message_update, session)
             await session.commit()
@@ -57,7 +57,7 @@ async def delete_message(
     message_id: int, session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        await service_delete_model(Message, message_id, session)
+        await service_delete_model(Message_model, message_id, session)
         await session.commit()
         return {"status": 204, "data": "Message is deleted"}
     except Exception as e:
@@ -68,5 +68,5 @@ async def delete_message(
 async def get_messages(
     start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
 ):
-    messages = await service_get_all_models(Message, start_from, end_at, session)
+    messages = await service_get_all_models(Message_model, start_from, end_at, session)
     return messages

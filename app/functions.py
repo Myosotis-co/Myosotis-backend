@@ -64,10 +64,7 @@ async def service_get_all_models(
     session: AsyncSession = Depends(get_async_session),
 ):
     exec_command = select(default_model).where(
-        and_(
-            default_model.id >= start_from,
-            default_model.id <= end_at
-        )
+        and_(default_model.id >= start_from, default_model.id <= end_at)
     )
 
     result_value = await session.execute(exec_command)
