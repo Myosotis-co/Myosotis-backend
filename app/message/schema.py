@@ -8,7 +8,10 @@ class MessageBase(BaseModel):
 
 
 class MessageCreate(BaseModel):
-    pass
+    application_id: int
+    message_type_id: int
+    topic: str
+    message_text: str
 
 
 class Message(MessageBase):
