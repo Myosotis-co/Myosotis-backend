@@ -54,3 +54,16 @@ async def service_delete_model(
 ):
     exec_command = delete(default_model).filter(default_model.id == model_id)
     await session.execute(exec_command)
+
+
+async def service_get_all_models(
+    default_model: Base,
+    start_from: int,
+    end_at: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    exec_command = select(default_model)
+    result_value = await session.execute(exec_command)
+    models = result_value.all()
+
+    return models

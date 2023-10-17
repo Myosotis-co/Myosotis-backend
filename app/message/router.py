@@ -65,6 +65,8 @@ async def delete_message(
 
 
 @router.get("messages/get_all")
-async def get_messages(session: AsyncSession = Depends(get_async_session)):
-    messages = await service_get_messages(session)
+async def get_messages(
+    start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
+):
+    messages = await service_get_all_models(Message, start_from, end_at, session)
     return messages
