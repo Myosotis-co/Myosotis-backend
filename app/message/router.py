@@ -46,9 +46,9 @@ async def update_message(
     session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        message = await service_get_message(message_id, session)
+        message = await service_get_model(Message, message_id, session)
         if message is not None:
-            service_update_message(message, message_update, session)
+            await service_update_model(message, message_update, session)
             await session.commit()
             return {"status": 204, "data": "Message is updated"}
         raise HTTPException(status_code=404, detail="Message not found")

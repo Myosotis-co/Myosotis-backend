@@ -33,3 +33,15 @@ async def service_get_model(
     model = result_value.scalar()
 
     return model
+
+
+async def service_update_model(
+    model: Base,
+    model_update: BaseModel,
+    session: AsyncSession = Depends(get_async_session),
+):
+    for key, value in model_update:
+        if value is not None:
+            setattr(model, key, value)
+    session.add(model)
+    return model
