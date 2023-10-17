@@ -2,6 +2,7 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete
 from pydantic import BaseModel
+from sqlalchemy import and_
 
 from app.database import get_async_session
 from app.database import Base
@@ -62,7 +63,13 @@ async def service_get_all_models(
     end_at: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    exec_command = select(default_model)
+    exec_command = select(default_model).where(
+        and_(
+            default_model.id >= start_from,
+            default_model.id <= end_at
+        )
+    )
+
     result_value = await session.execute(exec_command)
     models = result_value.all()
 
