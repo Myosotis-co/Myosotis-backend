@@ -4,12 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.database import get_async_session
-from app.email.functions import (
-    service_add_temp_email,
-    create_mailsac_public_email,
-    service_get_temp_email,
-    service_delete_temp_email,
-)
+from app.email.schema import *
+from app.email.models import TempEmail as TempEmail_model
+from app.email.functions import *
+from app.functions import *
 
 router = APIRouter(tags=["Email"])
 
@@ -81,13 +79,12 @@ async def get_email_message(email, message_id):
 
 @router.post("/email/create")
 async def create_temp_email(
-    id: int,
-    access_token: str,
     session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        email = await create_mailsac_public_email()
-        service_add_temp_email(id, email, access_token, session)
+        temp_email = await create_mailsac_public_email()
+        await service_create_model(temp_email, session)
+        # await service_create_model(TempEmail_model, temp_email, session)
         await session.commit()
         return {"status": 201, "data": "Temp email is created"}
     except Exception as e:

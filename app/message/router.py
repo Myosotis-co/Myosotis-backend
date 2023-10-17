@@ -14,8 +14,8 @@ async def create_message(
     message_create: MessageCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    await service_create_model(Message_model, message_create, session)
     try:
+        await service_create_model(Message_model, message_create, session)
         await session.commit()
         return {"status": 201, "data": "Message is created"}
     except Exception as e:

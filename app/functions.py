@@ -24,6 +24,15 @@ async def service_create_model(
     return new_model
 
 
+async def service_create_model(
+    model: Base,
+    session: AsyncSession = Depends(get_async_session),
+):
+    session.add(model)
+    session.commit()
+    return model
+
+
 async def service_get_model(
     default_model: Base,
     model_id: int,
