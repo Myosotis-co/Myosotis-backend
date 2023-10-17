@@ -1,12 +1,15 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete
+from pydantic import BaseModel
 
 from app.database import get_async_session
+from app.database import Base
+
 
 async def service_create_model(
-    defaul_model,
-    create_schema,
+    defaul_model: Base,
+    create_schema: BaseModel,
     session: AsyncSession = Depends(get_async_session),
 ):
     new_model = defaul_model()
@@ -18,3 +21,15 @@ async def service_create_model(
     session.commit()
 
     return new_model
+
+
+async def service_get_model(
+    default_model: Base,
+    model_id: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    exec_command = select(default_model).filter(default_model.id == model_id)
+    result_value = await session.execute(exec_command)
+    model = result_value.scalar()
+
+    return model
