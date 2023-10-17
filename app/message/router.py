@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_async_session
 from app.message.schema import *
 from app.message.models import Message as Message_model
-from app.functions import *
+from app.crud_manager import *
 
 router = APIRouter(tags=["Message"])
 

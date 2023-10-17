@@ -7,7 +7,7 @@ from app.database import get_async_session
 from app.email.schema import *
 from app.email.models import TempEmail as TempEmail_model
 from app.email.functions import *
-from app.functions import *
+from app.crud_manager import *
 
 router = APIRouter(tags=["Email"])
 

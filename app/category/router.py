@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_async_session
 from app.category.schema import *
 from app.category.models import Category as Category_model
-from app.functions import *
+from app.crud_manager import *
 
 router = APIRouter(tags=["Category"])
 
