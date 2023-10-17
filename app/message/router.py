@@ -14,9 +14,6 @@ async def create_message(
     message_create: MessageCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    # service_add_message(
-    #     application_id, message_type_id, message_topic, message_text, session
-    # )
     await service_create_model(Message, message_create, session)
     try:
         await session.commit()
@@ -30,7 +27,6 @@ async def get_message(
     message_id: int, session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        # message = await service_get_message(message_id, session)
         message = await service_get_model(Message, message_id, session)
         if message is not None:
             return message
@@ -61,7 +57,7 @@ async def delete_message(
     message_id: int, session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        await service_delete_message(message_id, session)
+        await service_delete_model(Message, message_id, session)
         await session.commit()
         return {"status": 204, "data": "Message is deleted"}
     except Exception as e:

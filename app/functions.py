@@ -45,3 +45,12 @@ async def service_update_model(
             setattr(model, key, value)
     session.add(model)
     return model
+
+
+async def service_delete_model(
+    default_model: Base,
+    model_id: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    exec_command = delete(default_model).filter(default_model.id == model_id)
+    await session.execute(exec_command)
