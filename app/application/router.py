@@ -3,18 +3,18 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_async_session
 from app.application.schema import *
-from app.application.functions import *
+from app.application.models import Application as Application_model
+from app.functions import *
 
 router = APIRouter(tags=["Application"])
 
 
 @router.post("/applications/create")
 async def create_application(
-    category_id: int,
-    website_url: str,
+    application_create: ApplicationCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    service_add_application(category_id, website_url, session)
+    await service_create_model(Application_model, application_create, session)
     try:
         await session.commit()
         return {"status": 201, "data": "Application is created"}
@@ -27,7 +27,9 @@ async def get_application(
     application_id: int, session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        application = await service_get_application(application_id, session)
+        application = await service_get_model(
+            Application_model, application_id, session
+        )
         if application is not None:
             return application
         raise HTTPException(status_code=404, detail="Applicaion not found")
@@ -42,9 +44,11 @@ async def update_application(
     session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        application = await service_get_application(application_id, session)
+        application = await service_get_model(
+            Application_model, application_id, session
+        )
         if application is not None:
-            service_update_application(application, application_update, session)
+            await service_update_model(application, application_update, session)
             await session.commit()
             return {"status": 204, "data": "Application is updated"}
         raise HTTPException(status_code=404, detail="Application not found")
@@ -57,7 +61,7 @@ async def delete_application(
     application_id: int, session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        await service_delete_application(application_id, session)
+        await service_delete_model(Application_model, application_id, session)
         await session.commit()
         return {"status": 204, "data": "Application is deleted"}
     except Exception as e:
@@ -65,6 +69,10 @@ async def delete_application(
 
 
 @router.get("applications/get_all")
-async def get_applications(session: AsyncSession = Depends(get_async_session)):
-    applications = await service_get_applications(session)
+async def get_applications(
+    start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
+):
+    applications = await service_get_all_models(
+        Application_model, start_from, end_at, session
+    )
     return applications
