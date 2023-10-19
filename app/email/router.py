@@ -131,3 +131,16 @@ async def delete_temp_email(
         return {"status": 204, "data": "Temp email is deleted"}
     except Exception as e:
         return "Failed to delete a temp email: " + str(e)
+
+
+@router.get("email/get_all")
+async def get_temp_emails(
+    start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
+):
+    try:
+        temp_emails = await service_get_all_models(
+            TempEmail_model, start_from, end_at, session
+        )
+        return temp_emails
+    except Exception as e:
+        return "Failed to get temp emails: " + str(e)
