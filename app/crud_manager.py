@@ -53,6 +53,7 @@ async def service_update_model(
     for key, value in model_update:
         if value is not None:
             setattr(model, key, value)
+
     session.add(model)
     return model
 

@@ -72,7 +72,10 @@ async def delete_application(
 async def get_applications(
     start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
 ):
-    applications = await service_get_all_models(
-        Application_model, start_from, end_at, session
-    )
-    return applications
+    try:
+        applications = await service_get_all_models(
+            Application_model, start_from, end_at, session
+        )
+        return applications
+    except Exception as e:
+        return "Failed to get applications: " + str(e)

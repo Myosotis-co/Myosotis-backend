@@ -14,8 +14,8 @@ async def create_category(
     category_create: CategoryCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    await service_create_model(Category_model, category_create, session)
     try:
+        await service_create_model(Category_model, category_create, session)
         await session.commit()
         return {"status": 201, "data": "Category is created"}
     except Exception as e:
@@ -68,7 +68,10 @@ async def delete_category(
 async def get_categories(
     start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
 ):
-    categories = await service_get_all_models(
-        Category_model, start_from, end_at, session
-    )
-    return categories
+    try:
+        categories = await service_get_all_models(
+            Category_model, start_from, end_at, session
+        )
+        return categories
+    except Exception as e:
+        return "Failed to get messages: " + str(e)

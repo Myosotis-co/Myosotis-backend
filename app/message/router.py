@@ -68,5 +68,10 @@ async def delete_message(
 async def get_messages(
     start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
 ):
-    messages = await service_get_all_models(Message_model, start_from, end_at, session)
-    return messages
+    try:
+        messages = await service_get_all_models(
+            Message_model, start_from, end_at, session
+        )
+        return messages
+    except Exception as e:
+        return "Failed to get messages: " + str(e)
