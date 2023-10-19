@@ -104,6 +104,23 @@ async def get_temp_email(
         return "Failed to get a temp email: " + str(e)
 
 
+@router.patch("/email/update/{temp_email_id}")
+async def update_temp_email(
+    temp_email_id: int,
+    temp_email_update: TempEmailUpdate,
+    session: AsyncSession = Depends(get_async_session),
+):
+    try:
+        temp_email = await service_get_model(TempEmail_model, temp_email_id, session)
+        if temp_email is not None:
+            await service_update_model(temp_email, temp_email_update, session)
+            await session.commit()
+            return {"status": 204, "data": "Temp email is updated"}
+        raise HTTPException(status_code=404, detail="Temp email is not found")
+    except Exception as e:
+        return "Failed to update temp email: " + str(e)
+
+
 @router.delete("/email/delete/{temp_email_id}")
 async def delete_temp_email(
     temp_email_id: int, session: AsyncSession = Depends(get_async_session)

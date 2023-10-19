@@ -20,3 +20,7 @@ class TempEmail(TempEmailBase):
     updated_at: datetime.datetime
 
     category: Category
+
+class TempEmailUpdate(BaseModel):
+    email: str
+    access_token: str
