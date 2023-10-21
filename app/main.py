@@ -47,15 +47,15 @@ app.include_router(
     prefix="/auth",
     tags=["Auth"],
 )
-
+#As we do not have the frontend yet, we will redirect to the callback url so we can avoid to write code and state manually.
 app.include_router(
-    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/docs"),
+    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/auth/google/callback"),
     prefix="/auth/google",
     tags=["Auth"],
 )
 
 app.include_router(
-    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/docs"),
+    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/auth/github/callback"),
     prefix="/auth/github",
     tags=["Auth"],
 )
