@@ -49,13 +49,13 @@ app.include_router(
 )
 
 app.include_router(
-    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/auth/google/callback"),
+    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/docs"),
     prefix="/auth/google",
     tags=["Auth"],
 )
 
 app.include_router(
-    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, "SECRET", redirect_url="http://localhost:8000"),
+    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/docs"),
     prefix="/auth/github",
     tags=["Auth"],
 )
