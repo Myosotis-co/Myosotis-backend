@@ -8,10 +8,6 @@ from fastapi_users.db import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, relationship
-from httpx_oauth.clients.google import GoogleOAuth2
-from httpx_oauth.clients.github import GitHubOAuth2
-from httpx_oauth.clients.linkedin import LinkedInOAuth2
-from httpx_oauth.clients.reddit import RedditOAuth2
 
 from app.database import SQLALCHEMY_DATABASE_URL
 
