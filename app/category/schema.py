@@ -1,12 +1,16 @@
 import datetime
+
 from pydantic import BaseModel
+
 
 class CategoryBase(BaseModel):
     pass
 
 
 class CategoryCreate(BaseModel):
-    pass
+    user_id: int
+    temp_email_id: int
+    category_name: str
 
 
 class Category(CategoryBase):
@@ -17,8 +21,6 @@ class Category(CategoryBase):
     deletion_date: datetime.datetime
     created_at: datetime.datetime
     updated_at: datetime.datetime
-    # temp_email: ForwardRef("Temp_Email")
-    # applications: List[Application]
 
     class Config:
         orm_mode = True

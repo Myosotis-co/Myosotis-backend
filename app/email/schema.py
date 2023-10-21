@@ -1,11 +1,26 @@
 import datetime
-from app.schema import Temp_EmailBase, Category
+from pydantic import BaseModel
+
+from app.category.schema import Category
 
 
-class Temp_Email(Temp_EmailBase):
-    id: int
+class TempEmailBase(BaseModel):
+    email: str
     access_token: str
+
+
+class TempEmailCreate(BaseModel):
+    email: str
+    access_token: str
+
+
+class TempEmail(TempEmailBase):
+    id: int
     created_at: datetime.datetime
     updated_at: datetime.datetime
 
     category: Category
+
+class TempEmailUpdate(BaseModel):
+    email: str
+    access_token: str

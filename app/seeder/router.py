@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-
-from app.database import get_async_session
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.database import get_async_session
 from app.seeder.seeder import *
 
 router = APIRouter(tags=["Seeder"])
