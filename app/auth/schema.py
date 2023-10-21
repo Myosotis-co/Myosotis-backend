@@ -1,10 +1,11 @@
 import datetime
+
 from typing import Generic, List, Optional
-
 from pydantic import BaseModel
-
 from fastapi_users import schemas
 from fastapi_users import models
+
+from app.category.schema import Category
 
 
 class CreateUpdateDictModel(BaseModel):
@@ -56,3 +57,42 @@ class UserUpdate(CreateUpdateDictModel):
     name: str
     password: str
     is_deleted: str
+
+
+class UserBase(BaseModel):
+    email: str
+
+
+class User(UserBase):
+    id: int
+    role_id: int
+    name: str
+    user_token: str
+    is_deleted: bool
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
+
+    categories: List[Category]
+
+    class Config:
+        orm_mode = True
+
+
+# ---#
+class RoleBase(BaseModel):
+    pass
+
+
+class RoleCreate(RoleBase):
+    pass
+
+
+class Role(RoleBase):
+    id: int
+    name: str
+    description: str
+
+    users: List[User]
+
+    class Config:
+        orm_mode = True

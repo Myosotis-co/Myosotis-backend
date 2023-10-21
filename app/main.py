@@ -1,9 +1,13 @@
 import os
+
+from dotenv import load_dotenv
+from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi import FastAPI, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.staticfiles import StaticFiles
 
-# from app import email
 from app.auth.models import User
 from app.auth.schema import UserCreate, UserRead
 from app.config import settings
@@ -11,12 +15,11 @@ from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
 from app.auth.jwt_config import auth_backend, fastapi_users, google_oauth_client, github_oauth_client,SECRET
 from app.database import SQLALCHEMY_DATABASE_URL
-from fastapi.openapi.docs import get_swagger_ui_html
-from fastapi.staticfiles import StaticFiles
-
 from app.email.router import router as email_router
 from app.seeder.router import router as seeder_router
 from app.category.router import router as category_router
+from app.application.router import router as application_router
+from app.message.router import router as message_router
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -67,8 +70,9 @@ app.include_router(
 )
 
 app.include_router(seeder_router, prefix="/seeder", tags=["Seeder"])
-
 app.include_router(category_router, prefix="/category", tags=["Category"])
+app.include_router(application_router, prefix="/application", tags=["Application"])
+app.include_router(message_router, prefix="/message", tags=["Message"])
 
 current_user = fastapi_users.current_user()
 

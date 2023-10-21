@@ -14,9 +14,10 @@ from app import seeder
 
 # Required for migrations (Do not delete)
 from app.auth.models import Role, User
-from app.models import Message, Application, Message_Type
+from app.message.models import Message, Message_Type
+from app.application.models import Application
 from app.category.models import Category
-from app.email.models import Temp_Email
+from app.email.models import TempEmail
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, "docker/env/.env-docker"))

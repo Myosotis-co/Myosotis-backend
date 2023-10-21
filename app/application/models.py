@@ -14,18 +14,17 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 from app.database import Base
-from app.application.models import Application
+from app.message.models import Message
 
 
-class Category(Base):
-    __tablename__ = "categories"
+class Application(Base):
+    __tablename__ = "applications"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    category_id = Column(
+        Integer, ForeignKey("categories.id", ondelete="CASCADE"), nullable=False
     )
-    temp_email_id = Column(Integer, ForeignKey("temp_emails.id"), nullable=False)
-    category_name = Column(String, nullable=False)
+    website_url = Column(String, nullable=False)
     deletion_date = Column(TIMESTAMP(timezone=True), nullable=True)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
@@ -34,12 +33,9 @@ class Category(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
 
-    applications = relationship(
-        Application,
-        backref="applications",
+    received_messages = relationship(
+        Message,
+        backref="received_messages",
         passive_deletes=True,
         cascade="all, delete",
-    )
-    temp_email = relationship(
-        "TempEmail", back_populates="category", passive_deletes=True
     )
