@@ -1,5 +1,6 @@
 import datetime
-from typing import ForwardRef, List
+
+from typing import List
 from pydantic import BaseModel
 
 
@@ -8,7 +9,10 @@ class MessageBase(BaseModel):
 
 
 class MessageCreate(BaseModel):
-    pass
+    application_id: int
+    message_type_id: int
+    topic: str
+    message_text: str
 
 
 class Message(MessageBase):

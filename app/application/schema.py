@@ -11,7 +11,8 @@ class ApplicationBase(BaseModel):
 
 
 class ApplicationCreate(BaseModel):
-    pass
+    category_id: int
+    website_url: str
 
 
 class Application(ApplicationBase):

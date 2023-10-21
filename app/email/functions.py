@@ -8,7 +8,8 @@ from sqlalchemy import select, delete
 
 from app.database import get_async_session
 from app.config import settings
-from app.email.models import TempEmail
+from app.email.schema import TempEmailCreate
+from app.email.models import TempEmail as TempEmail_model
 
 MAILSAC_API_KEY = settings.MAILSAC_KEY
 MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
@@ -54,35 +55,9 @@ async def create_mailsac_public_email():
 
         conn.request("GET", f"/api/addresses/{email}", headers=headers)
 
-        return email
+        temp_email_create = TempEmail_model(email=email, access_token=email)
+        # temp_email_create = TempEmailCreate(email=email, access_token=email)
+
+        return temp_email_create
     except Exception as e:
         return f"Failed to fetch email: {e}"
-
-
-def service_add_temp_email(
-    temp_email_id: int,
-    email: TempEmail,
-    access_token: str,
-    session: AsyncSession = Depends(get_async_session),
-):
-    new_temp_email = TempEmail(id=temp_email_id, email=email, access_token=access_token)
-    session.add(new_temp_email)
-    session.commit()
-    return new_temp_email
-
-
-async def service_get_temp_email(
-    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
-):
-    exec_command = select(TempEmail).filter(TempEmail.id == temp_email_id)
-    result_value = await session.execute(exec_command)
-    temp_email = result_value.scalar()
-
-    return temp_email
-
-
-async def service_delete_temp_email(
-    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
-):
-    exec_command = delete(TempEmail).filter(TempEmail.id == temp_email_id)
-    await session.execute(exec_command)
