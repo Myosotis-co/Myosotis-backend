@@ -62,7 +62,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             "expires_at": expires_at,
             "refresh_token": refresh_token,
         }
-        print(oauth_account_dict)
 
         try:
             user = await self.get_by_oauth_account(oauth_name, account_id)
