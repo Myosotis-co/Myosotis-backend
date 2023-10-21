@@ -1,9 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, delete
+from sqlalchemy import desc, select, delete
 from pydantic import BaseModel
-from sqlalchemy import and_
-
 from app.database import get_async_session
 from app.database import Base
 
@@ -24,7 +22,7 @@ async def service_create_model(
     return new_model
 
 
-async def service_create_model(
+async def service_add_model(
     model: Base,
     session: AsyncSession = Depends(get_async_session),
 ):
@@ -67,14 +65,21 @@ async def service_delete_model(
     await session.execute(exec_command)
 
 
-async def service_get_all_models(
+async def service_get_some_models(
     default_model: Base,
-    start_from: int,
-    end_at: int,
+    page: int,
+    items_per_page: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    exec_command = select(default_model).where(
-        and_(default_model.id >= start_from, default_model.id <= end_at)
+    # Calculate the offset to retrieve the appropriate chunk
+    offset = (page - 1) * items_per_page
+
+    # Sort by a stable column like 'created_at'
+    exec_command = (
+        select(default_model)
+        .order_by(desc(default_model.created_at))
+        .limit(items_per_page)
+        .offset(offset)
     )
 
     result_value = await session.execute(exec_command)

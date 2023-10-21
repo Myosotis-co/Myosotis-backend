@@ -83,8 +83,7 @@ async def create_temp_email(
 ):
     try:
         temp_email = await create_mailsac_public_email()
-        await service_create_model(temp_email, session)
-        # await service_create_model(TempEmail_model, temp_email, session)
+        await service_add_model(temp_email, session)
         await session.commit()
         return {"status": 201, "data": "Temp email is created"}
     except Exception as e:
@@ -135,11 +134,13 @@ async def delete_temp_email(
 
 @router.get("email/get_all")
 async def get_temp_emails(
-    start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
+    page_num: int,
+    items_per_page: int,
+    session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        temp_emails = await service_get_all_models(
-            TempEmail_model, start_from, end_at, session
+        temp_emails = await service_get_some_models(
+            TempEmail_model, page_num, items_per_page, session
         )
         return temp_emails
     except Exception as e:

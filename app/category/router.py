@@ -66,11 +66,13 @@ async def delete_category(
 
 @router.get("/categories/get_all")
 async def get_categories(
-    start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
+    page_num: int,
+    items_per_page: int,
+    session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        categories = await service_get_all_models(
-            Category_model, start_from, end_at, session
+        categories = await service_get_some_models(
+            Category_model, page_num, items_per_page, session
         )
         return categories
     except Exception as e:

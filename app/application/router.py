@@ -70,11 +70,13 @@ async def delete_application(
 
 @router.get("applications/get_all")
 async def get_applications(
-    start_from: int, end_at: int, session: AsyncSession = Depends(get_async_session)
+    page_num: int,
+    items_per_page: int,
+    session: AsyncSession = Depends(get_async_session),
 ):
     try:
-        applications = await service_get_all_models(
-            Application_model, start_from, end_at, session
+        applications = await service_get_some_models(
+            Application_model, page_num, items_per_page, session
         )
         return applications
     except Exception as e:
