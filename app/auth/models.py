@@ -1,6 +1,6 @@
 from app.database import Base
 
-from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
+from fastapi_users_db_sqlalchemy import SQLAlchemyBaseOAuthAccountTable
 from sqlalchemy import (
     Table,
     Column,
@@ -13,9 +13,8 @@ from sqlalchemy import (
     MetaData,
     text,
 )
-from sqlalchemy.orm import relationship
-
-
+from sqlalchemy.orm import relationship,Mapped
+from sqlalchemy.ext.declarative import declared_attr
 class Role(Base):
     __tablename__ = "roles"
 
@@ -25,7 +24,14 @@ class Role(Base):
 
     users = relationship("User", backref="users", passive_deletes=True)
 
+class OAuthAccount(SQLAlchemyBaseOAuthAccountTable[int], Base):
+    __tablename__ = "oauth_accounts"
+    id = Column(Integer, primary_key=True)
 
+    @declared_attr
+    def user_id(cls) -> Mapped[int]:
+        return Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    
 class User(Base):
     __tablename__ = "users"
 
@@ -38,9 +44,11 @@ class User(Base):
         nullable=False,
     )
     email = Column(String, unique=True, nullable=False)
-    user_token = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_deleted = Column(Boolean, default=False, nullable=False)
+    oauth_accounts = relationship(
+        "OAuthAccount", lazy="joined"
+    )
     is_verified = Column(Boolean, default=False, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")

@@ -9,7 +9,7 @@ from app.auth.schema import UserCreate, UserRead
 from app.config import settings
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
-from app.auth.jwt_config import auth_backend, fastapi_users, google_oauth_client, github_oauth_client
+from app.auth.jwt_config import auth_backend, fastapi_users, google_oauth_client, github_oauth_client,SECRET
 from app.database import SQLALCHEMY_DATABASE_URL
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
@@ -47,15 +47,15 @@ app.include_router(
     prefix="/auth",
     tags=["Auth"],
 )
-
+#As we do not have the frontend yet, we will redirect to the callback url so we can avoid to write code and state manually.
 app.include_router(
-    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, "SECRET", redirect_url="http://localhost:8000"),
+    fastapi_users.get_oauth_router(google_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/auth/google/callback"),
     prefix="/auth/google",
     tags=["Auth"],
 )
 
 app.include_router(
-    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, "SECRET", redirect_url="http://localhost:8000"),
+    fastapi_users.get_oauth_router(github_oauth_client, auth_backend, SECRET, redirect_url="http://localhost:8000/auth/github/callback"),
     prefix="/auth/github",
     tags=["Auth"],
 )
