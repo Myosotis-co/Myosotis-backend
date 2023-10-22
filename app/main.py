@@ -73,6 +73,11 @@ app.include_router(
     prefix="/auth",
     tags=["Auth"],
 )
+app.include_router(
+    fastapi_users.get_reset_password_router(),
+    prefix="/auth",
+    tags=["Auth"],
+)
 
 app.include_router(seeder_router, prefix="/seeder", tags=["Seeder"])
 app.include_router(category_router, prefix="/category", tags=["Category"])
