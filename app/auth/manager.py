@@ -10,10 +10,6 @@ from fastapi.responses import JSONResponse
 SECRET = "verysecuresecretpisdec"
 
 
-class OauthResponse(BaseModel):
-    token: Optional[str] = None
-
-
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     """
     UserManager class for managing user creation, authentication, and authorization.
@@ -35,7 +31,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         self, user: User, token: str, request: Optional[Request] = None
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
-        return OauthResponse(token=token)
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
