@@ -1,11 +1,17 @@
 from typing import Optional
-from fastapi import Depends, Request
+from pydantic import BaseModel
+from fastapi import Depends, Request, status
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
 
 from app.auth.functions import get_user_db
 from app.auth.models import User
+from fastapi.responses import JSONResponse
 
 SECRET = "verysecuresecretpisdec"
+
+
+class OauthResponse(BaseModel):
+    token: Optional[str] = None
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
@@ -24,6 +30,17 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         :param request: Optional Request object representing the HTTP request.
         """
         print(f"User {user.id} has registered.")
+
+    async def on_after_forgot_password(
+        self, user: User, token: str, request: Optional[Request] = None
+    ):
+        print(f"User {user.id} has forgot their password. Reset token: {token}")
+        return OauthResponse(token=token)
+
+    async def on_after_request_verify(
+        self, user: User, token: str, request: Optional[Request] = None
+    ):
+        print(f"Verification requested for user {user.id}. Verification token: {token}")
 
     async def create(
         self,
@@ -57,7 +74,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         await self.on_after_register(created_user, request)
 
         return created_user
-    
+
     async def oauth_callback(
         self: "BaseUserManager[models.UOAP, models.ID]",
         oauth_name: str,
@@ -68,7 +85,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         refresh_token: Optional[str] = None,
         request: Optional[Request] = None,
         *,
-        associate_by_email: bool = False
+        associate_by_email: bool = False,
     ) -> models.UOAP:
         """
         Method for handling OAuth callbacks and registering or authenticating users.
@@ -83,7 +100,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         based on email.
         :return: UserOAuthAccount object representing the user's OAuth account.
         """
-       
+
         oauth_account_dict = {
             "oauth_name": oauth_name,
             "access_token": access_token,
@@ -126,7 +143,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
                     )
 
         return user
- 
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):
