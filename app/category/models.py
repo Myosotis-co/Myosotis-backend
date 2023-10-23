@@ -1,4 +1,5 @@
 from sqlalchemy import (
+    UniqueConstraint,
     Boolean,
     Column,
     Integer,
@@ -43,3 +44,5 @@ class Category(Base):
     temp_email = relationship(
         "TempEmail", back_populates="category", passive_deletes=True
     )
+
+    __table_args__ = (UniqueConstraint("user_id", "temp_email_id"),)

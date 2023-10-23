@@ -14,7 +14,6 @@ class TempEmailCreate(BaseModel):
 
 class TempEmail(TempEmailBase):
     id: int
-    access_token: str
     created_at: datetime.datetime
     updated_at: datetime.datetime
 

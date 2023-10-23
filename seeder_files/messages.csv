@@ -8,8 +8,8 @@ application_id,message_type_id,topic,message_text
 3,3,Caution,Don't forger about about our best offer
 4,1,Hello,Welcome to the club
 4,2,Confirm btch,Please confirm your email!
-4,4,Password reset,Please follow this link to reset password
-4,4,Password reset,Please follow this link to reset password
+4,4,Password reset,Please follow this link to reset password 1
+4,4,Password reset,Please follow this link to reset password 2
 5,1,Hello,Welcome to the club
 5,2,Confirm btch,Please confirm your email!
 5,5,Code,1 2 3 4

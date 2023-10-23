@@ -1,4 +1,5 @@
 from sqlalchemy import (
+    UniqueConstraint,
     Column,
     Integer,
     String,
@@ -15,7 +16,6 @@ class TempEmail(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String, unique=True, nullable=False)
-    access_token = Column(String, unique=True, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
@@ -23,7 +23,8 @@ class TempEmail(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
 
-    # category = relationship("Category", backref="categories", passive_deletes=True)
     category = relationship(
         "Category", back_populates="temp_email", passive_deletes=True
     )
+
+    __table_args__ = (UniqueConstraint("email"),)
