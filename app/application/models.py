@@ -1,4 +1,5 @@
 from sqlalchemy import (
+    UniqueConstraint,
     Boolean,
     Column,
     Integer,
@@ -39,3 +40,5 @@ class Application(Base):
         passive_deletes=True,
         cascade="all, delete",
     )
+
+    __table_args__ = (UniqueConstraint("category_id", "website_url"),)
