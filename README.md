@@ -56,6 +56,14 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 6. In order to see logs of the container go to "Remote explorer"
 7. Click the right button to show logs of the container
 
+## Registering your app and using OAuth tokens
+1. Register your application with a 3rd party that will give you "Client Id and Secret" (Google, Github etc.)
+2. Store "Client Id and Secret" in a safe location (otherwise, they will be used by other people to create phishing attacks)
+3. When testing your OUath, input "Client Id and Secret" into their respective fields in `jwt_config.py` (once you want to commit to gihub, remove them)
+4. To test it out, go to your Authetication router.
+5. Get an autherization link and go to it.
+6. Sign in using your account and you should now be logged in through a 3rd party service provider with your credentials.
+
 # Troubleshooting
 
 ### - Unable to connect to PostgreSQL server: SCRAM authentication requires libpq version 10 or above (M1 Mac users).
