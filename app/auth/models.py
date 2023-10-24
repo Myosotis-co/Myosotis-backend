@@ -24,6 +24,7 @@ class Role(Base):
 
     users = relationship("User", backref="users", passive_deletes=True)
 
+#Needed for linkage autherization through 3rd party apps
 class OAuthAccount(SQLAlchemyBaseOAuthAccountTable[int], Base):
     __tablename__ = "oauth_accounts"
     id = Column(Integer, primary_key=True)
