@@ -13,20 +13,20 @@ from httpx_oauth.clients.github import GitHubOAuth2
 
 cookie_transport = CookieTransport(cookie_name="authCookie", cookie_max_age=3600)
 
-#Secret used for encryption. Should be very secure.
+# Secret used for encryption. Should be very secure.
 SECRET = "verysecuresecretpisdec"
 
-#Gives a json web token, an online signature used for authentication.
+
+# Gives a json web token, an online signature used for authentication.
 def get_jwt_strategy():
     return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
 
 
-#To Get Client ID and Secret you need to visit the respective provider and register your app.
-#Used for auhtentication through 3rd party apps and receiving an access token.
-#Warning!: Keep ID and SECRET very secure. Should be encrypted into the future.
+# To Get Client ID and Secret you need to visit the respective provider and register your app.
+# Used for auhtentication through 3rd party apps and receiving an access token.
+# Warning!: Keep ID and SECRET very secure. Should be encrypted into the future.
 google_oauth_client = GoogleOAuth2("CLIENT_ID", "CLIENT_SECRET")
 github_oauth_client = GitHubOAuth2("CLIENT_ID", "CLIENT_SECRET")
-
 
 
 auth_backend = AuthenticationBackend(
