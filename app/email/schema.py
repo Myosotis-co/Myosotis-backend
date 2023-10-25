@@ -21,6 +21,7 @@ class TempEmail(TempEmailBase):
 
     category: Category
 
+
 class TempEmailUpdate(BaseModel):
     email: str
     access_token: str
