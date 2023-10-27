@@ -1,8 +1,8 @@
-"""OauthAccount added
+"""oauth_migration
 
-Revision ID: ac5174394a27
-Revises: fe6bb73ad1f5
-Create Date: 2023-10-21 17:35:01.327746
+Revision ID: 2981198ebd93
+Revises: c7402d600dfa
+Create Date: 2023-10-27 19:20:28.232078
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ac5174394a27'
-down_revision = 'fe6bb73ad1f5'
+revision = '2981198ebd93'
+down_revision = 'c7402d600dfa'
 branch_labels = None
 depends_on = None
 
