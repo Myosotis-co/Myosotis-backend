@@ -6,12 +6,10 @@ from app.category.schema import Category
 
 class TempEmailBase(BaseModel):
     email: str
-    access_token: str
 
 
 class TempEmailCreate(BaseModel):
     email: str
-    access_token: str
 
 
 class TempEmail(TempEmailBase):
@@ -24,4 +22,3 @@ class TempEmail(TempEmailBase):
 
 class TempEmailUpdate(BaseModel):
     email: str
-    access_token: str
