@@ -1,12 +1,9 @@
 from sqlalchemy import (
-    Boolean,
+    UniqueConstraint,
     Column,
     Integer,
     String,
-    Float,
-    DateTime,
     ForeignKey,
-    MetaData,
     TIMESTAMP,
     text,
 )
@@ -29,6 +26,8 @@ class Message(Base):
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
+
+    __table_args__ = (UniqueConstraint("application_id", "message_text", "topic"),)
 
 
 class Message_Type(Base):
