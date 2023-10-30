@@ -67,7 +67,6 @@ class User(UserBase):
     id: int
     role_id: int
     name: str
-    user_token: str
     is_deleted: bool
     created_at: datetime.datetime
     updated_at: datetime.datetime

@@ -1,8 +1,8 @@
-role_id,name,email,user_token,hashed_password
-2, Mikhail Okrugov,mikork@gmail.com,Unique token 1,Unique password 1
-2, Arthur Zinnurov,artzin@gmail.com,Unique token 2,Unique password 2
-2, Illya Lobachevsky,illlob@gmail.com,Unique token 3,Unique password 3
-1, Studid Retardo,sturet@gmail.com,Unique token 4,12345678
-1, Smart Einsteino,smaein@gmail.com,Unique token 5,9g20hjgj-1iwjg2kb1jhv
-1, Average Middles,avemid@gmail.com,Unique token 6,abobus1!
+role_id,name,email,hashed_password
+2, Mikhail Okrugov,mikork@gmail.com,Unique password 1
+2, Arthur Zinnurov,artzin@gmail.com,Unique password 2
+2, Illya Lobachevsky,illlob@gmail.com,Unique password 3
+1, Studid Retardo,sturet@gmail.com,12345678
+1, Smart Einsteino,smaein@gmail.com,9g20hjgj-1iwjg2kb1jhv
+1, Average Middles,avemid@gmail.com,abobus1!
 

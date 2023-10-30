@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi import FastAPI, Depends
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
@@ -10,7 +11,15 @@ from fastapi.staticfiles import StaticFiles
 from app.auth.models import User
 from app.auth.schema import UserCreate, UserRead
 from app.config import settings
-from app.auth.jwt_config import auth_backend, fastapi_users
+from dotenv import load_dotenv
+from fastapi_sqlalchemy import DBSessionMiddleware
+from app.auth.jwt_config import (
+    auth_backend,
+    fastapi_users,
+    google_oauth_client,
+    github_oauth_client,
+    SECRET,
+)
 from app.database import SQLALCHEMY_DATABASE_URL
 from app.email.router import router as email_router
 from app.seeder.router import router as seeder_router
@@ -47,9 +56,41 @@ app.include_router(
     prefix="/auth",
     tags=["Auth"],
 )
+# As we do not have the frontend yet, we will redirect to the callback url so we can avoid to write code and state manually.
+app.include_router(
+    fastapi_users.get_oauth_router(
+        google_oauth_client,
+        auth_backend,
+        SECRET,
+        redirect_url="http://localhost:8000/auth/google/callback",
+    ),
+    prefix="/auth/google",
+    tags=["Auth"],
+)
+
+app.include_router(
+    fastapi_users.get_oauth_router(
+        github_oauth_client,
+        auth_backend,
+        SECRET,
+        redirect_url="http://localhost:8000/auth/github/callback",
+    ),
+    prefix="/auth/github",
+    tags=["Auth"],
+)
 
 app.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["Auth"],
+)
+app.include_router(
+    fastapi_users.get_verify_router(UserRead),
+    prefix="/auth",
+    tags=["Auth"],
+)
+app.include_router(
+    fastapi_users.get_reset_password_router(),
     prefix="/auth",
     tags=["Auth"],
 )
