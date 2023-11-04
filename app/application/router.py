@@ -9,7 +9,7 @@ from app.crud_manager import *
 router = APIRouter(tags=["Application"])
 
 
-@router.post("/applications/create")
+@router.post("/create")
 async def create_application(
     application_create: ApplicationCreate,
     session: AsyncSession = Depends(get_async_session),
@@ -22,7 +22,7 @@ async def create_application(
         return "Failed to create application: " + str(e)
 
 
-@router.get("/applications/get/{category_id}")
+@router.get("/get/{category_id}")
 async def get_application(
     application_id: int, session: AsyncSession = Depends(get_async_session)
 ):
@@ -37,7 +37,7 @@ async def get_application(
         return "Failed to get an applicaion: " + str(e)
 
 
-@router.patch("/applications/update/{application_id}")
+@router.patch("/update/{application_id}")
 async def update_application(
     application_id: int,
     application_update: ApplicationUpdate,
@@ -56,7 +56,7 @@ async def update_application(
         return "Failed to update an application: " + str(e)
 
 
-@router.delete("/applications/delete/{application_id}")
+@router.delete("/delete/{application_id}")
 async def delete_application(
     application_id: int, session: AsyncSession = Depends(get_async_session)
 ):
@@ -68,7 +68,7 @@ async def delete_application(
         return "Failed to delete an application: " + str(e)
 
 
-@router.get("applications/get_all")
+@router.get("/get_all")
 async def get_applications(
     page_num: int,
     items_per_page: int,

@@ -77,7 +77,7 @@ async def get_email_message(email, message_id):
         return f"Failed to get message for email: {e}"
 
 
-@router.post("/email/create")
+@router.post("/create")
 async def create_temp_email(
     session: AsyncSession = Depends(get_async_session),
 ):
@@ -90,7 +90,7 @@ async def create_temp_email(
         return "Failed to create a temp email: " + str(e)
 
 
-@router.get("/email/get/{temp_email_id}")
+@router.get("/get/{temp_email_id}")
 async def get_temp_email(
     temp_email_id: int, session: AsyncSession = Depends(get_async_session)
 ):
@@ -103,7 +103,7 @@ async def get_temp_email(
         return "Failed to get a temp email: " + str(e)
 
 
-@router.patch("/email/update/{temp_email_id}")
+@router.patch("/update/{temp_email_id}")
 async def update_temp_email(
     temp_email_id: int,
     temp_email_update: TempEmailUpdate,
@@ -120,7 +120,7 @@ async def update_temp_email(
         return "Failed to update temp email: " + str(e)
 
 
-@router.delete("/email/delete/{temp_email_id}")
+@router.delete("/delete/{temp_email_id}")
 async def delete_temp_email(
     temp_email_id: int, session: AsyncSession = Depends(get_async_session)
 ):
@@ -132,7 +132,7 @@ async def delete_temp_email(
         return "Failed to delete a temp email: " + str(e)
 
 
-@router.get("email/get_all")
+@router.get("/get_all")
 async def get_temp_emails(
     page_num: int,
     items_per_page: int,

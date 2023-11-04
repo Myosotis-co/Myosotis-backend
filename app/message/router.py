@@ -9,7 +9,7 @@ from app.crud_manager import *
 router = APIRouter(tags=["Message"])
 
 
-@router.post("/messages/create")
+@router.post("/create")
 async def create_message(
     message_create: MessageCreate,
     session: AsyncSession = Depends(get_async_session),
@@ -22,7 +22,7 @@ async def create_message(
         return "Failed to create message: " + str(e)
 
 
-@router.get("/messages/get/{message_id}")
+@router.get("/get/{message_id}")
 async def get_message(
     message_id: int, session: AsyncSession = Depends(get_async_session)
 ):
@@ -35,7 +35,7 @@ async def get_message(
         return "Failed to get a message: " + str(e)
 
 
-@router.patch("/messages/{message_id}")
+@router.patch("/{message_id}")
 async def update_message(
     message_id: int,
     message_update: MessageUpdate,
@@ -52,7 +52,7 @@ async def update_message(
         return "Failed to update a message: " + str(e)
 
 
-@router.delete("/messages/delete/{message_id}")
+@router.delete("/delete/{message_id}")
 async def delete_message(
     message_id: int, session: AsyncSession = Depends(get_async_session)
 ):
@@ -64,7 +64,7 @@ async def delete_message(
         return "Failed to delete a message: " + str(e)
 
 
-@router.get("messages/get_all")
+@router.get("/get_all")
 async def get_messages(
     page_num: int,
     items_per_page: int,
