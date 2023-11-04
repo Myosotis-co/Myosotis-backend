@@ -7,7 +7,7 @@ from app.seeder.seeder import *
 router = APIRouter(tags=["Seeder"])
 
 
-@router.post("/seeder")
+@router.post("/seed")
 async def seeder_post(session: AsyncSession = Depends(get_async_session)):
     try:
         await seed(session)

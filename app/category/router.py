@@ -9,7 +9,7 @@ from app.crud_manager import *
 router = APIRouter(tags=["Category"])
 
 
-@router.post("/categories/create")
+@router.post("/create")
 async def create_category(
     category_create: CategoryCreate,
     session: AsyncSession = Depends(get_async_session),
@@ -22,7 +22,7 @@ async def create_category(
         return "Failed to create a category: " + str(e)
 
 
-@router.get("/categories/get/{category_id}")
+@router.get("/get/{category_id}")
 async def get_category(
     category_id: int, session: AsyncSession = Depends(get_async_session)
 ):
@@ -35,7 +35,7 @@ async def get_category(
         return "Failed to get a category: " + str(e)
 
 
-@router.patch("/categories/update/{category_id}")
+@router.patch("/update/{category_id}")
 async def update_category(
     category_id: int,
     category_update: CategoryUpdate,
@@ -52,7 +52,7 @@ async def update_category(
         return "Failed to update a category: " + str(e)
 
 
-@router.delete("/categories/delete/{category_id}")
+@router.delete("/delete/{category_id}")
 async def delete_category(
     category_id: int, session: AsyncSession = Depends(get_async_session)
 ):
@@ -64,7 +64,7 @@ async def delete_category(
         return "Failed to delete a category: " + str(e)
 
 
-@router.get("/categories/get_all")
+@router.get("/get_all")
 async def get_categories(
     page_num: int,
     items_per_page: int,
