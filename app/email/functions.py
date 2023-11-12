@@ -55,8 +55,7 @@ async def create_mailsac_public_email():
 
         conn.request("GET", f"/api/addresses/{email}", headers=headers)
 
-        temp_email_create = TempEmail_model(email=email, access_token=email)
-        # temp_email_create = TempEmailCreate(email=email, access_token=email)
+        temp_email_create = TempEmail_model(email=email)
 
         return temp_email_create
     except Exception as e:
