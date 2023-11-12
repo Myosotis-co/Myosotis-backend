@@ -48,6 +48,7 @@ jobs:
 
       - name: Run tests
         run: |
+          cd Myosotis-backend
           pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html -k "" || true
         env:
           DISPLAY: ":99"
