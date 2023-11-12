@@ -48,7 +48,6 @@ jobs:
 
       - name: Run tests
         run: |
-          cd tests
           pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html -k "" || true
         env:
           DISPLAY: ":99"
@@ -56,12 +55,10 @@ jobs:
       - name: Coverage report
         uses: 5monkeys/cobertura-action@v13
         with:
-          path: tests/coverage.xml
           minimum_coverage: 25
 
       - name: 'Upload Test Results'
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: tests/report.html
           retention-days: 5
