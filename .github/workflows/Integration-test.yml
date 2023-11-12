@@ -55,10 +55,12 @@ jobs:
       - name: Coverage report
         uses: 5monkeys/cobertura-action@v13
         with:
+          path: Myosotis-backend/Myosotis-backend/coverage.xml
           minimum_coverage: 25
 
       - name: 'Upload Test Results'
         uses: actions/upload-artifact@v3
         with:
           name: test-results
+          path: Myosotis-backend/Myosotis-backend/report.html
           retention-days: 5
