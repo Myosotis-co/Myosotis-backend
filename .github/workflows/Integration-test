@@ -48,8 +48,6 @@ jobs:
 
       - name: Run tests
         run: |
-          export $(grep -v '^#' docker/selenium-testing/env/remotetest.compose.env | xargs)
-          cd CodeListLibrary_project
           pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html -k "" || true
         env:
           DISPLAY: ":99"
@@ -57,12 +55,12 @@ jobs:
       - name: Coverage report
         uses: 5monkeys/cobertura-action@v13
         with:
-          path: CodeListLibrary_project/coverage.xml
+          path:  Myosotis-backend/coverage.xml
           minimum_coverage: 25
 
       - name: 'Upload Test Results'
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: CodeListLibrary_project/report.html
+          path: Myosotis-backend/report.html
           retention-days: 5
