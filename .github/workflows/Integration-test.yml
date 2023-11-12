@@ -9,6 +9,8 @@ on:
 jobs:
   pre-deploy-test:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./Myosotis-backend
     strategy:
       max-parallel: 4
       matrix:
@@ -48,7 +50,6 @@ jobs:
 
       - name: Run tests
         run: |
-          cd Myosotis-backend
           pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html -k "" || true
         env:
           DISPLAY: ":99"
@@ -62,5 +63,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: Myosotis-backend/report.html
+          path: ${{env.working-directory}}/report.html
           retention-days: 5
