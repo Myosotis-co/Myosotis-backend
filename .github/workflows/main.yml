@@ -26,17 +26,6 @@ jobs:
       - name: Install black and reorder-python-imports
         run: pip install black reorder-python-imports
 
-      - name: Check for changed files
-        run: echo "::set-output name=python_files::$(echo ${{ steps.changed-files.outputs.all_changed_files }} | tr -d '\n' | xargs -n1 | grep -E '\.py$' | tr '\n' ' ')"
-
-      - name: Black and Sort changed files
-        run: |
-          if [ -n "${{ steps.changed-files.outputs.python_files }}" ]; then
-            black --check ${{ steps.changed-files.outputs.python_files }}
-          else
-            echo "No Python files found to check with Black."
-          fi
-
       - name: Run black on full codebase
         with:
           options: "--check --diff --exclude '/migrations/versions' "
