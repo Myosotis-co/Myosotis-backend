@@ -4,8 +4,9 @@ services:
   app:
     build:
       context: .
+      dockerfile: development/app.Dockerfile
     env_file:
-      - env/.env-docker
+      -  development/env/.env-docker
     container_name: fastapi_app
     restart: unless-stopped
     volumes:
@@ -24,15 +25,15 @@ services:
   db:
     build:
       context: .
-      dockerfile: ./db.Dockerfile
+      dockerfile: development/postgres.Dockerfile
     restart: always
     container_name: db
     volumes:
-      - ./db/:/docker-entrypoint-initdb.d/db/
+      - ./development/db/:/docker-entrypoint-initdb.d/db/
     ports:
       - "5432:5432"
     env_file:
-      - env/.env-docker
+      - development/env/.env-docker
 
   pgadmin:
     container_name: pgadmin
@@ -50,7 +51,7 @@ services:
       - "/bin/echo 'db:5432:postgres:postgres:postgres' > /tmp/pgpassfile && chmod 600 /tmp/pgpassfile && /entrypoint.sh"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-      - ./docker_pgadmin_servers.json:/pgadmin4/servers.json
+      - ./development/docker_pgadmin_servers.json:/pgadmin4/servers.json
     depends_on:
       - db
 
