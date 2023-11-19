@@ -3,3 +3,10 @@ POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 DATABASE_PORT=5432
+
+CLIENT_ORIGIN=http://localhost:3000
+
+GIT_REPO=github.com/ZinnurovArtur/Deletemehere-backup.git
+
+MAILSAC_KEY=key
+MAILSAC_BASE_URL=mailsac.com
