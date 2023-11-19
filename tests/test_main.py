@@ -1,6 +1,7 @@
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
+from tests.confest import generate_email
 
 from app.email.models import TempEmail as TempEmail_model
 
