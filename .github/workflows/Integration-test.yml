@@ -70,8 +70,20 @@ jobs:
           path: report.html
           retention-days: 5
 
+  deploy:
+    needs: pre-deploy-test
+
+    permissions:
+      pages: write      
+      id-token: write  
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
-        id: tests
+        id: deployment
         uses: actions/deploy-pages@v2 
-      
-     
+
