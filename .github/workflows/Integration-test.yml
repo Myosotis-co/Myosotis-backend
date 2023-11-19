@@ -94,7 +94,7 @@ jobs:
           name: allure-report
           path: tests/allure-report
 
-  deploy-pages:
+  test-result-page:
     needs: pre-deploy-test
 
     permissions:
