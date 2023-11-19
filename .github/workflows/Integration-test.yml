@@ -75,7 +75,7 @@ jobs:
         continue-on-error: true
         with:
           ref: pytest-integration
-          path: github-pages
+          path: test-results
         
       - name: Allure Report action
         uses: simple-elf/allure-report-action@v1.7
@@ -83,12 +83,3 @@ jobs:
         with:
           allure_results: allure-results
       
-      - name: Deploy report to Github Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: github-pages
-          PUBLISH_DIR: allure-history
-    
-    
