@@ -117,4 +117,6 @@ jobs:
 
     - name: Deploy to GitHub Pages
       id: deployment
+      with:
+        artifact_name: allure-report
       uses: actions/deploy-pages@v2 
