@@ -91,6 +91,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         if: always()
         with:
+          name: allure-report
           path: tests/allure-report
 
   deploy-pages:
