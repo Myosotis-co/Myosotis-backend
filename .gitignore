@@ -10,3 +10,5 @@ git.token
 data/
 
 docker/development/env/.env-docker
+
+docker/test/env/.env-docker
