@@ -70,7 +70,7 @@ jobs:
           path: report.html
           retention-days: 5
 
-  deploy:
+  deploy-pages:
     needs: pre-deploy-test
 
     permissions:
