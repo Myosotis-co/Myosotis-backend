@@ -69,18 +69,9 @@ jobs:
           name: test-results
           path: report.html
           retention-days: 5
+
+      - name: Deploy to GitHub Pages
+        id: tests
+        uses: actions/deploy-pages@v2 
       
-      - name: Get Allure history
-        uses: actions/checkout@v3
-        if: always()
-        continue-on-error: true
-        with:
-          ref: pytest-integration
-          path: pytest-integration
-        
-      - name: Allure Report action
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
-        with:
-          allure_results: tests/allure-results
-          allure_history: tests/allure-reports
+     
