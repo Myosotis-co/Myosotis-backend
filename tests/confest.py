@@ -15,7 +15,6 @@ engine = create_async_engine(
 )
 
 
-
 @pytest.fixture
 async def async_db_engine():
     async with engine.begin() as conn:
@@ -45,7 +44,7 @@ async def async_db(async_db_engine):
         await session.rollback()
 
         for table in reversed(Base.metadata.sorted_tables):
-            await session.execute(f'TRUNCATE {table.name} CASCADE;')
+            await session.execute(f"TRUNCATE {table.name} CASCADE;")
             await session.commit()
 
 
@@ -54,10 +53,9 @@ async def async_client() -> AsyncClient:
     return AsyncClient(app=app, base_url="http://localhost")
 
 
-
 @pytest.fixture
-async def generate_email(async_db:AsyncSession):
-    email = TempEmail(email='test@gmail.com')
+async def generate_email(async_db: AsyncSession):
+    email = TempEmail(email="test@gmail.com")
     async_db.add(email)
     await async_db.commit()
     await async_db.refresh(email)
