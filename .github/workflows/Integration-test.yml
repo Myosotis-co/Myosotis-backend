@@ -51,7 +51,7 @@ jobs:
       - name: Run tests
         if: success() || failure()
         run: |
-          export $(grep -v '^#' docker/test/.integration-test| xargs)
+          export $(grep -v '^#' docker/test/env/.integration-test| xargs)
           pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html --alluredir=allure-results
         env:
           DISPLAY: ":99"
