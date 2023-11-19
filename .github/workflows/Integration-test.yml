@@ -99,10 +99,11 @@ jobs:
 
     permissions:
       pages: write      
-      id-token: write  
+      id-token: write
+      contents: read  
 
     environment:
-      name: github-pages
+      name: test-result-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     runs-on: ubuntu-latest
@@ -112,6 +113,7 @@ jobs:
       with:
         name: allure-report
         path: tests/allure-report
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deploy to GitHub Pages
       id: deployment
