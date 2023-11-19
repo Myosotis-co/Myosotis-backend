@@ -95,6 +95,7 @@ black==23.7.0
 pytest==7.4.3
 pytest-html==4.1.1
 pytest-cov==4.1.0
+allure-pytest==2.13.2
 flower
 gunicorn
 Faker
