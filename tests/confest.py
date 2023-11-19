@@ -1,13 +1,13 @@
-import asyncio
-from app.email.models import TempEmail
+
+import pytest
+from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
+
 from app.config import settings
 from app.database import Base, engine
-import pytest
-from sqlalchemy.orm import sessionmaker
+from app.email.models import TempEmail
 from app.main import app
-from httpx import AsyncClient
-
 
 engine = create_async_engine(
     f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}",
