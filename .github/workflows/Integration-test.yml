@@ -15,14 +15,6 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.11]
-    
-    permissions:
-      pages: write      
-      id-token: write  
-    
-    environment:
-      name: test-result-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     services:
       db:
@@ -77,8 +69,27 @@ jobs:
           name: test-results
           path: report.html
           retention-days: 5
+      
+      - name: Get Allure history # Step to retrieve Allure history
+        uses: actions/checkout@v3
+        if: always() 
+        continue-on-error: true # Continue execution even if the step fails
+        with:
+          ref: github-pages # Specify the branch to retrieve Allure history from
+          path: github-pages # Set the destination path for Allure history
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2 
-  
+      - name: Allure report action # Step to generate Allure report
+        uses: simple-elf/allure-report-action@master
+        if: always() 
+        with:
+          allure_results: tests/allure-results
+          allure_history: allure-history 
+          keep_reports: 5 # Specify the number of previous reports to keep
+
+      - name: Deploy Allure report to GitHub Pages # Step to deploy Allure report to GitHub Pages
+        if: always() 
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Provide the GitHub token for authentication
+          publish_branch: github-pages # Specify the branch to publish the report to
+          publish_dir: allure-history # Specify the directory containing the report
