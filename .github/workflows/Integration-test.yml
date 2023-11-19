@@ -83,13 +83,35 @@ jobs:
         if: always() 
         with:
           allure_results: tests/allure-results
+          allure_report: tests/allure-report
           allure_history: allure-history 
           keep_reports: 5 # Specify the number of previous reports to keep
 
-      - name: Deploy Allure report to GitHub Pages # Step to deploy Allure report to GitHub Pages
-        if: always() 
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload an artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v2
+        if: always()
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Provide the GitHub token for authentication
-          publish_branch: testing-result-pages # Specify the branch to publish the report to
-          publish_dir: allure-history # Specify the directory containing the report
+          path: tests/allure-report
+
+  deploy-pages:
+    needs: pre-deploy-test
+
+    permissions:
+      pages: write      
+      id-token: write  
+
+    environment:
+      name: test-result-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Allure Results
+      uses: actions/download-artifact@v2
+      with:
+        name: allure-report
+        path: tests/allure-report
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2 
