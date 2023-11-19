@@ -20,8 +20,8 @@ jobs:
       db:
         image: postgres
         env:
-          POSTGRES_DB: MyosotidDB
-          POSTGRES_USER: test_user
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
