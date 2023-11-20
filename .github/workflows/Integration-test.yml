@@ -47,8 +47,7 @@ jobs:
       
 
       - name: Run tests
-        if: success() || failure()
-        continue-on-error: true
+        if: always()
         run: |
           export $(grep -v '^#' docker/test/env/.integration-test| xargs)
           pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html --alluredir=tests/allure-results
