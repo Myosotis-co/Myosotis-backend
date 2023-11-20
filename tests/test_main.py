@@ -10,3 +10,7 @@ pytestmark = pytest.mark.asyncio
 
 async def test_email(generate_email: TempEmail_model):
     assert generate_email.email == "test@gmail.com"
+
+
+def test_fail():
+    assert 1 == 2
