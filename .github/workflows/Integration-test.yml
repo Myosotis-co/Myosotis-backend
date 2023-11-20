@@ -1,10 +1,8 @@
 name: Integration-test
 
 on:
-  push:
-    branches: ["pytest-integration"]
   pull_request:
-    branches: ["pytest-integration"]
+    branches: ["main"]
 
 jobs:
   pre-deploy-test:
