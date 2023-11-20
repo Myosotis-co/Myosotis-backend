@@ -70,7 +70,7 @@ jobs:
       
       - name: Get Allure history # Step to retrieve Allure history
         uses: actions/checkout@v3
-        if: always() 
+        if: success() || failure()
         continue-on-error: true # Continue execution even if the step fails
         with:
           ref: testing-result-pages # Specify the branch to retrieve Allure history from
@@ -78,7 +78,7 @@ jobs:
 
       - name: Allure report action # Step to generate Allure report
         uses: simple-elf/allure-report-action@master
-        if: always() 
+        if: success() || failure()
         with:
           allure_results: tests/allure-results
           allure_report: tests/allure-report
@@ -87,7 +87,7 @@ jobs:
 
       - name: Upload an artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v2
-        if: always()
+        if: success() || failure()
         with:
           name: allure-report
           path: tests/allure-report
