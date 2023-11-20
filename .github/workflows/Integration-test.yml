@@ -54,11 +54,6 @@ jobs:
         env:
           DISPLAY: ":99"
         
-      - name: Get directory
-        if: success() || failure()
-        run: | 
-            ls
-
       - name: Coverage report
         if: success() || failure()
         uses: 5monkeys/cobertura-action@v13
@@ -91,13 +86,6 @@ jobs:
           gh_pages: testing-result-pages
           keep_reports: 20 # Specify the number of previous reports to keep
       
-      - name: Get directory
-        if: success() || failure()
-        run: | 
-          ls
-          ls allure-history
-          ls tests/allure-history
-
       - name: Upload an artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v2
         if: success() || failure()
