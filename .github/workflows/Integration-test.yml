@@ -73,8 +73,8 @@ jobs:
         if: success() || failure()
         continue-on-error: true # Continue execution even if the step fails
         with:
-          ref: testing-result-pages2 # Specify the branch to retrieve Allure history from
-          path: testing-result-pages2 # Set the destination path for Allure history
+          ref: testing-result-pages # Specify the branch to retrieve Allure history from
+          path: testing-result-pages # Set the destination path for Allure history
 
       - name: Allure report action # Step to generate Allure report
         uses: simple-elf/allure-report-action@master
@@ -83,7 +83,7 @@ jobs:
           allure_results: tests/allure-results
           allure_report: tests/allure-report
           allure_history: allure-history 
-          gh_pages: testing-result-pages2
+          gh_pages: testing-result-pages
           keep_reports: 20 # Specify the number of previous reports to keep
 
       - name: Upload an artifact for GitHub Pages
@@ -92,6 +92,14 @@ jobs:
         with:
           name: allure-report
           path: tests/allure-report
+
+      - name: Deploy report to testing-result-pages branch
+        if: always()
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: testing-result-pages
+          PUBLISH_DIR: allure-history
 
   test-result-page:
     if: success() || failure()
@@ -103,7 +111,7 @@ jobs:
       contents: read  
 
     environment:
-      name: test-result-pages2
+      name: test-result-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     runs-on: ubuntu-latest
