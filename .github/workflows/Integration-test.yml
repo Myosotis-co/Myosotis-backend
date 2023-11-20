@@ -1,8 +1,8 @@
 name: Integration-test
 
 on:
-  pull_request:
-    branches: ["main"]
+  push:
+    branches: ["fix-duplicate-env"]
 
 jobs:
   pre-deploy-test:
@@ -99,7 +99,8 @@ jobs:
         with:
           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: testing-result-pages
-          PUBLISH_DIR: allure-history
+          PUBLISH_DIR: ./allure-history
+          destination_dir: ./allure-history
 
   test-result-page:
     if: success() || failure()
