@@ -53,6 +53,11 @@ jobs:
           pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html --alluredir=tests/allure-results
         env:
           DISPLAY: ":99"
+        
+      - name: Get directory
+        if: success() || failure()
+        run: | 
+            ls
 
       - name: Coverage report
         if: success() || failure()
