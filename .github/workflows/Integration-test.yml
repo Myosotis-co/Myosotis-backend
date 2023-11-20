@@ -82,7 +82,7 @@ jobs:
         with:
           allure_results: tests/allure-results
           allure_report: tests/allure-report
-          allure_history: allure-history 
+          allure_history: testing-result-pages/allure-history 
           keep_reports: 5 # Specify the number of previous reports to keep
 
       - name: Upload an artifact for GitHub Pages
