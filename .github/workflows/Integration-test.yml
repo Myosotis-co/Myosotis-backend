@@ -101,6 +101,7 @@ jobs:
           PUBLISH_BRANCH: testing-result-pages
           PUBLISH_DIR: ./allure-history
           destination_dir: ./allure-history
+          keep_files: true
 
   test-result-page:
     if: success() || failure()
