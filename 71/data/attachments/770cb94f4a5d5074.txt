@@ -1,0 +1,229 @@
+INFO     sqlalchemy.engine.Engine:base.py:1669 select pg_catalog.version()
+INFO     sqlalchemy.engine.Engine:base.py:1669 [raw sql] ()
+INFO     sqlalchemy.engine.Engine:base.py:1669 select current_schema()
+INFO     sqlalchemy.engine.Engine:base.py:1669 [raw sql] ()
+INFO     sqlalchemy.engine.Engine:base.py:1669 show standard_conforming_strings
+INFO     sqlalchemy.engine.Engine:base.py:1669 [raw sql] ()
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00028s] ('temp_emails',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.002536s ago] ('roles',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.003663s ago] ('oauth_accounts',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.004689s ago] ('users',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.00569s ago] ('messages',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.006714s ago] ('message_types',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.007759s ago] ('applications',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.008678s ago] ('categories',)
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+CREATE TABLE temp_emails (
+	id SERIAL NOT NULL, 
+	email VARCHAR NOT NULL, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id), 
+	UNIQUE (email), 
+	UNIQUE (email)
+)
+
+
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00024s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+CREATE TABLE roles (
+	id SERIAL NOT NULL, 
+	name VARCHAR NOT NULL, 
+	description VARCHAR NOT NULL, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00021s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+CREATE TABLE message_types (
+	id SERIAL NOT NULL, 
+	name VARCHAR NOT NULL, 
+	description VARCHAR NOT NULL, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00021s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+CREATE TABLE users (
+	id SERIAL NOT NULL, 
+	role_id INTEGER NOT NULL, 
+	name VARCHAR NOT NULL, 
+	email VARCHAR NOT NULL, 
+	hashed_password VARCHAR NOT NULL, 
+	is_deleted BOOLEAN NOT NULL, 
+	is_verified BOOLEAN NOT NULL, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(role_id) REFERENCES roles (id) ON DELETE CASCADE, 
+	UNIQUE (email)
+)
+
+
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00018s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+CREATE TABLE oauth_accounts (
+	oauth_name VARCHAR(100) NOT NULL, 
+	access_token VARCHAR(1024) NOT NULL, 
+	expires_at INTEGER, 
+	refresh_token VARCHAR(1024), 
+	account_id VARCHAR(320) NOT NULL, 
+	account_email VARCHAR(320) NOT NULL, 
+	id SERIAL NOT NULL, 
+	user_id INTEGER NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
+)
+
+
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00021s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 CREATE INDEX ix_oauth_accounts_account_id ON oauth_accounts (account_id)
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00021s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 CREATE INDEX ix_oauth_accounts_oauth_name ON oauth_accounts (oauth_name)
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+CREATE TABLE categories (
+	id SERIAL NOT NULL, 
+	user_id INTEGER NOT NULL, 
+	temp_email_id INTEGER NOT NULL, 
+	category_name VARCHAR NOT NULL, 
+	deletion_date TIMESTAMP WITH TIME ZONE, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id), 
+	UNIQUE (user_id, temp_email_id), 
+	FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE, 
+	FOREIGN KEY(temp_email_id) REFERENCES temp_emails (id)
+)
+
+
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+CREATE TABLE applications (
+	id SERIAL NOT NULL, 
+	category_id INTEGER NOT NULL, 
+	website_url VARCHAR NOT NULL, 
+	deletion_date TIMESTAMP WITH TIME ZONE, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id), 
+	UNIQUE (category_id, website_url), 
+	FOREIGN KEY(category_id) REFERENCES categories (id) ON DELETE CASCADE
+)
+
+
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+CREATE TABLE messages (
+	id SERIAL NOT NULL, 
+	application_id INTEGER NOT NULL, 
+	message_type_id INTEGER NOT NULL, 
+	topic VARCHAR NOT NULL, 
+	message_text VARCHAR NOT NULL, 
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL, 
+	PRIMARY KEY (id), 
+	UNIQUE (application_id, message_text, topic), 
+	FOREIGN KEY(application_id) REFERENCES applications (id) ON DELETE CASCADE, 
+	FOREIGN KEY(message_type_id) REFERENCES message_types (id)
+)
+
+
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 INSERT INTO temp_emails (email) VALUES (%s) RETURNING temp_emails.id
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00026s] ('test@gmail.com',)
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 SELECT temp_emails.id, temp_emails.email, temp_emails.created_at, temp_emails.updated_at 
+FROM temp_emails 
+WHERE temp_emails.id = %s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00032s] (1,)
+INFO     sqlalchemy.engine.Engine:base.py:2617 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 TRUNCATE messages CASCADE;
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00019s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 TRUNCATE applications CASCADE;
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00021s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 TRUNCATE oauth_accounts CASCADE;
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00043s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 TRUNCATE categories CASCADE;
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00020s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 TRUNCATE users CASCADE;
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00018s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 TRUNCATE temp_emails CASCADE;
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00021s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 TRUNCATE roles CASCADE;
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00021s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 TRUNCATE message_types CASCADE;
+INFO     sqlalchemy.engine.Engine:base.py:1572 [generated in 0.00018s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:2614 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.2523s ago] ('temp_emails',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.2541s ago] ('roles',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.2551s ago] ('oauth_accounts',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.2561s ago] ('users',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.2571s ago] ('messages',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.2581s ago] ('message_types',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.2591s ago] ('applications',)
+INFO     sqlalchemy.engine.Engine:base.py:1572 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=%s
+INFO     sqlalchemy.engine.Engine:base.py:1572 [cached since 0.26s ago] ('categories',)
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+DROP TABLE messages
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+DROP TABLE applications
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+DROP TABLE categories
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+DROP TABLE oauth_accounts
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+DROP TABLE users
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+DROP TABLE message_types
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+DROP TABLE roles
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00027s] ()
+INFO     sqlalchemy.engine.Engine:base.py:1472 
+DROP TABLE temp_emails
+INFO     sqlalchemy.engine.Engine:base.py:1472 [no key 0.00017s] ()
+INFO     sqlalchemy.engine.Engine:base.py:2620 COMMIT
