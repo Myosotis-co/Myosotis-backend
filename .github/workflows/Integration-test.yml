@@ -98,13 +98,6 @@ jobs:
           name: allure-report
           path: tests/allure-report
 
-      - name: Deploy report to testing-result-pages branch
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: testing-result-pages
-          PUBLISH_DIR: allure-history
 
   test-result-page:
     if: success() || failure()
@@ -117,7 +110,7 @@ jobs:
 
     environment:
       name: test-result-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}testing-result
 
     runs-on: ubuntu-latest
     steps:
