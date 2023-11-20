@@ -47,7 +47,7 @@ jobs:
       
 
       - name: Run tests
-        if: always()
+        if: success() || failure()
         run: |
           export $(grep -v '^#' docker/test/env/.integration-test| xargs)
           pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html --alluredir=tests/allure-results
@@ -94,6 +94,7 @@ jobs:
           path: tests/allure-report
 
   test-result-page:
+    if: success() || failure()
     needs: pre-deploy-test
 
     permissions:
