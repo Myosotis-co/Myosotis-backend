@@ -1,0 +1,8 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"failed","Mon Nov 20 15:28:15 GMT 2023","Mon Nov 20 15:28:15 GMT 2023","1","clinicalcode.tests.unit_tests","test_read_only_permmisions","TestReadOnlyPermissions","","","test_wrong_answer",""
+"passed","Mon Nov 20 15:28:14 GMT 2023","Mon Nov 20 15:28:14 GMT 2023","2","clinicalcode.tests.unit_tests","test_read_only_permmisions","TestReadOnlyPermissions","","","test_users_to_edit[super_user]",""
+"passed","Mon Nov 20 15:28:12 GMT 2023","Mon Nov 20 15:28:12 GMT 2023","0","clinicalcode.tests.unit_tests","test_read_only_permmisions","TestReadOnlyPermissions","","","test_genereic_entity[super_user]",""
+"passed","Mon Nov 20 15:28:15 GMT 2023","Mon Nov 20 15:28:15 GMT 2023","1","clinicalcode.tests.unit_tests","test_read_only_permmisions","TestReadOnlyPermissions","","","test_user_not_allowed_to_create",""
+"passed","Mon Nov 20 15:28:04 GMT 2023","Mon Nov 20 15:28:10 GMT 2023","6308","clinicalcode.tests.functional_tests","test_search_filters","TestSearchFilters","","","test_tags_filter[super_user]",""
+"passed","Mon Nov 20 15:28:15 GMT 2023","Mon Nov 20 15:28:15 GMT 2023","2","clinicalcode.tests.unit_tests","test_read_only_permmisions","TestReadOnlyPermissions","","","test_users_to_edit[owner_user]",""
+"passed","Mon Nov 20 15:28:11 GMT 2023","Mon Nov 20 15:28:11 GMT 2023","0","clinicalcode.tests.unit_tests","test_read_only_permmisions","TestReadOnlyPermissions","","","test_my_user",""
