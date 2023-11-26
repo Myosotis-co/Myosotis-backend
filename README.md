@@ -16,9 +16,26 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 
 3. `cd` into the directory you checked the project code out into.
 
-4. Start docker and initiate Redis:
+4. Start docker:
+
+   ### Development containers
+      Development containers only consist of:
+      * Database container
+      * Application container
+      * Pgadmin container
+        
    ```shell
-   docker compose up --build
+    docker compose -p myosotis -f docker-compose.dev.yml up --build
+   ```
+    ### Testing containers
+      Testing containers only consist of:
+      - Database container
+      - Application container
+      - Pgadmin container
+      - Allure container
+   
+    ```shell
+    docker compose -p myosotis -f docker-compose.testing.yml up --build
    ```
    To verify that the two images are running you can check with:
    ```shell
@@ -30,7 +47,7 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
    9d5416dd7273     deletemehere_app
    123304c59a4b     postgres:15
    ```
-5. To run the server and see all FastAPI endpoints go to localhost:8008/docs
+6. To run the server and see all FastAPI endpoints go to localhost:8008/docs
 
 ## Database setup
 
