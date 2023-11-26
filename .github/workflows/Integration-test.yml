@@ -60,7 +60,7 @@ jobs:
         with:
           minimum_coverage: 25
 
-      - name: 'Upload Test Results'
+      - name: Upload Test Results
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
