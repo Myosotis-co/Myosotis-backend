@@ -3,6 +3,7 @@ name: Telegram-bot message
 on:
     pull_request:
         types: [opened]
+        branches: main
 
 jobs:
     Telegram-bot:
