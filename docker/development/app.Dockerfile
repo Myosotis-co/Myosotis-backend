@@ -21,6 +21,6 @@ RUN pip install -r base.txt
 COPY . .
 
 
-COPY ./scripts/wait-for-it.sh /bin/wait-for-it.sh
+COPY development/scripts/wait-for-it.sh /bin/wait-for-it.sh
 RUN ["chmod", "u+x", "/bin/wait-for-it.sh"]
 RUN ["dos2unix", "/bin/wait-for-it.sh"]

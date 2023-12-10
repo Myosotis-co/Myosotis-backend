@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     MAILSAC_BASE_URL: str
 
     class Config:
-        env_file = "docker/env/.env-docker"
+        env_file = "docker/development/env/.env-docker"
 
 
 settings = Settings()

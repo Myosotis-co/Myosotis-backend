@@ -31,7 +31,7 @@ from app.message.router import router as message_router
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, "/docker/env/.env-docker"))
 
-app = FastAPI(docs_url=None, title="DeleteMeHere")
+app = FastAPI(docs_url=None, title="Myosotis")
 app.add_middleware(DBSessionMiddleware, db_url=SQLALCHEMY_DATABASE_URL)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
