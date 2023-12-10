@@ -8,3 +8,4 @@ git.token
 .env
 *.backup
 data/
+.env-docker
