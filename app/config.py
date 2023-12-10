@@ -12,6 +12,7 @@ class Settings(BaseSettings):
 
     MAILSAC_KEY: str
     MAILSAC_BASE_URL: str
+    MYOSOTIS_PRIVATE_DOMAIN: str
 
     class Config:
         env_file = "docker/env/.env-docker"
