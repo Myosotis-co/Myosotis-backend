@@ -1,0 +1,60 @@
+version: "3.8"
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: development/app.Dockerfile
+    env_file:
+      -  development/env/.env-docker
+    container_name: fastapi_app
+    restart: unless-stopped
+    volumes:
+      - ../:/deletemehere/
+    command: bash -c " alembic upgrade head && uvicorn app.main:app  --host 0.0.0.0 --reload"
+    tty: true
+    stdin_open: true
+    ports:
+      - "8000:8000"
+      - "3000:3000"
+    links:
+      - db:db
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: .
+      dockerfile: development/postgres.Dockerfile
+    restart: always
+    container_name: db
+    volumes:
+      - ./development/db/:/docker-entrypoint-initdb.d/db/
+    ports:
+      - "5432:5432"
+    env_file:
+      - development/env/.env-docker
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+    ports:
+      - "5050:80"
+    entrypoint: 
+      - "/bin/sh"
+      - "-c"
+      - "/bin/echo 'db:5432:postgres:postgres:postgres' > /tmp/pgpassfile && chmod 600 /tmp/pgpassfile && /entrypoint.sh"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+      - ./development/docker_pgadmin_servers.json:/pgadmin4/servers.json
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+  pgadmin-data:

@@ -1,0 +1,130 @@
+name: Integration-test
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  pre-deploy-test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./Myosotis-backend
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.11]
+
+    services:
+      db:
+        image: postgres
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('docker/requirements/base.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade --upgrade-strategy eager -r docker/requirements/base.txt
+      
+
+      - name: Run tests
+        if: success() || failure()
+        run: |
+          export $(grep -v '^#' docker/test/env/.integration-test| xargs)
+          pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html --alluredir=tests/allure-results
+        env:
+          DISPLAY: ":99"
+        
+      - name: Coverage report
+        if: success() || failure()
+        uses: 5monkeys/cobertura-action@v13
+        with:
+          minimum_coverage: 25
+
+      - name: Upload Test Results
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: report.html
+          retention-days: 5
+      
+      - name: Get Allure history # Step to retrieve Allure history
+        uses: actions/checkout@v3
+        if: success() || failure()
+        continue-on-error: true # Continue execution even if the step fails
+        with:
+          ref: testing-result-pages # Specify the branch to retrieve Allure history from
+          path: testing-result-pages # Set the destination path for Allure history
+
+      - name: Allure report action # Step to generate Allure report
+        uses: simple-elf/allure-report-action@master
+        if: success() || failure()
+        with:
+          allure_results: tests/allure-results
+          allure_report: tests/allure-report
+          allure_history: allure-history 
+          gh_pages: testing-result-pages
+          keep_reports: 20 # Specify the number of previous reports to keep
+      
+      - name: Upload an artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v2
+        if: success() || failure()
+        with:
+          name: allure-report
+          path: tests/allure-report
+
+      - name: Deploy report to testing-result-pages branch
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: testing-result-pages
+          PUBLISH_DIR: allure-history
+
+  test-result-page:
+    if: success() || failure()
+    needs: pre-deploy-test
+
+    permissions:
+      pages: write      
+      id-token: write
+      contents: read  
+
+    environment:
+      name: test-result-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Allure Results
+      uses: actions/download-artifact@v2
+      with:
+        name: allure-report
+        path: tests/allure-report
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      with:
+        artifact_name: allure-report
+      uses: actions/deploy-pages@v2 
