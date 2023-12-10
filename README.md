@@ -6,11 +6,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
 
 ## Setup
 
-1. Install nvm and Node 18.
-
-```shell
-   docker ps
-```
+1. Install Node 18 (comes with npm).
 
 2. Clone the project: `git clone https://github.com/ZinnurovArtur/DeleteMeHere.git`
 
@@ -45,7 +41,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
 3. Use your own git repository for storing backup and put it to the `env-docker` file as the `GIT_REPO`
 4. In the project `docker/db` create the `git.token` file
 5. Put your token into this file
-6.  Run ```docker compose up --build```
+6.  Run ```docker compose up --build -d``` ( -d means in detached mode, so you can continue work in the same terminal)
 
 ## Using VSCode for development
 1. Ensure container is running
