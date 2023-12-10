@@ -1,0 +1,21 @@
+name: Telegram-bot message
+
+on:
+    pull_request:
+        types: [opened]
+        branches: main
+
+jobs:
+    Telegram-bot:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Send telegram message on pull-request
+              if: always()
+              run: |
+                msg_text='${{ github.actor }} created pull request${{ github.event.number }} \n Repository: ${{ github.repository }} \n See changes: https://github.com/${{ github.repository }}/pull/${{ github.event.number }}'
+            
+                curl -s -X POST 'https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage' \
+                -d "chat_id=${{ secrets.TELEGRAM_TO }}&text=${msg_text}&reply_to_message_id=${{ secrets.TOPIC_ID }}"
+    
+    
+            
