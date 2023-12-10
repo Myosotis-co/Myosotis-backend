@@ -34,7 +34,7 @@ async def check_email_availability(email):
         data = res.read()
         return data.decode("utf-8")
     except Exception as e:
-        return f"Failed to check email availability: {e}"
+        return f"Failed to check email availability for {email}: {e}"
 
 
 async def generate_valid_temp_email():
