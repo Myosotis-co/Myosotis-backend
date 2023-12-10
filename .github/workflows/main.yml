@@ -26,11 +26,9 @@ jobs:
       - name: Install black and reorder-python-imports
         run: pip install black reorder-python-imports
 
-      - name: Black and Sort changed files
-        run: |
-          black --check  ${{ steps.changed-files.outputs.all_changed_files }}
-
       - name: Run black on full codebase
         with:
           options: "--check --diff --exclude '/migrations/versions' "
         uses: psf/black@stable
+      
+    

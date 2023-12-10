@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     MYOSOTIS_PRIVATE_DOMAIN: str
 
     class Config:
-        env_file = "docker/env/.env-docker"
+        env_file = "docker/development/env/.env-docker"
 
 
 settings = Settings()

@@ -4,8 +4,9 @@ services:
   app:
     build:
       context: .
+      dockerfile: test/app.Dockerfile
     env_file:
-      - env/.env-docker
+      -  test/env/.env-docker
     container_name: fastapi_app
     restart: unless-stopped
     volumes:
@@ -24,15 +25,15 @@ services:
   db:
     build:
       context: .
-      dockerfile: ./db.Dockerfile
+      dockerfile: test/postgres.Dockerfile
     restart: always
     container_name: db
     volumes:
-      - ./db/:/docker-entrypoint-initdb.d/db/
+      - ./test/db/:/docker-entrypoint-initdb.d/db/
     ports:
       - "5432:5432"
     env_file:
-      - env/.env-docker
+      - test/env/.env-docker
 
   pgadmin:
     container_name: pgadmin
@@ -43,16 +44,27 @@ services:
       - PGADMIN_CONFIG_SERVER_MODE=False
       - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
     ports:
-      - "5050:80"
+      - "5052:80"
     entrypoint: 
       - "/bin/sh"
       - "-c"
       - "/bin/echo 'db:5432:postgres:postgres:postgres' > /tmp/pgpassfile && chmod 600 /tmp/pgpassfile && /entrypoint.sh"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-      - ./docker_pgadmin_servers.json:/pgadmin4/servers.json
+      - ./test/docker_pgadmin_servers.json:/pgadmin4/servers.json
     depends_on:
       - db
+      
+  allure:
+    image: "frankescobar/allure-docker-service"
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 1
+      KEEP_HISTORY: 1
+    ports:
+      - "5050:5050"
+    volumes:
+      - ../tests/allure-results:/app/allure-results
+      - ../tests/allure-reports:/app/allure-reports
 
 volumes:
   postgres_data:
