@@ -13,13 +13,14 @@ from app.email.models import TempEmail as TempEmail_model
 
 MAILSAC_API_KEY = settings.MAILSAC_KEY
 MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
+MYOSOTIS_PRIVATE_DOMAIN = settings.MYOSOTIS_PRIVATE_DOMAIN
 
 
 def generate_random_mailsac_email():
     random_prefix = "".join(
         random.choice(string.ascii_lowercase + string.digits) for _ in range(10)
     )
-    mailsac_temp_email = f"{random_prefix}@mailsac.com"
+    mailsac_temp_email = f"{random_prefix}@{MYOSOTIS_PRIVATE_DOMAIN}"
     return mailsac_temp_email
 
 
@@ -33,7 +34,7 @@ async def check_email_availability(email):
         data = res.read()
         return data.decode("utf-8")
     except Exception as e:
-        return f"Failed to check email availability: {e}"
+        return f"Failed to check email availability for {email}: {e}"
 
 
 async def generate_valid_temp_email():

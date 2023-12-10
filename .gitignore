@@ -8,7 +8,6 @@ git.token
 .env
 *.backup
 data/
-
+docker/env/.env-docker
 docker/development/env/.env-docker
-
 docker/test/env/.env-docker

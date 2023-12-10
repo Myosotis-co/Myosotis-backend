@@ -27,7 +27,7 @@ async def list_messages_for_an_email(email):
 
         return data.decode("utf-8")
     except Exception as e:
-        return f"Failed to get a list of messages for email: {e}"
+        return f"Failed to get a list of messages for {email}: {e}"
 
 
 @router.get("/raw/{email}/{message_id}")
@@ -42,7 +42,7 @@ async def get_original_email_message(email, message_id):
 
         return data.decode("utf-8")
     except Exception as e:
-        return f"Failed to get SMTP for email: {e}"
+        return f"Failed to get SMTP for {email}: {e}"
 
 
 @router.get("/addresses/{email}/messages/{message_id}")
@@ -59,7 +59,7 @@ async def get_email_metadata(email, message_id):
 
         return data.decode("utf-8")
     except Exception as e:
-        return f"Failed to get metadata for email: {e}"
+        return f"Failed to get metadata for {email}: {e}"
 
 
 @router.get("/text/{email}/{message_id}")
@@ -74,7 +74,7 @@ async def get_email_message(email, message_id):
 
         return data.decode("utf-8")
     except Exception as e:
-        return f"Failed to get message for email: {e}"
+        return f"Failed to get message for {email}: {e}"
 
 
 @router.post("/create")
@@ -85,7 +85,7 @@ async def create_temp_email(
         temp_email = await create_mailsac_public_email()
         await service_add_model(temp_email, session)
         await session.commit()
-        return {"status": 201, "data": "Temp email is created"}
+        return {"status": 201, "data": f"Temp email was created: {temp_email.email}"}
     except Exception as e:
         return "Failed to create a temp email: " + str(e)
 
@@ -98,7 +98,9 @@ async def get_temp_email(
         temp_email = await service_get_model(TempEmail_model, temp_email_id, session)
         if temp_email is not None:
             return temp_email
-        raise HTTPException(status_code=404, detail="Temp email was not found")
+        raise HTTPException(
+            status_code=404, detail=f"Temp email: {temp_email.email}  was not found"
+        )
     except Exception as e:
         return "Failed to get a temp email: " + str(e)
 
@@ -115,7 +117,9 @@ async def update_temp_email(
             await service_update_model(temp_email, temp_email_update, session)
             await session.commit()
             return {"status": 204, "data": "Temp email is updated"}
-        raise HTTPException(status_code=404, detail="Temp email is not found")
+        raise HTTPException(
+            status_code=404, detail=f"Temp email: {temp_email.email} is not found"
+        )
     except Exception as e:
         return "Failed to update temp email: " + str(e)
 
