@@ -85,4 +85,17 @@ async def service_get_some_models(
     result_value = await session.execute(exec_command)
     models = result_value.all()
 
-    return models
+    formatted_models = models_format(models)
+    return formatted_models    
+
+
+# Removes dictionaty key for each element in the list
+def models_format(models: list):
+    new_models = list()
+    keys = list(models[0].keys())
+    for model in models:
+        key = keys[0]
+        new_model = model[key]
+        new_models.append(new_model)
+
+    return new_models
