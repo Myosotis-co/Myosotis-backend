@@ -26,13 +26,10 @@ async def create_category(
 async def get_category(
     category_id: int, session: AsyncSession = Depends(get_async_session)
 ):
-    try:
-        category = await service_get_model(Category_model, category_id, session)
-        if category is not None:
-            return category
-        raise HTTPException(status_code=404, detail="Category not found")
-    except Exception as e:
-        return "Failed to get a category: " + str(e)
+    category = await service_get_model(Category_model, category_id, session)
+    if category is not None:
+        return category
+    raise HTTPException(status_code=404, detail="Category not found")
 
 
 @router.patch("/update/{category_id}")
