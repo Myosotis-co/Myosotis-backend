@@ -11,8 +11,6 @@ from fastapi.staticfiles import StaticFiles
 from app.auth.models import User
 from app.auth.schema import UserCreate, UserRead
 from app.config import settings
-from dotenv import load_dotenv
-from fastapi_sqlalchemy import DBSessionMiddleware
 from app.auth.jwt_config import (
     auth_backend,
     fastapi_users,

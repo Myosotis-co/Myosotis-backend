@@ -1,19 +1,48 @@
-# Drops the whole database, not cool
+import pytest, asyncio
+from fastapi.testclient import TestClient
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import NullPool
 
-# import pytest
-# from httpx import AsyncClient
-# from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-# from sqlalchemy.orm import sessionmaker
+from app.config import settings
+from app.database import SQLALCHEMY_DATABASE_URL
+from app.email.models import TempEmail
+from app.main import app
 
-# from app.config import settings
-# from app.database import Base, engine
-# from app.email.models import TempEmail
-# from app.main import app
+engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
+Base = declarative_base()
+testing_session = sessionmaker(
+    expire_on_commit=False,
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+    class_=AsyncSession,
+)
 
-# engine = create_async_engine(
-#     f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}",
-#     echo=True,
-# )
+# Base.metadata.create_all(bind=engine)
+
+
+async def init_models():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
+
+
+asyncio.run(init_models())
+
+
+def override_get_db():
+    try:
+        db = testing_session()
+        yield db
+    finally:
+        db.close()
+
+
+client = TestClient(app)
+
+# app.dependency_overrides[get_db] = override_get_db
 
 
 # @pytest.fixture
@@ -30,11 +59,11 @@
 # @pytest.fixture(scope="function")
 # async def async_db(async_db_engine):
 #     async_session = sessionmaker(
-#         expire_on_commit=False,
-#         autocommit=False,
-#         autoflush=False,
-#         bind=async_db_engine,
-#         class_=AsyncSession,
+#       expire_on_commit=False,
+#       autocommit=False,
+#       autoflush=False,
+#       bind=async_db_engine,
+#       class_=AsyncSession,
 #     )
 
 #     async with async_session() as session:

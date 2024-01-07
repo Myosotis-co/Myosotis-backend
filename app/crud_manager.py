@@ -17,7 +17,7 @@ async def service_create_model(
             setattr(new_model, key, value)
 
     session.add(new_model)
-    session.commit()
+    await session.commit()
 
     return new_model
 
@@ -27,7 +27,7 @@ async def service_add_model(
     session: AsyncSession = Depends(get_async_session),
 ):
     session.add(model)
-    session.commit()
+    await session.commit()
     return model
 
 
@@ -52,7 +52,8 @@ async def service_update_model(
         if value is not None:
             setattr(model, key, value)
 
-    session.add(model)
+    await session.add(model)
+    await session.comm
     return model
 
 
@@ -86,7 +87,7 @@ async def service_get_some_models(
     models = result_value.all()
 
     formatted_models = models_format(models)
-    return formatted_models    
+    return formatted_models
 
 
 # Removes dictionaty key for each element in the list

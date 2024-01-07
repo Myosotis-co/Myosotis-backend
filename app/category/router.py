@@ -9,17 +9,15 @@ from app.crud_manager import *
 router = APIRouter(tags=["Category"])
 
 
-@router.post("/create")
+@router.post("/create", status_code=201)
 async def create_category(
     category_create: CategoryCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    try:
-        await service_create_model(Category_model, category_create, session)
-        await session.commit()
-        return {"status": 201, "data": "Category is created"}
-    except Exception as e:
-        return "Failed to create a category: " + str(e)
+    new_category = await service_create_model(Category_model, category_create, session)
+    if new_category is not None:
+        return "New category is created"
+    raise HTTPException(status_code=418, detail="Failer to create a category")
 
 
 @router.get("/get/{category_id}")
