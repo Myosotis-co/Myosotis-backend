@@ -12,3 +12,5 @@ docker/env/.env-docker
 docker/development/env/.env-docker
 docker/test/env/.env-docker
 .coverage
+tests/allure-reports/*
+tests/allure-results/*
