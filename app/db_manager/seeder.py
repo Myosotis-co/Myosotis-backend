@@ -52,7 +52,7 @@ def hash_password(entities):
     return entities
 
 
-async def seed(db):
+async def database_seeding(db):
     await create_table(db, "seeder_files/roles.csv", Role)
     await create_table(db, "seeder_files/users.csv", User)
     await create_table(db, "seeder_files/temp_emails.csv", TempEmail)

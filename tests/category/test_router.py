@@ -37,3 +37,5 @@ async def test_get_category():
 async def test_get_category_fail():
     response = client.get("/category/get/0")
     assert response.status_code == 404
+
+

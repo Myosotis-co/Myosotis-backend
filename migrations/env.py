@@ -10,7 +10,7 @@ from sqlmodel import create_engine
 from app.database import SQLALCHEMY_DATABASE_URL, Base
 from alembic import context
 from app.database import Base
-from app import seeder
+from app.db_manager import seeder
 
 # Required for migrations (Do not delete)
 from app.auth.models import Role, User
@@ -61,7 +61,6 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
-    # seeder.seed(url)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -69,7 +68,6 @@ def run_migrations_offline() -> None:
 
 def do_run_migrations(connection):
     context.configure(connection=connection, target_metadata=target_metadata)
-    # seeder.seed(connection)
 
     with context.begin_transaction():
         context.run_migrations()

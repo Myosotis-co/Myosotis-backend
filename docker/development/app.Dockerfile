@@ -4,7 +4,7 @@
 FROM python:3.9-slim
 
 # set work directory
-WORKDIR /deletemehere
+WORKDIR /myosotis
 
 RUN apt-get update -y -q && \
     apt-get upgrade -y -q && apt-get install git -y -q && apt-get install dos2unix
