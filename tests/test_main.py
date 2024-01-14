@@ -12,14 +12,6 @@ async def test_email(generate_email: TempEmail_model):
     assert generate_email.email == "test@gmail.com"
 
 
-def test_fail():
-    assert 1 == 1
-
-
-def test_fail():
-    assert 1 == "1"
-
-
 def test_good():
     assert 1 == 1
 
