@@ -12,9 +12,16 @@ This is where Myosotis comes in. Our application is designed to empower users to
 
 3. `cd` into the directory you checked the project code out into.
 
-4. Start docker and initiate Redis:
+4. Start docker:
+
+   ### Development containers
+      Development containers only consist of:
+      * Database container
+      * Application container
+      * Pgadmin container
+        
    ```shell
-   docker compose up --build
+    docker compose -p myosotis -f docker-compose.dev.yml up --build
    ```
    To verify that the two images are running you can check with:
    ```shell
@@ -26,7 +33,29 @@ This is where Myosotis comes in. Our application is designed to empower users to
    9d5416dd7273     deletemehere_app
    123304c59a4b     postgres:15
    ```
-5. To run the server and see all FastAPI endpoints go to localhost:8008/docs
+    ### Testing containers
+      Testing containers only consist of:
+      - Database container
+      - Application container
+      - Pgadmin container
+      - Allure container
+   
+    ```shell
+    docker compose -p myosotis -f docker-compose.testing.yml up --build
+   ```
+   To verify that the two images are running you can check with:
+   ```shell
+   docker ps
+   ```
+   Should look like this:
+   ```
+     CONTAINER ID   IMAGE                               
+      8defca6e66fc   myosotis-app         
+      4b03948a858f   dpage/pgadmin4                      
+      d54c9f7ccdbe   frankescobar/allure-docker-service   
+      17c7d3e635e0   myosotis-db   
+   ```
+6. To run the server and see all FastAPI endpoints go to localhost:8008/docs
 
 ## Database setup
 
