@@ -7,40 +7,57 @@ from sqlalchemy.pool import NullPool
 
 from app.config import settings
 from app.database import SQLALCHEMY_DATABASE_URL
-from app.email.models import TempEmail
 from app.main import app
+from app.database import Base
 
-engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
-Base = declarative_base()
-testing_session = sessionmaker(
-    expire_on_commit=False,
-    autocommit=False,
-    autoflush=False,
-    bind=engine,
-    class_=AsyncSession,
-)
+@pytest.fixture(scope="session")
+def client():
+    yield TestClient(app=app)
+    
 
-# Base.metadata.create_all(bind=engine)
-
-
-async def init_models():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
-
-
-asyncio.run(init_models())
+# @pytest.fixture(scope="session")
+# def tmp_database():
+#     try:
+#         engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
+#         testing_session = sessionmaker(
+#             expire_on_commit=False,
+#             autocommit=False,
+#             autoflush=False,
+#             bind=engine,
+#             class_=AsyncSession,
+#         )
+#     catch Exception as e:
 
 
-def override_get_db():
-    try:
-        db = testing_session()
-        yield db
-    finally:
-        db.close()
+# @pytest.fixture
+
+# engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
+# testing_session = sessionmaker(
+#     expire_on_commit=False,
+#     autocommit=False,
+#     autoflush=False,
+#     bind=engine,
+#     class_=AsyncSession,
+# )
+
+# async def init_models():
+#     async with engine.begin() as conn:
+#         await conn.run_sync(Base.metadata.drop_all)
+#         await conn.run_sync(Base.metadata.create_all)
 
 
-client = TestClient(app)
+# asyncio.run(init_models())
+
+
+# def override_get_db():
+#     try:
+#         db = testing_session()
+#         yield db
+#     finally:
+#         db.close()
+
+
+# client = TestClient(app)
 
 # app.dependency_overrides[get_db] = override_get_db
 
