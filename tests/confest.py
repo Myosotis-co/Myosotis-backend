@@ -1,109 +1,59 @@
 import pytest, asyncio
+from fastapi import Depends
 from fastapi.testclient import TestClient
+from sqlalchemy_utils import database_exists, create_database, drop_database
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
+from sqlalchemy.orm import Session
 
-from app.config import settings
 from app.database import SQLALCHEMY_DATABASE_URL
 from app.main import app
-from app.database import Base
+from app.database import *
 
-@pytest.fixture(scope="session")
+
+url = str(SQLALCHEMY_DATABASE_URL + "_test")
+_db_conn = create_async_engine(url)
+
+
+def get_test_db_conn():
+    assert _db_conn is not None
+    return _db_conn
+
+
+def get_test_db():
+    session = AsyncSession(bind=_db_conn)
+
+    try:
+        yield session
+    finally:
+        session.close()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def create_test_database():
+    if database_exists(url):
+        drop_database(url)
+    create_database(url)
+    # Base.metadata.create_async_engine(_db_conn) # Create the tables.
+    Base.metadata.create_all(_db_conn)
+    # app.dependency_overrides[get_db] = get_test_db  # Mock the Database Dependency
+    app.dependency_overrides[get_async_session] = get_test_db
+    yield
+    drop_database(url)
+
+
+@pytest.yield_fixture
+def test_db_session():
+    session = Session(bind=_db_conn)
+    yield session
+    for table in reversed(Base.metadata.sorted_tables):
+        _db_conn.execute(table.delete())
+    session.close()
+
+
+@pytest.fixture()
 def client():
-    yield TestClient(app=app)
-    
-
-# @pytest.fixture(scope="session")
-# def tmp_database():
-#     try:
-#         engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
-#         testing_session = sessionmaker(
-#             expire_on_commit=False,
-#             autocommit=False,
-#             autoflush=False,
-#             bind=engine,
-#             class_=AsyncSession,
-#         )
-#     catch Exception as e:
-
-
-# @pytest.fixture
-
-# engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
-# testing_session = sessionmaker(
-#     expire_on_commit=False,
-#     autocommit=False,
-#     autoflush=False,
-#     bind=engine,
-#     class_=AsyncSession,
-# )
-
-# async def init_models():
-#     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.drop_all)
-#         await conn.run_sync(Base.metadata.create_all)
-
-
-# asyncio.run(init_models())
-
-
-# def override_get_db():
-#     try:
-#         db = testing_session()
-#         yield db
-#     finally:
-#         db.close()
-
-
-# client = TestClient(app)
-
-# app.dependency_overrides[get_db] = override_get_db
-
-
-# @pytest.fixture
-# async def async_db_engine():
-#     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.create_all)
-
-#     yield engine
-
-#     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.drop_all)
-
-
-# @pytest.fixture(scope="function")
-# async def async_db(async_db_engine):
-#     async_session = sessionmaker(
-#       expire_on_commit=False,
-#       autocommit=False,
-#       autoflush=False,
-#       bind=async_db_engine,
-#       class_=AsyncSession,
-#     )
-
-#     async with async_session() as session:
-#         await session.begin()
-
-#         yield session
-
-#         await session.rollback()
-
-#         for table in reversed(Base.metadata.sorted_tables):
-#             await session.execute(f"TRUNCATE {table.name} CASCADE;")
-#             await session.commit()
-
-
-# @pytest.fixture
-# async def async_client() -> AsyncClient:
-#     return AsyncClient(app=app, base_url="http://localhost")
-
-
-# @pytest.fixture
-# async def generate_email(async_db: AsyncSession):
-#     email = TempEmail(email="test@gmail.com")
-#     async_db.add(email)
-#     await async_db.commit()
-#     await async_db.refresh(email)
-#     return email
+    with TestClient(app) as client:
+        yield client

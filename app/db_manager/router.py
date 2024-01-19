@@ -16,12 +16,13 @@ async def seed_database(session: AsyncSession = Depends(get_async_session)):
     except Exception as e:
         # Handle the exception and return an appropriate error response
         raise HTTPException(status_code=500, detail=str(e))
-    
+
 
 @router.delete("/empty_database", status_code=204)
 async def empty_database(session: AsyncSession = Depends(get_async_session)):
     try:
-        await database_emptying()
+        await database_emptying(session)
+        return "Database is emptied"
     except Exception as e:
         # Handle the exception and return an appropriate error response
         raise HTTPException(status=500, detail=str(e))

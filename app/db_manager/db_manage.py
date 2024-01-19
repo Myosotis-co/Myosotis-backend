@@ -1,15 +1,13 @@
-import sqlalchemy as sa
-from sqlalchemy.future import select
-from sqlalchemyseed import load_entities_from_csv, Seeder
-from fastapi_users.password import PasswordHelper
-from passlib.context import CryptContext
+from fastapi import Depends
+from app.database import Base
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_async_session
-from app.auth.models import Role, User
-from app.category.models import Category
-from app.email.models import TempEmail
-from app.application.models import Application
-from app.message.models import Message, Message_Type 
 
-async def database_emptying(db):
-    return
+
+async def database_emptying(session: AsyncSession = Depends(get_async_session)):
+    for table in reversed(Base.metadata.sorted_tables):
+        await session.execute(f"TRUNCATE {table.name} CASCADE;")
+        seq_name = table.name + "_id_seq"
+        await session.execute(f"ALTER SEQUENCE {seq_name} RESTART WITH 1;")
+        await session.commit()
