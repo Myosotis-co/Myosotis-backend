@@ -14,9 +14,12 @@ fi
 # Restore the backup using pg_restore
 BACKUP_FILE=$(find /docker-entrypoint-initdb.d/db/backup -name '*.backup'| head -1)
 echo "Backup file: $BACKUP_FILE"
+/usr/bin/psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE DATABASE $POSTGRES_TEST_DB;"
 if [ ! -z $BACKUP_FILE ] && [ -e $BACKUP_FILE ]; then 
     echo "[!>] Restoring database from cloned .backup file"
+    /usr/bin/psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE USER $POSTGRES_TEST_USER WITH PASSWORD '$POSTGRES_TEST_PASSWORD'; ALTER USER $POSTGRES_TEST_USER CREATEDB;"
     pg_restore -U postgres -d postgres $BACKUP_FILE
+    pg_restore -U postgres -d $POSTGRES_TEST_DB $BACKUP_FILE
     rm -rf /docker-entrypoint-initdb.d/db/backup/
 
 fi
