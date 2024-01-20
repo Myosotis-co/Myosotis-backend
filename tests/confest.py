@@ -1,3 +1,4 @@
+import os
 import pytest, asyncio
 from fastapi import Depends
 from fastapi.testclient import TestClient
@@ -7,13 +8,13 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import Session
+from dotenv import load_dotenv
 
-from app.database import SQLALCHEMY_DATABASE_URL
 from app.main import app
 from app.database import *
 
-
-url = str(SQLALCHEMY_DATABASE_URL + "_test")
+load_dotenv()
+url = f"postgresql+asyncpg://{os.environ.get('POSTGRES_TEST_USER')}:{os.environ.get('POSTGRES_TEST_PASSWORD')}@{os.environ.get('POSTGRES_TEST_HOST')}:{os.environ.get('DATABASE_PORT')}/{os.environ.get('POSTGRES_TEST_DB')}"
 _db_conn = create_async_engine(url)
 
 
