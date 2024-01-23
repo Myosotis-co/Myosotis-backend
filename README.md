@@ -24,7 +24,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
    Important: make sure you have env folders in bot /test and /development directories (ask keys from other team mates).
 
    ```shell
-    docker compose -p myosotis -f docker-compose.dev.yml up --build
+    docker compose -p myosotis -f docker-compose.dev.yml up --build -d
    ```
 
    To verify that the two images are running you can check with:
@@ -47,7 +47,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
       - Allure container
    
     ```shell
-    docker compose -p myosotis -f docker-compose.testing.yml up --build
+    docker compose -p myosotis -f docker-compose.testing.yml up --build -d
    ```
 
    To verify that the two images are running you can check with:
