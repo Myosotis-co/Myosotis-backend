@@ -28,23 +28,7 @@ async def list_messages_for_an_email(email):
 
         return parsed_json
     except Exception as e:
-        return f"Failed to get a list of messages for {email}: {e}"
-
-
-@router.get("/raw/{email}/{message_id}")
-async def get_original_email_message(email, message_id):
-    try:
-        conn = http.client.HTTPSConnection("mailsac.com")
-        headers = {"Mailsac-Key": MAILSAC_API_KEY}
-        conn.request("GET", f"/api/raw/{email}/{message_id}", headers=headers)
-
-        res = conn.getresponse()
-        data = res.read()
-        parsed_json = json.loads(data.decode("utf-8"))
-
-        return parsed_json
-    except Exception as e:
-        return f"Failed to get SMTP for {email}: {e}"
+        return {"error": f"Failed to get a list of messages for {email}. {e}"}
 
 
 @router.get("/addresses/{email}/messages/{message_id}")
@@ -62,23 +46,7 @@ async def get_email_metadata(email, message_id):
 
         return parsed_json
     except Exception as e:
-        return f"Failed to get metadata for {email}: {e}"
-
-
-@router.get("/text/{email}/{message_id}")
-async def get_email_message(email, message_id):
-    try:
-        conn = http.client.HTTPSConnection("mailsac.com")
-        headers = {"Mailsac-Key": MAILSAC_API_KEY}
-        conn.request("GET", f"/api/text/{email}/{message_id}", headers=headers)
-
-        res = conn.getresponse()
-        data = res.read()
-        parsed_json = json.loads(data.decode("utf-8"))
-
-        return parsed_json
-    except Exception as e:
-        return f"Failed to get message for {email}: {e}"
+        return {"error": f"Failed to get metadata for {email}. {e}"}
 
 
 @router.post("/create")
@@ -91,7 +59,7 @@ async def create_temp_email(
         await session.commit()
         return {"status": 201, "data": f"Temp email was created: {temp_email.email}"}
     except Exception as e:
-        return "Failed to create a temp email: " + str(e)
+        return {"error": f"Failed to create a temp email. {e}"}
 
 
 @router.get("/get/{temp_email_id}")
@@ -106,7 +74,9 @@ async def get_temp_email(
             status_code=404, detail=f"Temp email: {temp_email.email}  was not found"
         )
     except Exception as e:
-        return "Failed to get a temp email: " + str(e)
+        return {
+            "error": f"Failed to get a temp email {temp_email.email} with id:{temp_email_id}. {e}"
+        }
 
 
 @router.patch("/update/{temp_email_id}")
@@ -125,7 +95,9 @@ async def update_temp_email(
             status_code=404, detail=f"Temp email: {temp_email.email} is not found"
         )
     except Exception as e:
-        return "Failed to update temp email: " + str(e)
+        return {
+            "error": f"Failed to update temp email {temp_email.email} with id:{temp_email_id}. {e}"
+        }
 
 
 @router.delete("/delete/{temp_email_id}")
@@ -137,7 +109,7 @@ async def delete_temp_email(
         await session.commit()
         return {"status": 204, "data": "Temp email is deleted"}
     except Exception as e:
-        return "Failed to delete a temp email: " + str(e)
+        return {"error": f"Failed to delete a temp email with id:{temp_email_id}. {e}"}
 
 
 @router.get("/get_all")
@@ -152,4 +124,4 @@ async def get_temp_emails(
         )
         return temp_emails
     except Exception as e:
-        return "Failed to get temp emails: " + str(e)
+        return {"error": f"Failed to get temp emails. {e}"}
