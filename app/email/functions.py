@@ -42,8 +42,7 @@ async def generate_valid_temp_email():
     mailsac_temp_email = ""
     while is_owned:
         mailsac_temp_email = generate_random_mailsac_email()
-        response_data = await check_email_availability(mailsac_temp_email)
-        response_json = json.loads(response_data)
+        response_json = await check_email_availability(mailsac_temp_email)
         is_owned = response_json["owned"]
     return mailsac_temp_email
 

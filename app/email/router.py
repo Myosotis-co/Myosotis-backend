@@ -24,8 +24,9 @@ async def list_messages_for_an_email(email):
 
         res = conn.getresponse()
         data = res.read()
+        parsed_json = json.loads(data.decode("utf-8"))
 
-        return data.decode("utf-8")
+        return parsed_json
     except Exception as e:
         return f"Failed to get a list of messages for {email}: {e}"
 
@@ -39,8 +40,9 @@ async def get_original_email_message(email, message_id):
 
         res = conn.getresponse()
         data = res.read()
+        parsed_json = json.loads(data.decode("utf-8"))
 
-        return data.decode("utf-8")
+        return parsed_json
     except Exception as e:
         return f"Failed to get SMTP for {email}: {e}"
 
@@ -56,8 +58,9 @@ async def get_email_metadata(email, message_id):
 
         res = conn.getresponse()
         data = res.read()
+        parsed_json = json.loads(data.decode("utf-8"))
 
-        return data.decode("utf-8")
+        return parsed_json
     except Exception as e:
         return f"Failed to get metadata for {email}: {e}"
 
@@ -71,8 +74,9 @@ async def get_email_message(email, message_id):
 
         res = conn.getresponse()
         data = res.read()
+        parsed_json = json.loads(data.decode("utf-8"))
 
-        return data.decode("utf-8")
+        return parsed_json
     except Exception as e:
         return f"Failed to get message for {email}: {e}"
 
