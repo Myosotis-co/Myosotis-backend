@@ -32,7 +32,9 @@ async def check_email_availability(email):
 
         res = conn.getresponse()
         data = res.read()
-        return data.decode("utf-8")
+        parsed_json = json.loads(data.decode("utf-8"))
+
+        return parsed_json
     except Exception as e:
         return f"Failed to check email availability for {email}: {e}"
 
