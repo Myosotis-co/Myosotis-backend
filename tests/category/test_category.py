@@ -1,61 +1,44 @@
 import pytest
-from fastapi.testclient import TestClient
 
-from tests.confest import (
-    client,
-    get_test_db,
-    create_test_database,
-    url,
-    test_db_session as db,
-)
+from tests.confest import *
 from app.category.models import *
 
-# client = TestClient(app)
+pytestmark = pytest.mark.asyncio
 
 
 # Create Category
-test_category = {"user_id": 2, "temp_email_id": 2, "category_name": "Pytest data"}
-test_category_2 = {"user_id": 3, "temp_email_id": 3, "category_name": "Pytest data 2"}
+test_category = {"user_id": 2, "temp_email_id": 1, "category_name": "Pytest data"}
+test_category_2 = {"user_id": 3, "temp_email_id": 2, "category_name": "Pytest data 2"}
 
 
-# @pytest.fixture(scope="function")
-# @pytest.mark.asyncio
-# def test_create_category():
-#     try:
-#         response = next(client()).post("/category/create", json=test_category)
-#         assert response.status_code == 201
-#     finally:
+async def test_create_another_category(async_client: AsyncClient) -> None:
+    response = await async_client.post("/category/create", json=test_category_2)
+    assert response.status_code == 201
 
 
-class TestCategory:
-    def setup(self):
-        self.category_url = "/category"
-
-    @pytest.fixture(autouse=True)
-    def test_create_data(self, db):
-        db.add(test_category)
-        db.commit()
-        db.refresh(test_category)
-
-    def test_404(self, client, db):
-        response = client.get("/category")
-        assert response.status_code == 200
+async def test_create_category(async_client: AsyncClient) -> None:
+    response = await async_client.post("/category/create", json=test_category)
+    assert response.status_code == 201
 
 
-# @pytest.mark.asyncio
-# async def test_create_another_category():
-#     try:
-#         response = client.post("/category/create", json=test_category_2)
-#         assert response.status_code == 201
-#     finally:
-#         testing_session.rollback()
+async def test_get_category(async_client: AsyncClient) -> None:
+    response = await async_client.get("/category/get/1")
+    assert response.status_code == 200
+
 
 # # Get Category
 # @pytest.mark.asyncio
-# async def test_get_category():
-#     response = client.get("/category/get/1")
-#     assert response.status_code == 200
-#     assert response
+# @pytest.fixture
+# async def async_example_orm(async_db: AsyncSession) -> Category:
+#     category = Category(
+#         user_id=1,
+#         temp_email_id=1,
+#         category_name="Test category",
+#     )
+#     async_db.add(category)
+#     await async_db.commit()
+#     await async_db.refresh()
+#     return category
 
 
 # @pytest.mark.asyncio

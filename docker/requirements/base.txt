@@ -77,7 +77,6 @@ sqladmin==0.8.0
 SQLAlchemy==1.4.41
 sqlalchemy2-stubs==0.0.2a32
 sqlalchemy_database==0.1.0
-SQLAlchemy-Utils==0.41.1
 sqlmodel==0.0.8
 sqlmodelx==0.0.4
 starlette==0.22.0

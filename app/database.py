@@ -8,11 +8,17 @@ from app.config import settings
 
 SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}"
 
-engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
 Base = declarative_base()
+engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
 async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
-        yield session
+        try:
+            yield session
+        except:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
