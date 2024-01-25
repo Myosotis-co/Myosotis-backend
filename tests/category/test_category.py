@@ -1,14 +1,13 @@
 import pytest
 
-from tests.confest import *
+from tests.conftest import *
 from app.category.models import *
 
 pytestmark = pytest.mark.asyncio
 
-
 # Create Category
-test_category = {"user_id": 2, "temp_email_id": 1, "category_name": "Pytest data"}
-test_category_2 = {"user_id": 3, "temp_email_id": 2, "category_name": "Pytest data 2"}
+test_category = {"user_id": 2, "temp_email_id": 2, "category_name": "Pytest data"}
+test_category_2 = {"user_id": 3, "temp_email_id": 3, "category_name": "Pytest data 2"}
 
 
 async def test_create_another_category(async_client: AsyncClient) -> None:

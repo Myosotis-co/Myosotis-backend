@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 from sqlalchemy.future import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemyseed import load_entities_from_csv, Seeder
 from fastapi_users.password import PasswordHelper
 from passlib.context import CryptContext
@@ -52,11 +53,11 @@ def hash_password(entities):
     return entities
 
 
-async def database_seeding(db):
-    await create_table(db, "seeder_files/roles.csv", Role)
-    await create_table(db, "seeder_files/users.csv", User)
-    await create_table(db, "seeder_files/temp_emails.csv", TempEmail)
-    await create_table(db, "seeder_files/categories.csv", Category)
-    await create_table(db, "seeder_files/applications.csv", Application)
-    await create_table(db, "seeder_files/message_types.csv", Message_Type)
-    await create_table(db, "seeder_files/messages.csv", Message)
+async def database_seeding(session: AsyncSession):
+    await create_table(session, "seeder_files/roles.csv", Role)
+    await create_table(session, "seeder_files/users.csv", User)
+    await create_table(session, "seeder_files/temp_emails.csv", TempEmail)
+    await create_table(session, "seeder_files/categories.csv", Category)
+    await create_table(session, "seeder_files/applications.csv", Application)
+    await create_table(session, "seeder_files/message_types.csv", Message_Type)
+    await create_table(session, "seeder_files/messages.csv", Message)

@@ -3,6 +3,7 @@ import pytest, asyncio
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import NullPool
 from dotenv import load_dotenv
 from httpx import AsyncClient
 
@@ -12,9 +13,11 @@ from app.db_manager.seeder import database_seeding
 from app.db_manager.db_manage import database_emptying
 
 load_dotenv()
-TEST_SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://{os.environ.get('POSTGRES_TEST_USER')}:{os.environ.get('POSTGRES_TEST_PASSWORD')}@{os.environ.get('POSTGRES_TEST_HOST')}:{os.environ.get('DATABASE_PORT')}/{os.environ.get('POSTGRES_TEST_DB')}"
+# TEST_SQLALCHEMY_DATABASE_URL = f"postgresql+asyncpg://{os.environ.get('POSTGRES_TEST_USER')}:{os.environ.get('POSTGRES_TEST_PASSWORD')}@{os.environ.get('POSTGRES_TEST_HOST')}:{os.environ.get('DATABASE_PORT')}/{os.environ.get('POSTGRES_TEST_DB')}"
 TEST_SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL
-async_engine = create_async_engine(TEST_SQLALCHEMY_DATABASE_URL, echo=True)
+async_engine = create_async_engine(TEST_SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
+async_session_maker = sessionmaker(async_engine, class_=AsyncSession, expire_on_commit=False)
+
 
 
 @pytest.fixture(scope="session")
@@ -24,12 +27,11 @@ async def async_db_engine():
 
     yield async_engine
 
-    # No dropping for now
-    # async with async_engine.begin() as conn:
-    #     await conn.run_sync(Base.metadata.drop_all)
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 async def async_db(async_db_engine):
     async_session = sessionmaker(
         expire_on_commit=False,
@@ -38,12 +40,14 @@ async def async_db(async_db_engine):
         bind=async_db_engine,
         class_=AsyncSession,
     )
+
     async with async_session() as session:
+        await database_seeding(session=session)
         await session.begin()
-        try:
-            yield session
-        finally:
-            await session.close()
+        yield session
+        # await database_emptying(session=session)
+        # await session.rollback()
+        # await session.close()
 
 
 @pytest.fixture(scope="session")

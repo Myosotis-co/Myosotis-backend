@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_async_session
 
 
-async def database_emptying(session: AsyncSession = Depends(get_async_session)):
+async def database_emptying(session: AsyncSession):
     for table in reversed(Base.metadata.sorted_tables):
         await session.execute(f"TRUNCATE {table.name} CASCADE;")
         seq_name = table.name + "_id_seq"
