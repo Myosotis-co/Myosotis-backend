@@ -49,6 +49,24 @@ async def get_email_metadata(email, message_id):
         return {"error": f"Failed to get metadata for {email}. {e}"}
 
 
+@router.get("/addresses/{email}/messages/{message_id}/formatted_json")
+async def get_formatted_email_metadata(email, message_id):
+    try:
+        metadata = await get_email_metadata(email, message_id)
+        formatted_metadata = {
+            "message_id": metadata["_id"],
+            "from_name": metadata["from"][0]["name"],
+            "from_address": metadata["from"][0]["address"],
+            "from_domain": metadata["domain"],
+            "subject": metadata["subject"],
+            "date_received": metadata["received"],
+            "links": metadata["links"],
+        }
+        return formatted_metadata
+    except Exception as e:
+        return {"error": f"Failed to format original metadata for {email}. {e}"}
+
+
 @router.post("/create")
 async def create_temp_email(
     session: AsyncSession = Depends(get_async_session),
