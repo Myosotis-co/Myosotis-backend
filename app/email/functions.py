@@ -62,17 +62,3 @@ async def create_mailsac_public_email():
         return temp_email_create
     except Exception as e:
         return f"Failed to fetch email: {e}"
-
-
-async def get_formatted_email_metadata(email, message_id):
-    try:
-        metadata = get_email_metadata(email, message_id)
-        formatted_metadata = {
-            "from": metadata["from"],
-            "subject": metadata["subject"],
-            "date": metadata["date"],
-            "text": metadata["text"],
-        }
-        return formatted_metadata
-    except Exception as e:
-        return {"error": f"Failed to format original metadata for {email}. {e}"}
