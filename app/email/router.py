@@ -31,6 +31,40 @@ async def list_messages_for_an_email(email):
         return {"error": f"Failed to get a list of messages for {email}. {e}"}
 
 
+@router.get("/body/{email}/{message_id}")
+async def get_message_html_body_no_links(email, message_id):
+    try:
+        conn = http.client.HTTPSConnection("mailsac.com")
+        headers = {"Mailsac-Key": MAILSAC_API_KEY}
+        conn.request("GET", f"/api/body/{email}/{message_id}", headers=headers)
+
+        res = conn.getresponse()
+        data = res.read()
+        # parsed_json = json.loads(data.decode("utf-8"))
+
+        # return parsed_json
+        return data.decode("utf-8")
+    except Exception as e:
+        return {"error": f"Failed to get sanitazed html body for {email}. {e}"}
+
+
+@router.get("/dirty/{email}/{message_id}")
+async def get_message_html_body_with_links(email, message_id):
+    try:
+        conn = http.client.HTTPSConnection("mailsac.com")
+        headers = {"Mailsac-Key": MAILSAC_API_KEY}
+        conn.request("GET", f"/api/dirty/{email}/{message_id}", headers=headers)
+
+        res = conn.getresponse()
+        data = res.read()
+        # parsed_json = json.loads(data.decode("utf-8"))
+
+        # return parsed_json
+        return data.decode("utf-8")
+    except Exception as e:
+        return {"error": f"Failed to get dirty html body for {email}. {e}"}
+
+
 @router.get("/addresses/{email}/messages/{message_id}")
 async def get_email_metadata(email, message_id):
     try:
