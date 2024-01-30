@@ -1,6 +1,9 @@
 name: Integration-test
 
 on:
+  push:
+    branches:
+      - '*'
   pull_request:
     branches: ["main"]
 
@@ -83,7 +86,16 @@ jobs:
           allure_results: tests/allure-results
           allure_report: tests/allure-report
           allure_history: allure-history 
+          report_url: https://meek-florentine-a03d43.netlify.app
           keep_reports: 20 # Specify the number of previous reports to keep
+      
+      - name: Publish
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=allure-history --functions=functions
+        env:
+          NETLIFY_SITE_ID:  56288579-1cf4-478f-bfe4-73a565df2f0c
+          NETLIFY_AUTH_TOKEN: nfp_se4DT28bsNY1k7Fc7UgYhUQF4Z5cZJWceaa4
 
       - name: Deploy report to testing-result-pages branch
         if: always()
