@@ -91,6 +91,7 @@ jobs:
       
       - name: Publish
         uses: netlify/actions/cli@master
+        if: success() || failure()
         with:
           args: deploy --dir=allure-history --functions=functions
         env:
