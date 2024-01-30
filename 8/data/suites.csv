@@ -1,4 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Mon Jan 29 22:37:28 GMT 2024","Mon Jan 29 22:37:28 GMT 2024","0","tests","test_main","","","","test_loh",""
-"passed","Mon Jan 29 22:37:27 GMT 2024","Mon Jan 29 22:37:27 GMT 2024","0","tests","test_main","","","","test_email",""
-"passed","Mon Jan 29 22:37:28 GMT 2024","Mon Jan 29 22:37:28 GMT 2024","0","tests","test_main","","","","test_good",""
