@@ -93,7 +93,7 @@ jobs:
         uses: netlify/actions/cli@master
         if: success() || failure()
         with:
-          args: deploy --dir=allure-history --functions=functions
+          args: deploy --dir=allure-history --prod --functions=functions
         env:
           NETLIFY_SITE_ID:  56288579-1cf4-478f-bfe4-73a565df2f0c
           NETLIFY_AUTH_TOKEN: nfp_se4DT28bsNY1k7Fc7UgYhUQF4Z5cZJWceaa4
