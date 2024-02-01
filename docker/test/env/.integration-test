@@ -1,5 +1,4 @@
-
-POSTGRES_HOST=db
+POSTGRES_HOST=localhost
 POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
@@ -9,5 +8,6 @@ CLIENT_ORIGIN=http://localhost:3000
 
 GIT_REPO=github.com/ZinnurovArtur/Deletemehere-backup.git
 
-MAILSAC_KEY="k_ct9W7QW7n1BRZocC75c8JzQjp5e05pj4g5a59"
-MAILSAC_BASE_URL = "mailsac.com"
+MAILSAC_KEY="key"
+MYOSOTIS_PRIVATE_DOMAIN="private_domain"
+MAILSAC_BASE_URL="mailsac.com"

@@ -1,36 +1,70 @@
-# About DeleteMeHere
+# About Myosotis
 
 In a world where almost every online service requires you to create an account, it's easy to lose track of all the websites and apps you've signed up for. Many of these services offer trial periods and if not monitored closely, one could end up with a long list of unwanted subscriptions or even worse, surprise charges on your credit card.
 
-This is where DeleteMeHere comes in. Our application is designed to empower users to take control of their digital footprint. It offers a simple and efficient way to view and manage all your online accounts in one place.
+This is where Myosotis comes in. Our application is designed to empower users to take control of their digital footprint. It offers a simple and efficient way to view and manage all your online accounts in one place.
 
 ## Setup
 
-1. Install nvm and Node 18.
+1. Install Node 18 (comes with npm).
 
-```shell
-   docker ps
-```
-
-2. Clone the project: `git clone https://github.com/ZinnurovArtur/DeleteMeHere.git`
+2. Clone the project: `git clone https://github.com/ZinnurovArtur/Myosotis-backend.git`
 
 3. `cd` into the directory you checked the project code out into.
 
-4. Start docker and initiate Redis:
+4. Start docker:
+
+   ### Development containers
+      Development containers only consist of:
+      * Database container
+      * Application container
+      * Pgadmin container
+        
+
+   Important: make sure you have env folders in bot /test and /development directories (ask keys from other team mates).
+
    ```shell
-   docker compose up --build
+    docker compose -p myosotis -f docker-compose.dev.yml up --build
    ```
+
    To verify that the two images are running you can check with:
    ```shell
    docker ps
    ```
+
    Should look like this:
    ```
    CONTAINER ID     IMAGE
    9d5416dd7273     deletemehere_app
    123304c59a4b     postgres:15
    ```
-5. To run the server and see all FastAPI endpoints go to localhost:8008/docs
+
+    ### Testing containers
+      Testing containers only consist of:
+      - Database container
+      - Application container
+      - Pgadmin container
+      - Allure container
+   
+    ```shell
+    docker compose -p myosotis -f docker-compose.testing.yml up --build
+   ```
+
+   To verify that the two images are running you can check with:
+   ```shell
+   docker ps
+   ```
+
+   Should look like this:
+   ```
+     CONTAINER ID   IMAGE                               
+      8defca6e66fc   myosotis-app         
+      4b03948a858f   dpage/pgadmin4                      
+      d54c9f7ccdbe   frankescobar/allure-docker-service   
+      17c7d3e635e0   myosotis-db   
+   ```
+
+6. To run the server and see all FastAPI endpoints go to localhost:8008/docs
 
 ## Database setup
 
@@ -45,7 +79,7 @@ This is where DeleteMeHere comes in. Our application is designed to empower user
 3. Use your own git repository for storing backup and put it to the `env-docker` file as the `GIT_REPO`
 4. In the project `docker/db` create the `git.token` file
 5. Put your token into this file
-6.  Run ```docker compose up --build```
+6.  Run ```docker compose up --build -d``` ( -d means in detached mode, so you can continue work in the same terminal)
 
 ## Using VSCode for development
 1. Ensure container is running
