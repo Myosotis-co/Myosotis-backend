@@ -35,7 +35,14 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
     ):
+        verify_link = f""
+        """send_verify_to_email(verify_link, user.email)
+        """
         print(f"Verification requested for user {user.id}. Verification token: {token}")
+    async def on_after_verify(
+        self, user: User, request: Optional[Request] = None
+    ):
+        print(f"User {user.id} has been verified")
 
     async def create(
         self,

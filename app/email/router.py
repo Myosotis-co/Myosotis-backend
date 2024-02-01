@@ -9,11 +9,42 @@ from app.email.models import TempEmail as TempEmail_model
 from app.email.functions import *
 from app.crud_manager import *
 
+from starlette.responses import JSONResponse
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
+
 router = APIRouter(tags=["Email"])
 
 MAILSAC_API_KEY = settings.MAILSAC_KEY
 MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
 
+
+conf = ConnectionConfig(
+    MAIL_USERNAME = "SENDER EMAIL", #Ask for config
+    MAIL_PASSWORD = "GOD SUPER SECURE PASSWORD",  #Need to do 2 step verification to work
+    MAIL_FROM = "SENDER EMAIL",
+    MAIL_PORT = 587,
+    MAIL_SERVER = "smtp.gmail.com",
+    MAIL_STARTTLS = True,
+    MAIL_SSL_TLS = False,
+    USE_CREDENTIALS = True,
+)
+
+@router.post("/email")
+async def simple_send(email: EmailSchema) -> JSONResponse:
+    try:
+        html = """<p>Hi this test mail, thanks for using Fastapi-mail</p> """
+
+        message = MessageSchema(
+            subject="Fastapi-Mail module",
+            recipients=email.dict().get("email"),
+            body=html,
+            subtype=MessageType.html)
+
+        fm = FastMail(conf)
+        await fm.send_message(message)
+        return JSONResponse(status_code=200, content={"message": "email has been sent"})
+    except Exception as e:
+        return f"Failed to send message {email}: {e}"
 
 @router.get("/addresses/{email}/messages")
 async def list_messages_for_an_email(email):
