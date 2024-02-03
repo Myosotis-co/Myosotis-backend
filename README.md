@@ -24,7 +24,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
    Important: make sure you have env folders in bot /test and /development directories (ask keys from other team mates).
 
    ```shell
-    docker compose -p myosotis -f docker-compose.dev.yml up --build
+    docker compose -p myosotis -f docker-compose.dev.yml up --build -d
    ```
 
    To verify that the two images are running you can check with:
@@ -47,7 +47,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
       - Allure container
    
     ```shell
-    docker compose -p myosotis -f docker-compose.testing.yml up --build
+    docker compose -p myosotis -f docker-compose.testing.yml up --build -d
    ```
 
    To verify that the two images are running you can check with:
@@ -74,7 +74,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
 
 ## Initialize database through git backup
 
-1. Remove previous volumes using `docker compose down --volumes`
+1. Remove previous volumes using `docker compose -p myosotis -f docker-compose.dev.yml down --volumes`
 2. Generate personal token in settings
 3. Use your own git repository for storing backup and put it to the `env-docker` file as the `GIT_REPO`
 4. In the project `docker/db` create the `git.token` file
