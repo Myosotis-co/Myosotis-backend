@@ -32,7 +32,9 @@ async def check_email_availability(email):
 
         res = conn.getresponse()
         data = res.read()
-        return data.decode("utf-8")
+        parsed_json = json.loads(data.decode("utf-8"))
+
+        return parsed_json
     except Exception as e:
         return f"Failed to check email availability for {email}: {e}"
 
@@ -42,8 +44,7 @@ async def generate_valid_temp_email():
     mailsac_temp_email = ""
     while is_owned:
         mailsac_temp_email = generate_random_mailsac_email()
-        response_data = await check_email_availability(mailsac_temp_email)
-        response_json = json.loads(response_data)
+        response_json = await check_email_availability(mailsac_temp_email)
         is_owned = response_json["owned"]
     return mailsac_temp_email
 
