@@ -26,7 +26,7 @@ def get_jwt_strategy():
 # Used for auhtentication through 3rd party apps and receiving an access token.
 # Warning!: Keep ID and SECRET very secure. Should be encrypted into the future.
 google_oauth_client = GoogleOAuth2("CLIENT_ID", "CLIENT_SECRET")
-github_oauth_client = GitHubOAuth2("ee229338dd853d5a0d5f", "c02ba600b6bba21567f809ac4365febe3fb4960a")
+github_oauth_client = GitHubOAuth2("CLIENT_ID", "CLIENT_SECRET")
 
 
 auth_backend = AuthenticationBackend(
