@@ -19,9 +19,9 @@ MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
 
 
 conf = ConnectionConfig(
-    MAIL_USERNAME = "SENDER EMAIL", #Ask for config
-    MAIL_PASSWORD = "GOD SUPER SECURE PASSWORD",  #Need to do 2 step verification to work
-    MAIL_FROM = "SENDER EMAIL",
+    MAIL_USERNAME = "secretpizdez@gmail.com",
+    MAIL_PASSWORD = "cfzt cnsy cwxr wtdz",
+    MAIL_FROM = "secretpizdez@gmail.com",
     MAIL_PORT = 587,
     MAIL_SERVER = "smtp.gmail.com",
     MAIL_STARTTLS = True,
@@ -30,21 +30,22 @@ conf = ConnectionConfig(
 )
 
 @router.post("/email")
-async def simple_send(email: EmailSchema) -> JSONResponse:
+async def simple_send(email: EmailSchema, context: str) -> JSONResponse:
     try:
-        html = """<p>Hi this test mail, thanks for using Fastapi-mail</p> """
-
+        html = "<p>Hi this test mail, thanks for using Fastapi-mail</p> "
+        html = "<p>" + context + "<p>"
         message = MessageSchema(
             subject="Fastapi-Mail module",
             recipients=email.dict().get("email"),
             body=html,
             subtype=MessageType.html)
-
+        
         fm = FastMail(conf)
         await fm.send_message(message)
         return JSONResponse(status_code=200, content={"message": "email has been sent"})
     except Exception as e:
         return f"Failed to send message {email}: {e}"
+
 
 @router.get("/addresses/{email}/messages")
 async def list_messages_for_an_email(email):
