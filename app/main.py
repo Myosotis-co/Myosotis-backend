@@ -62,7 +62,7 @@ app.include_router(
         google_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url="http://localhost:8000/auth/google/callback",
+        redirect_url="http://localhost:8000/auth/github/callback",
     ),
     prefix="/auth/google",
     tags=["Auth"],
@@ -100,14 +100,17 @@ app.include_router(category_router, prefix="/category", tags=["Category"])
 app.include_router(application_router, prefix="/application", tags=["Application"])
 app.include_router(message_router, prefix="/message", tags=["Message"])
 
-current_user = fastapi_users.current_user()
+current_user = fastapi_users.current_user(active=True)
 
 
 # Added for test
-@app.get("/protected-route")
+@app.get("/protected-route/currentUserName")
 def protected_route(user: User = Depends(current_user)):
     return f"Hello, {user.name}"
 
+@app.get("/protected-route/currentUserEmail")
+def protected_route(user: User = Depends(current_user)):
+    return {user.email}
 
 @app.get("/docs", include_in_schema=False)
 def custom_swagger_ui_html_cdn():

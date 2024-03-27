@@ -1,8 +1,14 @@
 import datetime
 from pydantic import BaseModel
 
+from typing import List
+
 from app.category.schema import Category
 
+from pydantic import EmailStr
+
+class EmailSchema(BaseModel):
+    email: List[EmailStr]
 
 class TempEmailBase(BaseModel):
     email: str

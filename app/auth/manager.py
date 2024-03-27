@@ -1,4 +1,6 @@
 from typing import Optional
+from app.email.router import simple_send
+from app.email.schema import EmailSchema
 from pydantic import BaseModel
 from fastapi import Depends, Request, status
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
@@ -6,6 +8,8 @@ from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, s
 from app.auth.functions import get_user_db
 from app.auth.models import User
 from fastapi.responses import JSONResponse
+
+from typing import List
 
 SECRET = "verysecuresecretpisdec"
 
@@ -20,11 +24,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        """
-        Method called after a user has registered.
-        :param user: User object representing the registered user.
-        :param request: Optional Request object representing the HTTP request.
-        """
+        
         print(f"User {user.id} has registered.")
 
     async def on_after_forgot_password(
@@ -35,7 +35,20 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
     ):
+
+        print(f"Trying to send verification code...")
+        try:
+            email_instance = EmailSchema(email=[user.email])
+            await simple_send(email_instance, token)
+        except Exception as e:
+            print(f"Failed to send message {user.email}: {e}")
+        
         print(f"Verification requested for user {user.id}. Verification token: {token}")
+
+    async def on_after_verify(
+        self, user: User, request: Optional[Request] = None
+    ):
+        print(f"User {user.id} has been verified")
 
     async def create(
         self,
@@ -95,7 +108,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         based on email.
         :return: UserOAuthAccount object representing the user's OAuth account.
         """
-
+        
         oauth_account_dict = {
             "oauth_name": oauth_name,
             "access_token": access_token,
