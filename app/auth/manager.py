@@ -24,7 +24,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        
+
         print(f"User {user.id} has registered.")
 
     async def on_after_forgot_password(
@@ -42,12 +42,10 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             await simple_send(email_instance, token)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")
-        
+
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
-    async def on_after_verify(
-        self, user: User, request: Optional[Request] = None
-    ):
+    async def on_after_verify(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has been verified")
 
     async def create(
@@ -108,7 +106,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         based on email.
         :return: UserOAuthAccount object representing the user's OAuth account.
         """
-        
+
         oauth_account_dict = {
             "oauth_name": oauth_name,
             "access_token": access_token,
