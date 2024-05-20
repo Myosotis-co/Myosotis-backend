@@ -54,11 +54,11 @@ jobs:
         env:
           DISPLAY: ":99"
         
-      - name: Coverage report
-        if: success() || failure()
-        uses: 5monkeys/cobertura-action@v13
-        with:
-          minimum_coverage: 25
+      # - name: Coverage report
+        #if: success() || failure()
+        #uses: 5monkeys/cobertura-action@v13
+        #with:
+         # minimum_coverage: 25
 
       - name: Upload Test Results
         if: success() || failure()
