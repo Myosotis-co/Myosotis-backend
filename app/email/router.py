@@ -19,15 +19,16 @@ MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
 
 
 conf = ConnectionConfig(
-    MAIL_USERNAME = "secretpizdez@gmail.com",
-    MAIL_PASSWORD = "cfzt cnsy cwxr wtdz",
-    MAIL_FROM = "secretpizdez@gmail.com",
-    MAIL_PORT = 587,
-    MAIL_SERVER = "smtp.gmail.com",
-    MAIL_STARTTLS = True,
-    MAIL_SSL_TLS = False,
-    USE_CREDENTIALS = True,
+    MAIL_USERNAME="secretpizdez@gmail.com",
+    MAIL_PASSWORD="cfzt cnsy cwxr wtdz",
+    MAIL_FROM="secretpizdez@gmail.com",
+    MAIL_PORT=587,
+    MAIL_SERVER="smtp.gmail.com",
+    MAIL_STARTTLS=True,
+    MAIL_SSL_TLS=False,
+    USE_CREDENTIALS=True,
 )
+
 
 @router.post("/email")
 async def simple_send(email: EmailSchema, context: str) -> JSONResponse:
@@ -38,8 +39,9 @@ async def simple_send(email: EmailSchema, context: str) -> JSONResponse:
             subject="Fastapi-Mail module",
             recipients=email.dict().get("email"),
             body=html,
-            subtype=MessageType.html)
-        
+            subtype=MessageType.html,
+        )
+
         fm = FastMail(conf)
         await fm.send_message(message)
         return JSONResponse(status_code=200, content={"message": "email has been sent"})
