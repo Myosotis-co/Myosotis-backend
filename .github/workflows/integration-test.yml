@@ -101,30 +101,30 @@ jobs:
           PUBLISH_BRANCH: testing-result-pages
           PUBLISH_DIR: allure-history
 
-  test-result-page:
-    if: success() || failure()
-    needs: pre-deploy-test
+ # test-result-page:
+   # if: success() || failure()
+   # needs: pre-deploy-test
 
-    permissions:
-      pages: write      
-      id-token: write
-      contents: read  
+   # permissions:
+   #   pages: write      
+    #  id-token: write
+    #  contents: read  
 
-    environment:
-      name: test-result-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  #  environment:
+    #  name: test-result-pages
+     # url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download Allure Results
-      uses: actions/download-artifact@v2
-      with:
-        name: allure-report
-        path: tests/allure-report
-        token: ${{ secrets.GITHUB_TOKEN }}
+   # runs-on: ubuntu-latest
+   # steps:
+   # - name: Download Allure Results
+    #  uses: actions/download-artifact@v2
+    #  with:
+     #   name: allure-report
+     #   path: tests/allure-report
+      #  token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Deploy to GitHub Pages
-      id: deployment
-      with:
-        artifact_name: allure-report
-      uses: actions/deploy-pages@v2 
+    #- name: Deploy to GitHub Pages
+    #  id: deployment
+    #  with:
+      #  artifact_name: allure-report
+     # uses: actions/deploy-pages@v2 
