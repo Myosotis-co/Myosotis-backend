@@ -19,6 +19,7 @@ class Application(ApplicationBase):
     id: int
     category_id: int
     website_url: str
+    application_name: str
     deletion_date: datetime.datetime
     created_at: datetime.datetime
     updated_at: datetime.datetime
