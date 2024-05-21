@@ -7,8 +7,10 @@ from app.category.schema import Category
 
 from pydantic import EmailStr
 
+
 class EmailSchema(BaseModel):
     email: List[EmailStr]
+
 
 class TempEmailBase(BaseModel):
     email: str

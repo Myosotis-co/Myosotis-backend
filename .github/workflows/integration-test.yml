@@ -54,11 +54,11 @@ jobs:
         env:
           DISPLAY: ":99"
         
-      - name: Coverage report
-        if: success() || failure()
-        uses: 5monkeys/cobertura-action@v13
-        with:
-          minimum_coverage: 25
+      # - name: Coverage report
+        #if: success() || failure()
+        #uses: 5monkeys/cobertura-action@v13
+        #with:
+         # minimum_coverage: 25
 
       - name: Upload Test Results
         if: success() || failure()
@@ -86,45 +86,45 @@ jobs:
           gh_pages: testing-result-pages
           keep_reports: 20 # Specify the number of previous reports to keep
       
-      - name: Upload an artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v2
-        if: success() || failure()
-        with:
-          name: allure-report
-          path: tests/allure-report
+      #- name: Upload an artifact for GitHub Pages
+       # uses: actions/upload-pages-artifact@v2
+        #if: success() || failure()
+        #with:
+         # name: allure-report
+          #path: tests/allure-report
 
-      - name: Deploy report to testing-result-pages branch
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: testing-result-pages
-          PUBLISH_DIR: allure-history
+     # - name: Deploy report to testing-result-pages branch
+      #  if: always()
+       # uses: peaceiris/actions-gh-pages@v3
+        #with:
+         # PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          #PUBLISH_BRANCH: testing-result-pages
+          #PUBLISH_DIR: allure-history
 
-  test-result-page:
-    if: success() || failure()
-    needs: pre-deploy-test
+ # test-result-page:
+   # if: success() || failure()
+   # needs: pre-deploy-test
 
-    permissions:
-      pages: write      
-      id-token: write
-      contents: read  
+   # permissions:
+   #   pages: write      
+    #  id-token: write
+    #  contents: read  
 
-    environment:
-      name: test-result-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  #  environment:
+    #  name: test-result-pages
+     # url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download Allure Results
-      uses: actions/download-artifact@v2
-      with:
-        name: allure-report
-        path: tests/allure-report
-        token: ${{ secrets.GITHUB_TOKEN }}
+   # runs-on: ubuntu-latest
+   # steps:
+   # - name: Download Allure Results
+    #  uses: actions/download-artifact@v2
+    #  with:
+     #   name: allure-report
+     #   path: tests/allure-report
+      #  token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Deploy to GitHub Pages
-      id: deployment
-      with:
-        artifact_name: allure-report
-      uses: actions/deploy-pages@v2 
+    #- name: Deploy to GitHub Pages
+    #  id: deployment
+    #  with:
+      #  artifact_name: allure-report
+     # uses: actions/deploy-pages@v2 
