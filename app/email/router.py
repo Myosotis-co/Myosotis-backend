@@ -32,14 +32,14 @@ conf = ConnectionConfig(
 @router.post("/email")
 async def simple_send(email: EmailSchema, context: str) -> JSONResponse:
     try:
-        html = "<p>Hi this test mail, thanks for using Fastapi-mail</p> "
-        html = "<p>" + context + "<p>"
+
+        html = "<p>Hi this test mail, thanks for using Fastapi-mail</p> " + context
         message = MessageSchema(
             subject="Fastapi-Mail module",
             recipients=email.dict().get("email"),
             body=html,
             subtype=MessageType.html)
-        
+                
         fm = FastMail(conf)
         await fm.send_message(message)
         return JSONResponse(status_code=200, content={"message": "email has been sent"})
