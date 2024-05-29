@@ -35,8 +35,7 @@ app = FastAPI(docs_url=None, title="Myosotis")
 app.add_middleware(DBSessionMiddleware, db_url=SQLALCHEMY_DATABASE_URL)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-origins = [ "http://localhost:3001",
-    "http://localhost:8080","localhost"]
+origins = [settings.CLIENT_ORIGIN]
 
 app.add_middleware(
     CORSMiddleware,
