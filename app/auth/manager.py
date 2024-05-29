@@ -58,7 +58,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             await simple_send(email_instance, full_url)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")
-        
+
         print(f"Verification requested for user {user.id}. Verification token: {token}")
     
 
@@ -127,7 +127,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         based on email.
         :return: UserOAuthAccount object representing the user's OAuth account.
         """
-        
+
         oauth_account_dict = {
             "oauth_name": oauth_name,
             "access_token": access_token,

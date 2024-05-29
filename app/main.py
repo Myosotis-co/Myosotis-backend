@@ -9,7 +9,7 @@ from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 
 from app.auth.models import User
-from app.auth.schema import UserCreate, UserRead
+from app.auth.schema import UserCreate, UserRead, UserUpdate
 from app.config import settings
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
@@ -97,6 +97,12 @@ app.include_router(
     tags=["Auth"],
 )
 
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+
 app.include_router(seeder_router, prefix="/seeder", tags=["Seeder"])
 app.include_router(category_router, prefix="/category", tags=["Category"])
 app.include_router(application_router, prefix="/application", tags=["Application"])
@@ -110,9 +116,11 @@ current_user = fastapi_users.current_user(active=True)
 def protected_route(user: User = Depends(current_user)):
     return f"Hello, {user.name}"
 
+
 @app.get("/protected-route/currentUserEmail")
 def protected_route(user: User = Depends(current_user)):
     return {user.email}
+
 
 @app.get("/docs", include_in_schema=False)
 def custom_swagger_ui_html_cdn():
