@@ -139,7 +139,13 @@ async def create_temp_email(
         temp_email = await create_mailsac_public_email()
         await service_add_model(temp_email, session)
         await session.commit()
-        return {"status": 201, "data": f"Temp email was created: {temp_email.email}"}
+        return {
+            "status": 201,
+            "data": {
+                "message": f"Temp email was created: {temp_email.email}",
+                "temp_email": {temp_email.email},
+            },
+        }
     except Exception as e:
         return {"error": f"Failed to create a temp email. {e}"}
 
