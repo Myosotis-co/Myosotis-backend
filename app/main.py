@@ -35,8 +35,7 @@ app = FastAPI(docs_url=None, title="Myosotis")
 app.add_middleware(DBSessionMiddleware, db_url=SQLALCHEMY_DATABASE_URL)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-origins = [ "http://localhost:3001",
-    "http://localhost:8080","localhost"]
+origins = [settings.CLIENT_ORIGIN]
 
 app.add_middleware(
     CORSMiddleware,
@@ -63,7 +62,8 @@ app.include_router(
         google_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url="http://localhost:8000/auth/github/callback",
+        redirect_url="http://localhost:3001/callback_google",
+        
     ),
     prefix="/auth/google",
     tags=["Auth"],
@@ -74,7 +74,8 @@ app.include_router(
         github_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url="http://localhost:8000/auth/github/callback",
+        redirect_url="http://localhost:3001/callback_git",
+        
     ),
     prefix="/auth/github",
     tags=["Auth"],

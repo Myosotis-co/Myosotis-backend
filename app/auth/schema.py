@@ -56,7 +56,7 @@ class UserUpdate(CreateUpdateDictModel):
     email: str
     name: str
     password: str
-    is_deleted: str
+    is_deleted: bool
 
 
 class UserBase(BaseModel):

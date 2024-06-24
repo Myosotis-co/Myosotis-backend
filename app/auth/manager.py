@@ -2,14 +2,17 @@ from typing import Optional
 from app.email.router import simple_send
 from app.email.schema import EmailSchema
 from pydantic import BaseModel
-from fastapi import Depends, Request, status
+from fastapi import Depends, Request, Response, status
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
+from fastapi.responses import RedirectResponse
 
 from app.auth.functions import get_user_db
 from app.auth.models import User
 from fastapi.responses import JSONResponse
 
 from typing import List
+
+import urllib.parse
 
 SECRET = "verysecuresecretpisdec"
 
@@ -24,8 +27,15 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-
-        print(f"User {user.id} has registered.")
+        print("AAAAAA")
+        
+    async def on_after_login(
+        self,
+        user: User,
+        request: Optional[Request] = None,
+        response: Optional[Response] = None,
+    ):
+        print("BBBBB")
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None
@@ -38,14 +48,25 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
         print(f"Trying to send verification code...")
         try:
+            base_url = "http://localhost:3001/verify"
+
+            encoded_code = urllib.parse.quote(token)
+
+            full_url = f"{base_url}?code={encoded_code}"
+
             email_instance = EmailSchema(email=[user.email])
-            await simple_send(email_instance, token)
+            await simple_send(email_instance, full_url)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")
 
         print(f"Verification requested for user {user.id}. Verification token: {token}")
+    
 
-    async def on_after_verify(self, user: User, request: Optional[Request] = None):
+
+
+    async def on_after_verify(
+        self, user: User, request: Optional[Request] = None
+    ):
         print(f"User {user.id} has been verified")
 
     async def create(
