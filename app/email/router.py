@@ -143,7 +143,8 @@ async def create_temp_email(
             "status": 201,
             "data": {
                 "message": f"Temp email was created: {temp_email.email}",
-                "temp_email": {temp_email.email},
+                "temp_email": temp_email.email,
+                "temp_email_id": temp_email.id,
             },
         }
     except Exception as e:
