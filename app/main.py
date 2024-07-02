@@ -9,7 +9,7 @@ from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 
 from app.auth.models import User
-from app.auth.schema import UserCreate, UserRead
+from app.auth.schema import UserCreate, UserRead, UserUpdate
 from app.config import settings
 from dotenv import load_dotenv
 from fastapi_sqlalchemy import DBSessionMiddleware
@@ -62,7 +62,8 @@ app.include_router(
         google_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url="http://localhost:8000/auth/github/callback",
+        redirect_url="http://localhost:3001/callback_google",
+        
     ),
     prefix="/auth/google",
     tags=["Auth"],
@@ -73,7 +74,8 @@ app.include_router(
         github_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url="http://localhost:8000/auth/github/callback",
+        redirect_url="http://localhost:3001/callback_git",
+        
     ),
     prefix="/auth/github",
     tags=["Auth"],
@@ -93,6 +95,12 @@ app.include_router(
     fastapi_users.get_reset_password_router(),
     prefix="/auth",
     tags=["Auth"],
+)
+
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
 )
 
 app.include_router(seeder_router, prefix="/seeder", tags=["Seeder"])
