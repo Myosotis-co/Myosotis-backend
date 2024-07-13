@@ -62,7 +62,7 @@ app.include_router(
         google_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url="http://localhost:3001/callback_google",
+        redirect_url=settings.CLIENT_ORIGIN +"/callback_google",
         
     ),
     prefix="/auth/google",
@@ -74,7 +74,7 @@ app.include_router(
         github_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url="http://localhost:3001/callback_git",
+        redirect_url=settings.CLIENT_ORIGIN+"/callback_git",
         
     ),
     prefix="/auth/github",
