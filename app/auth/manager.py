@@ -28,7 +28,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print("AAAAAA")
-        
+
     async def on_after_login(
         self,
         user: User,
@@ -41,6 +41,11 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         self, user: User, token: str, request: Optional[Request] = None
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
+        base_url = "http://localhost:3000/password_reset"
+        encoded_code = urllib.parse.quote(token)
+        full_url = f"{base_url}/{encoded_code}"
+        email_intance = EmailSchema(email=[user.email])
+        await simple_send(email_intance, full_url)
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
@@ -48,7 +53,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
         print(f"Trying to send verification code...")
         try:
-            base_url = "http://localhost:3001/verify"
+            base_url = "http://localhost:3000/verify"
 
             encoded_code = urllib.parse.quote(token)
 
@@ -60,13 +65,8 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             print(f"Failed to send message {user.email}: {e}")
 
         print(f"Verification requested for user {user.id}. Verification token: {token}")
-    
 
-
-
-    async def on_after_verify(
-        self, user: User, request: Optional[Request] = None
-    ):
+    async def on_after_verify(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has been verified")
 
     async def create(
