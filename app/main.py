@@ -62,8 +62,7 @@ app.include_router(
         google_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url=settings.CLIENT_ORIGIN +"/callback_google",
-        
+        redirect_url=settings.CLIENT_ORIGIN + "/callback_google",
     ),
     prefix="/auth/google",
     tags=["Auth"],
@@ -74,8 +73,7 @@ app.include_router(
         github_oauth_client,
         auth_backend,
         SECRET,
-        redirect_url=settings.CLIENT_ORIGIN+"/callback_git",
-        
+        redirect_url=settings.CLIENT_ORIGIN + "/callback_git",
     ),
     prefix="/auth/github",
     tags=["Auth"],

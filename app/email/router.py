@@ -39,8 +39,9 @@ async def simple_send(email: EmailSchema, context: str) -> JSONResponse:
             subject="Fastapi-Mail module",
             recipients=email.dict().get("email"),
             body=html,
-            subtype=MessageType.html)
-                
+            subtype=MessageType.html,
+        )
+
         fm = FastMail(conf)
         await fm.send_message(message)
         return JSONResponse(status_code=200, content={"message": "email has been sent"})

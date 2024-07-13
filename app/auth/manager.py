@@ -29,7 +29,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print("AAAAAA")
-        
+
     async def on_after_login(
         self,
         user: User,
@@ -49,7 +49,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
         print(f"Trying to send verification code...")
         try:
-            base_url = settings.CLIENT_ORIGIN+"/verify"
+            base_url = settings.CLIENT_ORIGIN + "/verify"
 
             encoded_code = urllib.parse.quote(token)
 
@@ -61,13 +61,8 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             print(f"Failed to send message {user.email}: {e}")
 
         print(f"Verification requested for user {user.id}. Verification token: {token}")
-    
 
-
-
-    async def on_after_verify(
-        self, user: User, request: Optional[Request] = None
-    ):
+    async def on_after_verify(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has been verified")
 
     async def create(
