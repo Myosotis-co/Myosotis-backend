@@ -27,13 +27,8 @@ def get_jwt_strategy():
 # To Get Client ID and Secret you need to visit the respective provider and register your app.
 # Used for auhtentication through 3rd party apps and receiving an access token.
 # Warning!: Keep ID and SECRET very secure. Should be encrypted into the future.
-google_oauth_client = GoogleOAuth2(
-    "965700920174-jiio2s6t5ev6pe2sgakbjbaafdnmfcq6.apps.googleusercontent.com",
-    "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",
-)
-github_oauth_client = GitHubOAuth2(
-    "029629a2d9e9e76363a3", "0d7448461de7b4bd1cfbec9c63c061652d300697"
-)
+google_oauth_client = GoogleOAuth2("777490275004-dcuok40bfl21qpjg5a860ljoomrdtg68.apps.googleusercontent.com", "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")
+github_oauth_client = GitHubOAuth2("Ov23liC72QTqp6ep9qIi", "ba1b482fe289b74f9288e81d6e6e9da68a40086b")
 
 
 auth_backend = AuthenticationBackend(
