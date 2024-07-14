@@ -63,7 +63,6 @@ app.include_router(
         auth_backend,
         SECRET,
         redirect_url="http://localhost:3001/callback_google",
-        
     ),
     prefix="/auth/google",
     tags=["Auth"],
@@ -75,7 +74,6 @@ app.include_router(
         auth_backend,
         SECRET,
         redirect_url="http://localhost:3001/callback_git",
-        
     ),
     prefix="/auth/github",
     tags=["Auth"],
