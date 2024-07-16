@@ -24,6 +24,7 @@ from app.database import SQLALCHEMY_DATABASE_URL
 from app.email.router import router as email_router
 from app.seeder.router import router as seeder_router
 from app.category.router import router as category_router
+from app.category.isolatedRouter import router as isolated_category_router
 from app.application.router import router as application_router
 from app.message.router import router as message_router
 
@@ -105,6 +106,7 @@ app.include_router(
 
 app.include_router(seeder_router, prefix="/seeder", tags=["Seeder"])
 app.include_router(category_router, prefix="/category", tags=["Category"])
+app.include_router(isolated_category_router, prefix="/isolatedCategory", tags=["isolatedCategory"])
 app.include_router(application_router, prefix="/application", tags=["Application"])
 app.include_router(message_router, prefix="/message", tags=["Message"])
 
@@ -120,7 +122,6 @@ def protected_route(user: User = Depends(current_user)):
 @app.get("/protected-route/currentUserEmail")
 def protected_route(user: User = Depends(current_user)):
     return {user.email}
-
 
 @app.get("/docs", include_in_schema=False)
 def custom_swagger_ui_html_cdn():
