@@ -12,17 +12,23 @@ This is where Myosotis comes in. Our application is designed to empower users to
 
 3. `cd` into the directory you checked the project code out into.
 
-4. Start docker:
+4. Setup for docker containers:
 
-   ### Development containers
+   - Generate personal git token in GitHub Developer settings ( [instructions here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) )
+   - In the project `docker/db` create the `git.token` file and put generated token inside.
+   - Populate all the constants in the `docker/development/env/.env-docker.example` (ask Myosotis collegues for them + make sure to remove `.example` at the end of the file name to make it visible).
+
+
+    ### Set up Development containers
       Development containers only consist of:
       * Database container
       * Application container
       * Pgadmin container
         
 
-   Important: make sure you have env folders in bot /test and /development directories (ask keys from other team mates).
+   Important: make sure you have `env` folders in bot `/test` and `/development` directories (ask keys from other team mates).
 
+      Run this command to generate project containers:
    ```shell
     docker compose -p myosotis -f docker-compose.dev.yml up --build -d
    ```
@@ -32,6 +38,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
    docker ps
    ```
 
+
    Should look like this:
    ```
    CONTAINER ID     IMAGE
@@ -39,7 +46,15 @@ This is where Myosotis comes in. Our application is designed to empower users to
    123304c59a4b     postgres:15
    ```
 
-    ### Testing containers
+   ### Set Up Troubleshoot
+   If you are experiencing trouble with app container running remove previous volumes using this command and the rerun build command above:
+   ```shell
+   docker compose -p myosotis -f docker-compose.dev.yml down --volumes
+   ```
+
+
+
+    ### Set Up Testing containers
       Testing containers only consist of:
       - Database container
       - Application container
@@ -66,11 +81,6 @@ This is where Myosotis comes in. Our application is designed to empower users to
 
 6. To run the server and see all FastAPI endpoints go to localhost:8008/docs
 
-## Database setup
-
-1.  Install PostgreSQL
-
-2.  Install pgAdmin
 
 ## Initialize database through git backup
 
