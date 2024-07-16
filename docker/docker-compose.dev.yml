@@ -43,6 +43,7 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
       - PGADMIN_CONFIG_SERVER_MODE=False
       - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+      - PGADMIN_PREFERENCES_JSON_FILE=/pgadmin4/preferences.json
     ports:
       - "5050:80"
     entrypoint: 
@@ -52,6 +53,7 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
       - ./development/docker_pgadmin_servers.json:/pgadmin4/servers.json
+      - ./development/pgadmin_preferences.json:/pgadmin4/preferences.json
     depends_on:
       - db
 

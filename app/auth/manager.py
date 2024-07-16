@@ -46,7 +46,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
     ):
-
         print(f"Trying to send verification code...")
         try:
             base_url = settings.CLIENT_ORIGIN + "/verify"
