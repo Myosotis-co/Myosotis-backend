@@ -25,6 +25,7 @@ class Application(Base):
     category_id = Column(
         Integer, ForeignKey("categories.id", ondelete="CASCADE"), nullable=False
     )
+
     website_url = Column(String, nullable=False)
     application_name = Column(String, nullable=False)
     deletion_date = Column(TIMESTAMP(timezone=True), nullable=True)

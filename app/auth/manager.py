@@ -1,6 +1,7 @@
 from typing import Optional
 from app.email.router import simple_send
 from app.email.schema import EmailSchema
+from app.config import settings
 from pydantic import BaseModel
 from fastapi import Depends, Request, Response, status
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
@@ -28,7 +29,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print("AAAAAA")
-        
+
     async def on_after_login(
         self,
         user: User,
@@ -42,31 +43,36 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
 
+        base_url = settings.CLIENT_ORIGIN + "/password_reset"
+        encoded_code = urllib.parse.quote(token)
+
+        full_url = f"{base_url}/{encoded_code}"
+        email_intance = EmailSchema(email=[user.email])
+
+        message = "You have requested to reset your password. Please click the link below to reset your password."
+
+        await simple_send(message, email_intance, full_url)
+
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
     ):
-
         print(f"Trying to send verification code...")
         try:
-            base_url = "http://localhost:3001/verify"
+            base_url = settings.CLIENT_ORIGIN + "/verify"
 
             encoded_code = urllib.parse.quote(token)
 
             full_url = f"{base_url}?code={encoded_code}"
+            message = "Thank you for registering! Please verify your email by clicking the link below."
 
             email_instance = EmailSchema(email=[user.email])
-            await simple_send(email_instance, full_url)
+            await simple_send(message, email_instance, full_url)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")
 
         print(f"Verification requested for user {user.id}. Verification token: {token}")
-    
 
-
-
-    async def on_after_verify(
-        self, user: User, request: Optional[Request] = None
-    ):
+    async def on_after_verify(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has been verified")
 
     async def create(

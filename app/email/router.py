@@ -31,16 +31,16 @@ conf = ConnectionConfig(
 
 
 @router.post("/email")
-async def simple_send(email: EmailSchema, context: str) -> JSONResponse:
+async def simple_send(message: str, email: EmailSchema, context: str) -> JSONResponse:
     try:
-
-        html = "<p>Hi this test mail, thanks for using Fastapi-mail</p> " + context
+        html = f"<p>{message}</p>" + context
         message = MessageSchema(
             subject="Fastapi-Mail module",
             recipients=email.dict().get("email"),
             body=html,
-            subtype=MessageType.html)
-                
+            subtype=MessageType.html,
+        )
+
         fm = FastMail(conf)
         await fm.send_message(message)
         return JSONResponse(status_code=200, content={"message": "email has been sent"})
@@ -138,7 +138,14 @@ async def create_temp_email(
         temp_email = await create_mailsac_public_email()
         await service_add_model(temp_email, session)
         await session.commit()
-        return {"status": 201, "data": f"Temp email was created: {temp_email.email}"}
+        return {
+            "status": 201,
+            "data": {
+                "message": f"Temp email was created: {temp_email.email}",
+                "temp_email": temp_email.email,
+                "temp_email_id": temp_email.id,
+            },
+        }
     except Exception as e:
         return {"error": f"Failed to create a temp email. {e}"}
 
