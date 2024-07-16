@@ -1,6 +1,7 @@
 from typing import Optional
 from app.email.router import simple_send
 from app.email.schema import EmailSchema
+from app.config import settings
 from pydantic import BaseModel
 from fastapi import Depends, Request, Response, status
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
@@ -52,14 +53,15 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     ):
         print(f"Trying to send verification code...")
         try:
-            base_url = "http://localhost:3000/verify"
+            base_url = settings.CLIENT_ORIGIN + "/verify"
 
             encoded_code = urllib.parse.quote(token)
 
             full_url = f"{base_url}?code={encoded_code}"
+            message = "Thank you for registering! Please verify your email by clicking the link below."
 
             email_instance = EmailSchema(email=[user.email])
-            await simple_send(email_instance, full_url)
+            await simple_send(message, email_instance, full_url)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")
 
