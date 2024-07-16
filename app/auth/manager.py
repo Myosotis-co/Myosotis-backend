@@ -43,6 +43,16 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
 
+        base_url = settings.CLIENT_ORIGIN + "/password_reset"
+        encoded_code = urllib.parse.quote(token)
+
+        full_url = f"{base_url}/{encoded_code}"
+        email_intance = EmailSchema(email=[user.email])
+
+        message = "You have requested to reset your password. Please click the link below to reset your password."
+
+        await simple_send(message, email_intance, full_url)
+
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
     ):
