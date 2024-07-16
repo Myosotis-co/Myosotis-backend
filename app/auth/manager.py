@@ -53,9 +53,10 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             encoded_code = urllib.parse.quote(token)
 
             full_url = f"{base_url}?code={encoded_code}"
+            message = "Thank you for registering! Please verify your email by clicking the link below."
 
             email_instance = EmailSchema(email=[user.email])
-            await simple_send(email_instance, full_url)
+            await simple_send(message, email_instance, full_url)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")
 
