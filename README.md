@@ -15,7 +15,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
 4. Setup for docker containers:
 
    - Generate personal git token in GitHub Developer settings ( [instructions here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) )
-   - In the project `docker/db` create the `git.token` file and put generated token inside.
+   - In the project `docker/db` create the `git.token` file and put generated token inside. Do the same in `docker/develompent/db`.
    - Populate all the constants in the `docker/development/env/.env-docker.example` (ask Myosotis collegues for them + make sure to remove `.example` at the end of the file name to make it visible).
 
 
