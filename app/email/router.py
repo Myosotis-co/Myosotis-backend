@@ -1,6 +1,9 @@
+import base64
 import http.client
+from wsgiref import headers
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+import urllib.parse
 
 from app.config import settings
 from app.database import get_async_session
@@ -17,6 +20,11 @@ router = APIRouter(tags=["Email"])
 MAILSAC_API_KEY = settings.MAILSAC_KEY
 MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
 
+MAILGUN_API_KEY = settings.MAILGUN_API_KEY
+MAILGUN_BASE_URL = settings.MAILGUN_BASE_URL
+MAILGUN_CUSTOM_DOMAIN = settings.MAILGUN_CUSTOM_DOMAIN
+MAILGUN_API_URL = settings.MAILGUN_API_URL
+
 
 conf = ConnectionConfig(
     MAIL_USERNAME="secretpizdez@gmail.com",
@@ -31,18 +39,28 @@ conf = ConnectionConfig(
 
 
 @router.post("/email")
-async def simple_send(message: str, email: EmailSchema, context: str) -> JSONResponse:
+async def simple_send(
+    message: str, email: str, context: str, subject: str
+) -> JSONResponse:
     try:
         html = f"<p>{message}</p>" + context
-        message = MessageSchema(
-            subject="Fastapi-Mail module",
-            recipients=email.dict().get("email"),
-            body=html,
-            subtype=MessageType.html,
-        )
+        conn = http.client.HTTPSConnection(MAILGUN_BASE_URL)
+        api_key = "api:" + MAILGUN_API_KEY
+        user_and_pass = base64.b64encode(api_key.encode()).decode("ascii")
 
-        fm = FastMail(conf)
-        await fm.send_message(message)
+        headers = {
+            "Authorization": "Basic " + user_and_pass,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+        data = urllib.parse.urlencode(
+            {
+                "from": f"Myosotis support <notification@{MAILGUN_CUSTOM_DOMAIN}>",
+                "to": email.email,
+                "subject": subject,
+                "html": html,
+            }
+        )
+        conn.request("POST", MAILGUN_API_URL, body=data, headers=headers)
         return JSONResponse(status_code=200, content={"message": "email has been sent"})
     except Exception as e:
         return f"Failed to send message {email}: {e}"
