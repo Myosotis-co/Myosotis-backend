@@ -50,8 +50,9 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         email_intance = EmailSchema(email=[user.email])
 
         message = "You have requested to reset your password. Please click the link below to reset your password."
+        subject = "Myosotis - Password reset request"
 
-        await simple_send(message, email_intance, full_url)
+        await simple_send(message, email_intance, full_url, subject)
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
@@ -64,9 +65,10 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
             full_url = f"{base_url}?code={encoded_code}"
             message = "Thank you for registering! Please verify your email by clicking the link below."
+            subject = "Myosotis - Thank you for registering!"
 
             email_instance = EmailSchema(email=[user.email])
-            await simple_send(message, email_instance, full_url)
+            await simple_send(message, email_instance, full_url, subject)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")
 
