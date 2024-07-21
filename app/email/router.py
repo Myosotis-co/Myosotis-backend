@@ -61,6 +61,7 @@ async def send_single_email(
             }
         )
         conn.request("POST", MAILGUN_API_URL, body=data, headers=headers)
+        print(conn.getresponse().read().decode("utf-8"))
         return JSONResponse(status_code=200, content={"message": "email has been sent"})
     except Exception as e:
         return f"Failed to send message {email}: {e}"
