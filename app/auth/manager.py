@@ -1,5 +1,5 @@
 from typing import Optional
-from app.email.router import simple_send
+from app.email.router import send_single_email
 from app.email.schema import EmailSchema
 from app.config import settings
 from pydantic import BaseModel
@@ -52,7 +52,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         message = "You have requested to reset your password. Please click the link below to reset your password."
         subject = "Myosotis - Password reset request"
 
-        await simple_send(message, email_intance, full_url, subject)
+        await send_single_email(message, email_intance, full_url, subject)
 
     async def on_after_request_verify(
         self, user: User, token: str, request: Optional[Request] = None
@@ -68,7 +68,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             subject = "Myosotis - Thank you for registering!"
 
             email_instance = EmailSchema(email=[user.email])
-            await simple_send(message, email_instance, full_url, subject)
+            await send_single_email(message, email_instance, full_url, subject)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")
 
