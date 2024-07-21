@@ -232,5 +232,3 @@ async def get_temp_emails(
         return temp_emails
     except Exception as e:
         return {"error": f"Failed to get temp emails. {e}"}
-
-

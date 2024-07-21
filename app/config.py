@@ -19,7 +19,6 @@ class Settings(BaseSettings):
     MAILGUN_CUSTOM_DOMAIN: str
     MAILGUN_API_URL: str
 
-
     class Config:
         env_file = "docker/development/env/.env-docker"
 
