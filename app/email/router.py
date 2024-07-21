@@ -38,7 +38,7 @@ conf = ConnectionConfig(
 )
 
 
-@router.post("/email")
+@router.post("/email_single_send")
 async def send_single_email(
     message: str, email: EmailSchema, context: str, subject: str
 ) -> JSONResponse:
