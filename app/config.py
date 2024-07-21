@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     MAILSAC_BASE_URL: str
     MYOSOTIS_PRIVATE_DOMAIN: str
 
+    MAILGUN_API_KEY: str
+    MAILGUN_BASE_URL: str
+    MAILGUN_CUSTOM_DOMAIN: str
+    MAILGUN_API_URL: str
+
+
     class Config:
         env_file = "docker/development/env/.env-docker"
 
