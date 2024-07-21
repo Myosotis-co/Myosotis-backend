@@ -39,8 +39,8 @@ conf = ConnectionConfig(
 
 
 @router.post("/email")
-async def simple_send(
-    message: str, email: str, context: str, subject: str
+async def send_single_email(
+    message: str, email: EmailSchema, context: str, subject: str
 ) -> JSONResponse:
     try:
         html = f"<p>{message}</p>" + context
@@ -55,7 +55,7 @@ async def simple_send(
         data = urllib.parse.urlencode(
             {
                 "from": f"Myosotis support <notification@{MAILGUN_CUSTOM_DOMAIN}>",
-                "to": email.email,
+                "to": email.email[0],
                 "subject": subject,
                 "html": html,
             }
@@ -231,3 +231,5 @@ async def get_temp_emails(
         return temp_emails
     except Exception as e:
         return {"error": f"Failed to get temp emails. {e}"}
+
+
