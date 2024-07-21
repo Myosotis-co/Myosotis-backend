@@ -11,3 +11,8 @@ GIT_REPO=github.com/ZinnurovArtur/Deletemehere-backup.git
 MAILSAC_KEY="key"
 MYOSOTIS_PRIVATE_DOMAIN="private_domain"
 MAILSAC_BASE_URL="mailsac.com"
+
+MAILGUN_API_KEY=""
+MAILGUN_BASE_URL="api.eu.mailgun.net"
+MAILGUN_API_URL=""
+MAILGUN_CUSTOM_DOMAIN=""
