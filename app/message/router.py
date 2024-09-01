@@ -5,8 +5,10 @@ from app.database import get_async_session
 from app.message.schema import *
 from app.message.models import Message as Message_model
 from app.crud_manager import *
+from app.auth.jwt_config import fastapi_users
 
-router = APIRouter(tags=["Message"])
+current_user = fastapi_users.current_user(active=True)
+router = APIRouter(tags=["Message"],dependencies=[Depends(current_user)])
 
 
 @router.post("/create")
