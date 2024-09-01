@@ -1,18 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.auth.models import User
 from app.database import get_async_session
 from app.category.schema import *
 from app.category.models import Category as Category_model
 from app.crud_manager import *
 
-router = APIRouter(tags=["Category"])
+from app.auth.jwt_config  import fastapi_users
+
+current_user = fastapi_users.current_user(active=True)
+router = APIRouter(tags=["Category"],dependencies=[Depends(current_user)])
 
 
 @router.post("/create")
 async def create_category(
     category_create: CategoryCreate,
     session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user)
 ):
     try:
         await service_create_model(Category_model, category_create, session)
