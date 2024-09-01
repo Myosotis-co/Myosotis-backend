@@ -5,8 +5,10 @@ from app.database import get_async_session
 from app.application.schema import *
 from app.application.models import Application as Application_model
 from app.crud_manager import *
+from app.auth.jwt_config import fastapi_users
 
-router = APIRouter(tags=["Application"])
+current_user = fastapi_users.current_user(active=True)
+router = APIRouter(tags=["Application"],dependencies=[Depends(current_user)])
 
 
 @router.post("/create")
