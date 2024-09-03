@@ -13,6 +13,7 @@ class ApplicationBase(BaseModel):
 class ApplicationCreate(BaseModel):
     category_id: int
     website_url: str
+    application_name: str
 
 
 class Application(ApplicationBase):
