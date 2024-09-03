@@ -7,17 +7,17 @@ from app.category.schema import *
 from app.category.models import Category as Category_model
 from app.crud_manager import *
 
-from app.auth.jwt_config  import fastapi_users
+from app.auth.jwt_config import fastapi_users
 
 current_user = fastapi_users.current_user(active=True)
-router = APIRouter(tags=["Category"],dependencies=[Depends(current_user)])
+router = APIRouter(tags=["Category"], dependencies=[Depends(current_user)])
 
 
 @router.post("/create")
 async def create_category(
     category_create: CategoryCreate,
     session: AsyncSession = Depends(get_async_session),
-    user: User = Depends(current_user)
+    user: User = Depends(current_user),
 ):
     try:
         await service_create_model(Category_model, category_create, session)
@@ -29,14 +29,19 @@ async def create_category(
 
 @router.get("/get/{category_id}")
 async def get_category(
-    category_id: int, session: AsyncSession = Depends(get_async_session)
+    category_id: int,
+    session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user),
 ):
     try:
         category = await service_get_model(Category_model, category_id, session)
+        if category.user_id != user.id:
+            return HTTPException(status_code=403, detail="Forbidden")
         if category is not None:
             return category
         raise HTTPException(status_code=404, detail="Category not found")
     except Exception as e:
+        print(e)
         return "Failed to get a category: " + str(e)
 
 
