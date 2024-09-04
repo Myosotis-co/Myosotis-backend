@@ -22,8 +22,6 @@ MAILGUN_CUSTOM_DOMAIN = settings.MAILGUN_CUSTOM_DOMAIN
 MAILGUN_API_URL = settings.MAILGUN_API_URL
 
 
-
-
 @router.get("/addresses/{email}/messages")
 async def list_messages_for_an_email(email):
     try:
