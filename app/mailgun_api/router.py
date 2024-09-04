@@ -2,7 +2,6 @@ import base64
 import http.client
 import urllib.parse
 
-from app.email.router import MAILGUN_BASE_URL
 from starlette.responses import JSONResponse
 from wsgiref import headers
 from fastapi import APIRouter, Depends, HTTPException
