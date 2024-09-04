@@ -52,6 +52,7 @@ async def async_db(async_db_engine):
 async def async_client() -> AsyncClient:
     return AsyncClient(app=app, base_url="http://localhost")
 
+
 @pytest.fixture
 async def generate_role(async_db: AsyncSession):
     role = Role(name="user", description="user")
