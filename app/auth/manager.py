@@ -1,7 +1,7 @@
 from typing import Optional
-from app.email.router import send_single_email
 from app.email.schema import EmailSchema
 from app.config import settings
+from app.mailgun_api.router import send_single_email
 from pydantic import BaseModel
 from fastapi import Depends, Request, Response, status
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
