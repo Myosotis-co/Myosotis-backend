@@ -25,7 +25,7 @@ MAILGUN_API_URL = settings.MAILGUN_API_URL
 
 @router.post("/email_single_send")
 async def send_single_email(
-    message: str, email: EmailSchema, context: str, subject: str
+    message: str, email: str, context: str, subject: str
 ) -> JSONResponse:
     try:
         html = f"<p>{message}</p>" + context
@@ -40,7 +40,7 @@ async def send_single_email(
         data = urllib.parse.urlencode(
             {
                 "from": f"Myosotis support <notification@{MAILGUN_CUSTOM_DOMAIN}>",
-                "to": email.email[0],
+                "to": email,
                 "subject": subject,
                 "html": html,
             }
