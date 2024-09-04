@@ -1,4 +1,5 @@
 from app.auth.models import User
+from app.permissions import check_user_access
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -37,10 +38,7 @@ async def get_application(
             Application_model, application_id, session
         )
         if application is not None:
-            category = await service_get_model(
-                Category_model, application.category_id, session
-            )
-            if category.user_id != user.id:
+            if not check_user_access(user, application):
                 return HTTPException(status_code=403, detail="Forbidden")
             return application
         return HTTPException(status_code=404, detail="Applicaion not found")
@@ -60,10 +58,7 @@ async def update_application(
             Application_model, application_id, session
         )
         if application is not None:
-            category = await service_get_model(
-                Category_model, application.category_id, session
-            )
-            if category.user_id != user.id:
+            if not check_user_access(user, application):
                 return HTTPException(status_code=403, detail="Forbidden")
             await service_update_model(application, application_update, session)
             await session.commit()
@@ -83,11 +78,8 @@ async def delete_application(
         application = await service_get_model(
             Application_model, application_id, session
         )
-        category = await service_get_model(
-            Category_model, application.category_id, session
-        )
         if application is not None:
-            if category.user_id != user.id:
+            if not check_user_access(user, application):
                 return HTTPException(status_code=403, detail="Forbidden")
             await service_delete_model(Application_model, application_id, session)
             await session.commit()
@@ -111,10 +103,7 @@ async def get_applications(
         applications = [application for application in applications if application is not None]
         validatated_applications = []
         for application in applications:
-            category = await service_get_model(
-                Category_model, application.Application.category_id, session
-            )
-            if category.user_id == user.id:
+            if check_user_access(user, application.Application):
                 validatated_applications.append(application)
 
         return validatated_applications
