@@ -1,5 +1,4 @@
 import http.client
-from wsgiref import headers
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,7 +8,6 @@ from app.email.schema import *
 from app.email.models import TempEmail as TempEmail_model
 from app.email.functions import *
 from app.crud_manager import *
-
 
 router = APIRouter(tags=["Email"])
 
