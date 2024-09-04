@@ -25,6 +25,9 @@ class Application(Base):
     category_id = Column(
         Integer, ForeignKey("categories.id", ondelete="CASCADE"), nullable=False
     )
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
 
     website_url = Column(String, nullable=False)
     application_name = Column(String, nullable=False)
