@@ -1,20 +1,7 @@
-category_id,website_url, application_name
-1,IvanWizardov.com, IvanWizardov
-1,Sauron.info, Sauron
-2,diablo4.com, Diablo4
-3,clashofclans.com, ClashOfClans
-3,supercell.com, Supercell
-4,ironman.com, Ironman
-5,russiatoday.com, Russiatoday
-5,foxnews.org, FoxNews
-6,clashofclans.com, ClashOfClans
-6,tetris.swansea.ac.uk, Tetris
-6,blizzard.com, Blizzard
-7,dankmemes.info, Dankmemes
-8,optics.org, Optics
-8,electromagnetics.org, Electromagnetics
-9,impossible.info, Impossible
-10,iamgay.gay, iamgay
-10,spartak.ru, Spartak
-11,baltika7.org, Baltika7
-11,yantarnoe.ru, Yantarnoe
+category_id,website_url, application_name,user_id
+1,IvanWizardov.com, IvanWizardov ,1
+1,Sauron.info, Sauron,2
+2,diablo4.com, Diablo4,3
+3,clashofclans.com, ClashOfClans,4
+3,supercell.com, Supercell,5
+4,ironman.com, Ironman,6
