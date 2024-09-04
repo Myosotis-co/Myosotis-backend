@@ -100,7 +100,9 @@ async def get_applications(
         applications = await service_get_some_models(
             Application_model, page_num, items_per_page, session
         )
-        applications = [application for application in applications if application is not None]
+        applications = [
+            application for application in applications if application is not None
+        ]
         validatated_applications = []
         for application in applications:
             if check_user_access(user, application.Application):

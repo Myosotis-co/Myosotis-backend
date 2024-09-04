@@ -195,13 +195,15 @@ async def get_temp_emails(
     page_num: int,
     items_per_page: int,
     session: AsyncSession = Depends(get_async_session),
-    user: User = Depends(current_user)
+    user: User = Depends(current_user),
 ):
     try:
         temp_emails = await service_get_some_models(
             TempEmail_model, page_num, items_per_page, session
         )
-        temp_emails = [temp_email for temp_email in temp_emails if temp_email is not None]
+        temp_emails = [
+            temp_email for temp_email in temp_emails if temp_email is not None
+        ]
         validated_temp_emails = []
         for temp_email in temp_emails:
             if check_user_access(user, temp_email.TempEmail):

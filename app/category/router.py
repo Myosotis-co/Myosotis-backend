@@ -90,7 +90,7 @@ async def get_categories(
     page_num: int,
     items_per_page: int,
     session: AsyncSession = Depends(get_async_session),
-    user: User = Depends(current_user)
+    user: User = Depends(current_user),
 ):
     try:
         categories = await service_get_some_models(
