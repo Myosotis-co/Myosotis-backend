@@ -52,17 +52,19 @@ async def async_db(async_db_engine):
 async def async_client() -> AsyncClient:
     return AsyncClient(app=app, base_url="http://localhost")
 
+
 @pytest.fixture
-async def genereate_user(async_db: AsyncSession):
+async def generate_user(async_db: AsyncSession):
     user = User(email="test@gmail.com", password="123")
     async_db.add(user)
     await async_db.commit()
     await async_db.refresh(user)
     return user
 
+
 @pytest.fixture
-async def generate_email(async_db: AsyncSession,genereate_user):
-    email = TempEmail(email="test@gmail.com", user_id=genereate_user.id)
+async def generate_email(async_db: AsyncSession, generate_user: User):
+    email = TempEmail(email="test@gmail.com", user_id=generate_user.id)
     async_db.add(email)
     await async_db.commit()
     await async_db.refresh(email)
