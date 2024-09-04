@@ -1,4 +1,5 @@
 import http.client
+from app.auth.models import User
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -8,8 +9,11 @@ from app.email.schema import *
 from app.email.models import TempEmail as TempEmail_model
 from app.email.functions import *
 from app.crud_manager import *
+from app.auth.jwt_config import fastapi_users
+from app.permissions import check_user_access
 
-router = APIRouter(tags=["Email"])
+current_user = fastapi_users.current_user(active=True)
+router = APIRouter(tags=["Email"], dependencies=[Depends(current_user)])
 
 MAILSAC_API_KEY = settings.MAILSAC_KEY
 MAILSAC_BASE_URL = settings.MAILSAC_BASE_URL
@@ -105,17 +109,19 @@ async def get_formatted_email_metadata(email, message_id):
 @router.post("/create")
 async def create_temp_email(
     session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user),
 ):
     try:
         temp_email = await create_mailsac_public_email()
-        await service_add_model(temp_email, session)
+        temp_email_create = TempEmail_model(email=temp_email, user_id=user.id)
+        await service_add_model(temp_email_create, session)
         await session.commit()
         return {
             "status": 201,
             "data": {
-                "message": f"Temp email was created: {temp_email.email}",
-                "temp_email": temp_email.email,
-                "temp_email_id": temp_email.id,
+                "message": f"Temp email was created: {temp_email_create.email}",
+                "temp_email": temp_email_create.email,
+                "temp_email_id": temp_email_create.id,
             },
         }
     except Exception as e:
@@ -124,15 +130,17 @@ async def create_temp_email(
 
 @router.get("/get/{temp_email_id}")
 async def get_temp_email(
-    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
+    temp_email_id: int,
+    session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user),
 ):
     try:
         temp_email = await service_get_model(TempEmail_model, temp_email_id, session)
         if temp_email is not None:
+            if not check_user_access(user, temp_email):
+                return HTTPException(status_code=403, detail="Forbidden")
             return temp_email
-        raise HTTPException(
-            status_code=404, detail=f"Temp email: {temp_email.email}  was not found"
-        )
+        return HTTPException(status_code=404, detail=f"Temp email was not found")
     except Exception as e:
         return {
             "error": f"Failed to get a temp email {temp_email.email} with id:{temp_email_id}. {e}"
@@ -144,10 +152,13 @@ async def update_temp_email(
     temp_email_id: int,
     temp_email_update: TempEmailUpdate,
     session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user),
 ):
     try:
         temp_email = await service_get_model(TempEmail_model, temp_email_id, session)
         if temp_email is not None:
+            if not check_user_access(user, temp_email):
+                return HTTPException(status_code=403, detail="Forbidden")
             await service_update_model(temp_email, temp_email_update, session)
             await session.commit()
             return {"status": 204, "data": "Temp email is updated"}
@@ -162,12 +173,19 @@ async def update_temp_email(
 
 @router.delete("/delete/{temp_email_id}")
 async def delete_temp_email(
-    temp_email_id: int, session: AsyncSession = Depends(get_async_session)
+    temp_email_id: int,
+    session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user),
 ):
     try:
-        await service_delete_model(TempEmail_model, temp_email_id, session)
-        await session.commit()
-        return {"status": 204, "data": "Temp email is deleted"}
+        temp_email = await service_get_model(TempEmail_model, temp_email_id, session)
+        if temp_email is not None:
+            if not check_user_access(user, temp_email):
+                return HTTPException(status_code=403, detail="Forbidden")
+            await service_delete_model(TempEmail_model, temp_email_id, session)
+            await session.commit()
+            return {"status": 204, "data": "Temp email is deleted"}
+        return HTTPException(status_code=404, detail=f"Temp email is not found")
     except Exception as e:
         return {"error": f"Failed to delete a temp email with id:{temp_email_id}. {e}"}
 
@@ -177,11 +195,17 @@ async def get_temp_emails(
     page_num: int,
     items_per_page: int,
     session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user)
 ):
     try:
         temp_emails = await service_get_some_models(
             TempEmail_model, page_num, items_per_page, session
         )
-        return temp_emails
+        temp_emails = [temp_email for temp_email in temp_emails if temp_email is not None]
+        validated_temp_emails = []
+        for temp_email in temp_emails:
+            if check_user_access(user, temp_email.TempEmail):
+                validated_temp_emails.append(temp_email)
+        return validated_temp_emails
     except Exception as e:
         return {"error": f"Failed to get temp emails. {e}"}

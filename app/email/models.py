@@ -1,5 +1,6 @@
 from sqlalchemy import (
     UniqueConstraint,
+    ForeignKey,
     Column,
     Integer,
     String,
@@ -16,6 +17,9 @@ class TempEmail(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String, unique=True, nullable=False)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
