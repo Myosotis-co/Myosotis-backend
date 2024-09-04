@@ -54,7 +54,7 @@ async def async_client() -> AsyncClient:
 
 @pytest.fixture
 async def generate_email(async_db: AsyncSession):
-    email = TempEmail(email="test@gmail.com")
+    email = TempEmail(email="test@gmail.com", user_id=1)
     async_db.add(email)
     await async_db.commit()
     await async_db.refresh(email)
