@@ -13,6 +13,7 @@ class MessageCreate(BaseModel):
     message_type_id: int
     topic: str
     message_text: str
+    user_id: int
 
 
 class Message(MessageBase):

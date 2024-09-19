@@ -1,7 +1,6 @@
 from typing import Optional
-from app.email.router import send_single_email
-from app.email.schema import EmailSchema
 from app.config import settings
+from app.mailgun_api.router import send_single_email
 from pydantic import BaseModel
 from fastapi import Depends, Request, Response, status
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
@@ -47,7 +46,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         encoded_code = urllib.parse.quote(token)
 
         full_url = f"{base_url}/{encoded_code}"
-        email_intance = EmailSchema(email=[user.email])
+        email_intance = user.email
 
         message = "You have requested to reset your password. Please click the link below to reset your password."
         subject = "Myosotis - Password reset request"
@@ -67,7 +66,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             message = "Thank you for registering! Please verify your email by clicking the link below."
             subject = "Myosotis - Thank you for registering!"
 
-            email_instance = EmailSchema(email=[user.email])
+            email_instance = user.email
             await send_single_email(message, email_instance, full_url, subject)
         except Exception as e:
             print(f"Failed to send message {user.email}: {e}")

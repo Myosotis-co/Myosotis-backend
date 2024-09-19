@@ -59,4 +59,3 @@ async def seed(db):
     await create_table(db, "seeder_files/categories.csv", Category)
     await create_table(db, "seeder_files/applications.csv", Application)
     await create_table(db, "seeder_files/message_types.csv", Message_Type)
-    await create_table(db, "seeder_files/messages.csv", Message)

@@ -26,6 +26,7 @@ from app.seeder.router import router as seeder_router
 from app.category.router import router as category_router
 from app.application.router import router as application_router
 from app.message.router import router as message_router
+from app.mailgun_api.router import router as mailgun_router
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -51,6 +52,11 @@ app.include_router(
     tags=["Email"],
 )
 
+app.include_router(
+    mailgun_router,
+    prefix="/mailgun",
+    tags=["Mailgun"],
+)
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix="/auth",

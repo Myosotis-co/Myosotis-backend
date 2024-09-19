@@ -1,7 +1,7 @@
 import datetime
 
-from typing import List
-from pydantic import BaseModel
+from typing import Annotated, List
+from pydantic import BaseModel, Field
 
 from app.message.schema import Message
 
@@ -13,6 +13,8 @@ class ApplicationBase(BaseModel):
 class ApplicationCreate(BaseModel):
     category_id: int
     website_url: str
+    application_name: str
+    user_id: int
 
 
 class Application(ApplicationBase):

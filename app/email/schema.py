@@ -18,6 +18,7 @@ class TempEmailBase(BaseModel):
 
 class TempEmailCreate(BaseModel):
     email: str
+    user_id: int
 
 
 class TempEmail(TempEmailBase):

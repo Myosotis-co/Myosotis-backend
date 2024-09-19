@@ -3,6 +3,7 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
+from app.auth.models import Role, User
 from app.config import settings
 from app.database import Base, engine
 from app.email.models import TempEmail
@@ -53,8 +54,31 @@ async def async_client() -> AsyncClient:
 
 
 @pytest.fixture
-async def generate_email(async_db: AsyncSession):
-    email = TempEmail(email="test@gmail.com")
+async def generate_role(async_db: AsyncSession):
+    role = Role(name="user", description="user")
+    async_db.add(role)
+    await async_db.commit()
+    await async_db.refresh(role)
+    return role
+
+
+@pytest.fixture
+async def generate_user(async_db: AsyncSession, generate_role: Role):
+    user = User(
+        email="test@gmail.com",
+        name="Test",
+        hashed_password="123",
+        role_id=generate_role.id,
+    )
+    async_db.add(user)
+    await async_db.commit()
+    await async_db.refresh(user)
+    return user
+
+
+@pytest.fixture
+async def generate_email(async_db: AsyncSession, generate_user: User):
+    email = TempEmail(email="test@gmail.com", user_id=generate_user.id)
     async_db.add(email)
     await async_db.commit()
     await async_db.refresh(email)
