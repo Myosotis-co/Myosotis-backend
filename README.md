@@ -15,7 +15,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
 4. Setup for docker containers:
 
    - Generate personal git token in GitHub Developer settings ( [instructions here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) )
-   - In the project `docker/db` create the `git.token` file and put generated token inside. Do the same in `docker/develompent/db`.
+   - In the project `docker/db` create the `git.token` file and put generated token inside.
    - Populate all the constants in the `docker/development/env/.env-docker.example` (ask Myosotis collegues for them + make sure to remove `.example` at the end of the file name to make it visible).
 
 
@@ -26,7 +26,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
       * Pgadmin container
         
 
-   Important: make sure you have `env` folders in bot `/test` and `/development` directories (ask keys from other team mates).
+   Important: make sure you have `env` folders in both `/test` and `/development` directories (ask keys from other team mates).
 
       Run this command to generate project containers:
    ```shell
@@ -51,8 +51,6 @@ This is where Myosotis comes in. Our application is designed to empower users to
    ```shell
    docker compose -p myosotis -f docker-compose.dev.yml down --volumes
    ```
-
-
 
     ### Set Up Testing containers
       Testing containers only consist of:
@@ -107,6 +105,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
 4. To test it out, go to your Authetication router.
 5. Get an autherization link and go to it.
 6. Sign in using your account and you should now be logged in through a 3rd party service provider with your credentials.
+
 
 # Troubleshooting
 
