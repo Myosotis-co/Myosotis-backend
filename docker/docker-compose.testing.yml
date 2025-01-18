@@ -29,7 +29,7 @@ services:
     restart: always
     container_name: db
     volumes:
-      - ./test/db/:/docker-entrypoint-initdb.d/db/
+      - ./db/:/docker-entrypoint-initdb.d/db/
     ports:
       - "5432:5432"
     env_file:
