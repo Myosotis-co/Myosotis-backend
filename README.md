@@ -15,7 +15,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
 4. Setup for docker containers:
 
    - Generate personal git token in GitHub Developer settings ( [instructions here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) )
-   - In the project `docker/db` create the `git.token` file and put generated token inside. Do the same in `docker/develompent/db`.
+   - In the project `docker/db` create the `git.token` file and put generated token inside.
    - Populate all the constants in the `docker/development/env/.env-docker.example` (ask Myosotis collegues for them + make sure to remove `.example` at the end of the file name to make it visible).
 
 
@@ -26,7 +26,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
       * Pgadmin container
         
 
-   Important: make sure you have `env` folders in bot `/test` and `/development` directories (ask keys from other team mates).
+   Important: make sure you have `env` folders in both `/test` and `/development` directories (ask keys from other team mates).
 
       Run this command to generate project containers:
    ```shell
@@ -45,14 +45,6 @@ This is where Myosotis comes in. Our application is designed to empower users to
    9d5416dd7273     deletemehere_app
    123304c59a4b     postgres:15
    ```
-
-   ### Set Up Troubleshoot
-   If you are experiencing trouble with app container running remove previous volumes using this command and the rerun build command above:
-   ```shell
-   docker compose -p myosotis -f docker-compose.dev.yml down --volumes
-   ```
-
-
 
     ### Set Up Testing containers
       Testing containers only consist of:
@@ -79,8 +71,21 @@ This is where Myosotis comes in. Our application is designed to empower users to
       17c7d3e635e0   myosotis-db   
    ```
 
-6. To run the server and see all FastAPI endpoints go to localhost:8008/docs
+5. To run the server and see all FastAPI endpoints go to localhost:8008/docs
 
+6. Initialse an new user using the `auth/register` inside of Swagger using the this as example 
+```json
+{
+  "email": "test@gmail.com",
+  "name": "testuser",
+  "password": "1234",
+  "role_id": 2,
+  "is_verified": false
+}
+```
+7. Try to login usuing the `auth/login` endpoint there `username` will be `test@gmail.com` as example
+
+8. You will now have access to all endpoints 
 
 ## Initialize database through git backup
 
@@ -108,6 +113,7 @@ This is where Myosotis comes in. Our application is designed to empower users to
 5. Get an autherization link and go to it.
 6. Sign in using your account and you should now be logged in through a 3rd party service provider with your credentials.
 
+
 # Troubleshooting
 
 ### - Unable to connect to PostgreSQL server: SCRAM authentication requires libpq version 10 or above (M1 Mac users).
@@ -115,4 +121,9 @@ This is where Myosotis comes in. Our application is designed to empower users to
 This issue was fixed in psycopg2 version 2.9.6. Go to requirements.txt and make a local change by updating from 2.9.5. to 2.9.6 and run the docker build:
 ```shell
    docker compose up --build
+   ```
+
+   If you are experiencing trouble with app container running remove previous volumes using this command and the rerun build command above:
+   ```shell
+   docker compose -p myosotis -f docker-compose.dev.yml down --volumes
    ```
