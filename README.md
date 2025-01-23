@@ -46,12 +46,6 @@ This is where Myosotis comes in. Our application is designed to empower users to
    123304c59a4b     postgres:15
    ```
 
-   ### Set Up Troubleshoot
-   If you are experiencing trouble with app container running remove previous volumes using this command and the rerun build command above:
-   ```shell
-   docker compose -p myosotis -f docker-compose.dev.yml down --volumes
-   ```
-
     ### Set Up Testing containers
       Testing containers only consist of:
       - Database container
@@ -77,8 +71,21 @@ This is where Myosotis comes in. Our application is designed to empower users to
       17c7d3e635e0   myosotis-db   
    ```
 
-6. To run the server and see all FastAPI endpoints go to localhost:8008/docs
+5. To run the server and see all FastAPI endpoints go to localhost:8008/docs
 
+6. Initialse an new user using the `auth/register` inside of Swagger using the this as example 
+```json
+{
+  "email": "test@gmail.com",
+  "name": "testuser",
+  "password": "1234",
+  "role_id": 2,
+  "is_verified": false
+}
+```
+7. Try to login usuing the `auth/login` endpoint there `username` will be `test@gmail.com` as example
+
+8. You will now have access to all endpoints 
 
 ## Initialize database through git backup
 
@@ -114,4 +121,9 @@ This is where Myosotis comes in. Our application is designed to empower users to
 This issue was fixed in psycopg2 version 2.9.6. Go to requirements.txt and make a local change by updating from 2.9.5. to 2.9.6 and run the docker build:
 ```shell
    docker compose up --build
+   ```
+
+   If you are experiencing trouble with app container running remove previous volumes using this command and the rerun build command above:
+   ```shell
+   docker compose -p myosotis -f docker-compose.dev.yml down --volumes
    ```
