@@ -10,7 +10,6 @@ from sqlmodel import create_engine
 from app.database import SQLALCHEMY_DATABASE_URL, Base
 from alembic import context
 from app.database import Base
-from app import seeder
 
 # Required for migrations (Do not delete)
 from app.auth.models import Role, User
