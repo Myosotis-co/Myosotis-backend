@@ -1,5 +1,6 @@
 import json
 import requests
+import os
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
@@ -7,9 +8,13 @@ SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
 def get_google_access(code: str = None):
     if not code:
-        auth_data = get_credential_metadata()
-        auth_uri = f"{auth_data['auth_uri']}?response_type=code&client_id={auth_data['client_id']}&redirect_uri=http://localhost:8000&scope={SCOPES[0]}"
-        return auth_uri
+        if os.path.exists("token.json"):
+            with open("token.json", "r") as token:
+                return json.load(token)
+        else:
+            auth_data = get_credential_metadata()
+            auth_uri = f"{auth_data['auth_uri']}?response_type=code&client_id={auth_data['client_id']}&redirect_uri=http://localhost:8000&scope={SCOPES[0]}"
+            return auth_uri
     else:
         metadata = get_credential_metadata()
         token_request = {
