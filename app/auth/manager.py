@@ -27,7 +27,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        print("AAAAAA")
+        print("After register call")
 
     async def on_after_login(
         self,
@@ -35,7 +35,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         request: Optional[Request] = None,
         response: Optional[Response] = None,
     ):
-        print("BBBBB")
+        print("After login call")
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None
@@ -143,6 +143,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             "expires_at": expires_at,
             "refresh_token": refresh_token,
         }
+        print(oauth_account_dict)
 
         try:
             user = await self.get_by_oauth_account(oauth_name, account_id)
