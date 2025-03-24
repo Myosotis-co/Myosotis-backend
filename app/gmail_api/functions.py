@@ -11,8 +11,8 @@ def gmail_read_messages(creds: str = None):
             .execute()
         )
         messages = results.get("messages", [])
-        print(messages)
         if not messages:
-            print("No new messages.")
+            return None
+        return messages
     except Exception as e:
         print(f"Error occured:{e}")
