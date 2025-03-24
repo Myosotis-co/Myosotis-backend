@@ -26,12 +26,14 @@ from app.category.router import router as category_router
 from app.application.router import router as application_router
 from app.message.router import router as message_router
 from app.mailgun_api.router import router as mailgun_router
-
+from app.gmail_api.router import router as gmail_router
+from starlette.middleware.sessions import SessionMiddleware
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, "/docker/env/.env-docker"))
 
 app = FastAPI(docs_url=None, title="Myosotis")
+app.add_middleware(SessionMiddleware, secret_key="secret-key")
 app.add_middleware(DBSessionMiddleware, db_url=SQLALCHEMY_DATABASE_URL)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -109,6 +111,7 @@ app.include_router(
 app.include_router(category_router, prefix="/category", tags=["Category"])
 app.include_router(application_router, prefix="/application", tags=["Application"])
 app.include_router(message_router, prefix="/message", tags=["Message"])
+app.include_router(gmail_router, prefix="/gmail_api")
 
 current_user = fastapi_users.current_user(active=True)
 
