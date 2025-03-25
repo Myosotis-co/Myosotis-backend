@@ -5,7 +5,7 @@ from app.gmail_api.api_access_utils import (
     get_credential_metadata,
     get_google_access,
 )
-from app.gmail_api.functions import gmail_read_messages
+from app.gmail_api.functions import gmail_get_formatted_messages, gmail_read_messages
 
 
 router = APIRouter(tags=["DeveloperOnly"])
@@ -24,14 +24,13 @@ def google_request_api(request: Request, code: str = None):
 
 
 @router.get("/gmail_read_message")
-def google_read_message(request: Request):
+def google_read_message(request: Request, format: str = "minimal"):
     try:
         creds = create_credentials_object(
             get_credential_metadata(),
             request.session.get("google_token")["access_token"],
         )
-        print(creds)
-        response = gmail_read_messages(creds)
+        response = gmail_get_formatted_messages(creds, format)
         return {"status": 200, "messages": response}
     except Exception as e:
         return "Failed to get a message" + str(e)
